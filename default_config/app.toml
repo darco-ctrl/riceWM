@@ -4,4 +4,4 @@ width = 1000
 height = 675
 
 [theme]
-active_theme = "catpuccin_mocha.toml"
+active_theme = "default_theme.toml"

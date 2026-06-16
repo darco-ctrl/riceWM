@@ -8,6 +8,7 @@ def ensure_config():
     check_config()
     check_app_config()
     check_theme_dir()
+    check_window_icon_dir()
 
 
 def check_config():
@@ -26,7 +27,7 @@ def check_app_config():
 def check_theme_dir():
 
     # create the themes directory if it doesn't exist
-    if rice_paths.themes_dir.exists():
+    if not rice_paths.themes_dir.exists():
         rice_paths.themes_dir.mkdir(parents=True, exist_ok=True)
 
     # copy the default theme to the themes directory
@@ -34,3 +35,17 @@ def check_theme_dir():
         shutil.copyfile(
             rice_paths.default_theme_path, rice_paths.themes_dir / "default_theme.toml"
         )
+
+
+def check_window_icon_dir():
+    if not rice_paths.window_cache_icon_dir.exists():
+        rice_paths.window_cache_icon_dir.mkdir(parents=True, exist_ok=True)
+
+
+def delete_cache():
+    del_window_icon_dir()
+
+
+def del_window_icon_dir():
+    if rice_paths.window_cache_icon_dir.exists():
+        shutil.rmtree(rice_paths.window_cache_icon_dir)

@@ -14,10 +14,18 @@ def ensure_config():
     bootstrap.ensure_config()
 
 
+def on_exit():
+    bootstrap.delete_cache()
+
+
 def main():
 
     application = QApplication(sys.argv)
     application.setQuitOnLastWindowClosed(False)
+
+    def quit_application():
+        application.quit()
+        on_exit()
 
     ensure_config()
 
@@ -50,7 +58,7 @@ def main():
     menu.addAction(open_settings_action)
     menu.addAction(quit_action)
 
-    quit_action.triggered.connect(application.quit)
+    quit_action.triggered.connect(quit_application)
 
     tray_icon.setContextMenu(menu)
 

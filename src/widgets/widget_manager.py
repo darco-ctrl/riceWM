@@ -1,5 +1,6 @@
 from theme.theme_manager import Theme
-from widgets.widget_theme import WidgetTheme
+from widgets.widget_themes.widget_theme import WidgetTheme
+from widgets.window_switch_panel.window_switch_panel import WindowSwitchPanelWidget
 
 
 class WidgetManager:
@@ -10,7 +11,10 @@ class WidgetManager:
         self.load_widgets()
 
     def load_widgets(self):
-        pass
+        self.widgets["window_switch_panel"] = WindowSwitchPanelWidget(
+            self.theme.data["window_switch_panel"]
+        )
+
         # self.widgets["dock"] = DockWidget(WidgetTheme(self.theme.data["dock"]))
 
     def show_widgets(self):
