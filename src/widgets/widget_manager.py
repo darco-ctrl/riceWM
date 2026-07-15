@@ -1,4 +1,4 @@
-from theme.theme_manager import Theme, Config
+from data.data_manager import Theme, Config
 from widgets.widget_data.theme.widget_theme import WidgetTheme
 from widgets.window_switch_panel.window_switch_panel import WindowSwitchPanelWidget
 
