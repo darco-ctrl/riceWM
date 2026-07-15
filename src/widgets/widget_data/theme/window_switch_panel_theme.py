@@ -37,13 +37,12 @@ class WindowSwitchPanelTheme:
         search_box_dict = data["search_box"]
 
         search_box = SearchBox(
-            padding=search_box_dict["padding"],
-            background_color=search_box_dict["background_color"]
+            padding=search_box_dict["padding"]
         )
         return search_box
 
     def create_line_edit(self, data) -> LineEdit:
-        line_edit_dict = data["line_edit"]
+        line_edit_dict = data["search_box"]["line_edit"]
 
         line_edit = LineEdit(
             corner_radius=line_edit_dict["corner_radius"],
