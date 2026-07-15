@@ -1,0 +1,18 @@
+[config]
+name = 'rice_default'
+
+
+[settings_window]
+corner_radius = 3
+
+[window_switch_panel]
+
+[window_switch_panel.behavior]
+max_results_shown = 5 # maximum results shown
+set_height_auto = true
+
+[window_switch_panel.window_panel]
+window_width = 300
+
+[window_switch_panel.search_box]
+search_box_height = 30

@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QApplication, QMenu, QSystemTrayIcon
 import app.bootstrap as bootstrap
 import app.paths as rice_paths
 from config.app_config import AppConfig
-from theme.theme_manager import ThemeManager
+from data.data_manager import DataManager
 from widgets.widget_manager import WidgetManager
 
 
@@ -33,14 +33,17 @@ def main():
     app_config = AppConfig(rice_paths.app_config_path)
 
     # Create ThemeManager with AppConfig and apply theme
-    theme_manager = ThemeManager(
-        themes_dir=rice_paths.themes_dir, app_config=app_config
+    data_manager = DataManager(
+        app_config=app_config,
+        config_dir=rice_paths.config_dir,
+        themes_dir=rice_paths.themes_dir
     )
 
-    theme = theme_manager.load_current_theme()
+    theme = data_manager.load_current_theme()
+    config = data_manager.load_current_config()
 
     # Create WidgetManager with theme and show widgets
-    widget_manager = WidgetManager(theme=theme)
+    widget_manager = WidgetManager(config=config, theme=theme)
     widget_manager.show_widgets()
 
     # Create system tray icon

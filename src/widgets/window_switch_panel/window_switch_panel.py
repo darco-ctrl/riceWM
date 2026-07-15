@@ -2,13 +2,15 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtWidgets import QHBoxLayout, QLineEdit, QVBoxLayout, QWidget
 
-from widgets.widget_themes.window_switch_panel_theme import WindowSwitchPanelTheme
+from widgets.widget_data.theme.window_switch_panel_theme import WindowSwitchPanelTheme
+from widgets.widget_data.config.window_switch_panel_config import WindowSwitchPanelConfig
 from windows.window_manager import WindowManager
 
 
 class WindowSwitchPanelWidget(QWidget):
-    def __init__(self, theme_dict: dict):
+    def __init__(self, config_dict: dict, theme_dict: dict):
         super().__init__()
+        self.config = WindowSwitchPanelConfig(config_dict)
         self.theme = WindowSwitchPanelTheme(theme_dict)
 
         self.window_manager = WindowManager()
@@ -34,10 +36,10 @@ class WindowSwitchPanelWidget(QWidget):
 
         window_height = int(screen_height * 0.9)
 
-        position_x = int((screen_width / 2) - (self.theme.window_width / 2))
+        position_x = int((screen_width / 2) - (self.config.window_panel.width / 2))
         position_y = int((screen_height / 2) - (window_height / 2))
 
-        self.setFixedWidth(self.theme.window_width)
+        self.setFixedWidth(self.config.window_panel.width)
         self.setFixedHeight(window_height)
         self.move(position_x, position_y)
 
@@ -45,7 +47,7 @@ class WindowSwitchPanelWidget(QWidget):
         main_panel = QWidget()
 
         main_panel.setStyleSheet(f"""
-            background-color: {self.theme.background_color};
+            background-color: {self.theme.main_panel.background_color};
         """)
 
         main_panel.setFixedHeight(100)
@@ -69,7 +71,7 @@ class WindowSwitchPanelWidget(QWidget):
 
         container = QWidget()
 
-        container.setFixedHeight(self.theme.search_box_height)
+        container.setFixedHeight(self.config.search_box.height)
 
         container.setStyleSheet("""
             background-color: transparent;
@@ -81,7 +83,8 @@ class WindowSwitchPanelWidget(QWidget):
 
         line_edit = QLineEdit()
         line_edit.setStyleSheet(f"""
-            """)
+            background_color:
+        """)
 
         panel_layout.addWidget(container)
 

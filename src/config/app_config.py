@@ -20,4 +20,8 @@ class AppConfig:
 
     @property
     def get_current_theme(self) -> str:
-        return self.data["theme"]["active_theme"]
+        return self.data["data"]["active_theme"]
+
+    @property
+    def get_current_config(self) -> str:
+        return self.data["data"]["active_config"]

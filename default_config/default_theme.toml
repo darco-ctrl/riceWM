@@ -7,6 +7,16 @@ background_color = "#1e1e2e"
 font_color = "#cdd6f4"
 accent_color = "#cba6f7"
 border_color = "#313244"
-corner_radius = 12
+
 
 [window_switch_panel]
+[window_switch_panel.search_box]
+padding = [0, 0, 0, 0] # top, right, bottom, left
+background_color = "#1e1e2e"
+
+[window_switch_panel.search_box.line_edit]
+corner_radius = 3
+border_width = 2
+padding = [0, 0, 0, 0] # [top, right, bottom, left]
+background_color = "#1e1e2e"
+border_color = "#bac2de"
