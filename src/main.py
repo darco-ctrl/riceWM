@@ -21,11 +21,11 @@ def on_exit():
 def main():
 
     application = QApplication(sys.argv)
-    application.setQuitOnLastWindowClosed(False)
+    #application.setQuitOnLastWindowClosed(False)
 
     def quit_application():
-        application.quit()
         on_exit()
+        application.quit()
 
     ensure_config()
 
