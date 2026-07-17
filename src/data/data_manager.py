@@ -13,7 +13,7 @@ class Theme:
 
     def load(self) -> dict:
         with open(self.theme_path, "rb") as file:
-            print(f"Loading theme: {self.theme_path}")
+            print(f"Loading theme: {self.theme_path}.")
             return tomllib.load(file)
 
 class Config:
@@ -23,7 +23,7 @@ class Config:
 
     def load(self) -> dict:
         with open(self.config_path, "rb") as file:
-            print(f"Loading config: {self.config_path}")
+            print(f"Loading config: {self.config_path}.")
             return tomllib.load(file)
 
 class DataManager:
@@ -61,5 +61,5 @@ class DataManager:
         if not config_name.exists():
             raise FileNotFoundError(f"Config not found: {config_name}")
 
-        self.current_config = Theme(config_name)
+        self.current_config = Config(config_name)
         return self.current_config

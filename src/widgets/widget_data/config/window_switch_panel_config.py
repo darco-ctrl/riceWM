@@ -17,11 +17,9 @@ class WindowSwitchPanelConfig:
     def __init__(self, data: dict):
         self.data = data
 
-        print(data)
-
         self.behavior: Behavior = self.create_behavior(data)
-        self.window_panel: WindowPanel = self.create_window_panel(data)
-        self.search_box: SearchBox = self.create_search_box(data)
+        #self.window_panel: WindowPanel = self.create_window_panel(data)
+        #self.search_box: SearchBox = self.create_search_box(data)
 
     def create_behavior(self, data: dict) -> Behavior:
         behavior_dict = data["behavior"]
@@ -32,6 +30,8 @@ class WindowSwitchPanelConfig:
 
         return behavior
 
+
+    # BOTH ARE NOT IN USE AT MOMENT
     def create_window_panel(self, data: dict) -> WindowPanel:
         window_panel_dict = data["window_panel"]
 

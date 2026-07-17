@@ -1,6 +1,8 @@
+from typing import cast
+
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QGuiApplication
-from PySide6.QtWidgets import QHBoxLayout, QLineEdit, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QHBoxLayout, QLineEdit, QSizePolicy, QVBoxLayout, QWidget
 
 from widgets.widget_data.theme.window_switch_panel_theme import WindowSwitchPanelTheme
 from widgets.widget_data.config.window_switch_panel_config import WindowSwitchPanelConfig
@@ -36,10 +38,10 @@ class WindowSwitchPanelWidget(QWidget):
 
         window_height = int(screen_height * 0.9)
 
-        position_x = int((screen_width / 2) - (self.config.window_panel.width / 2))
+        position_x = int((screen_width / 2) - (self.theme.main_panel.window_width / 2))
         position_y = int((screen_height / 2) - (window_height / 2))
 
-        self.setFixedWidth(self.config.window_panel.width)
+        self.setFixedWidth(self.theme.main_panel.window_width)
         self.setFixedHeight(window_height)
         self.move(position_x, position_y)
 
@@ -50,7 +52,7 @@ class WindowSwitchPanelWidget(QWidget):
             background-color: {self.theme.main_panel.background_color};
         """)
 
-        main_panel.setFixedHeight(100)
+        #main_panel.setFixedHeight(100)
 
         # Main panel layout
         main_panel_layout = QVBoxLayout(main_panel)
@@ -64,29 +66,56 @@ class WindowSwitchPanelWidget(QWidget):
         return main_panel
 
     def create_search_box(self):
-        panel_layout = self.main_panel.layout()
+        panel_layout: QVBoxLayout = cast(QVBoxLayout, self.main_panel.layout())
 
         if not panel_layout:
             return
 
         container = QWidget()
 
-        container.setFixedHeight(self.config.search_box.height)
+        container.setFixedHeight(self.theme.search_box.height)
 
-        container.setStyleSheet("""
-            background-color: transparent;
+        container.setStyleSheet(f"""
+            background-color: {self.theme.search_box.background_color};
         """)
 
         layout = QVBoxLayout(container)
-        layout.setContentsMargins(0,0,0,0)
+        layout.setContentsMargins(
+            self.theme.line_edit.margin[0],
+            self.theme.line_edit.margin[1],
+            self.theme.line_edit.margin[2],
+            self.theme.line_edit.margin[3]
+        )
         layout.setSpacing(0)
 
         line_edit = QLineEdit()
+
+        #line_edit.setFixedHeight(self.theme.search_box.height)
+
+        size_policy = line_edit.sizePolicy()
+        size_policy.setVerticalPolicy(QSizePolicy.Policy.Expanding)
+        line_edit.setSizePolicy(size_policy)
+
         line_edit.setStyleSheet(f"""
-            background_color:
+            border-style: {self.theme.line_edit.border_style};
+            border-radius: {self.theme.line_edit.border_radius}px;
+            border-top-width: {self.theme.line_edit.border_width[0]}px;
+            border-right-width: {self.theme.line_edit.border_width[1]}px;
+            border-bottom-width: {self.theme.line_edit.border_width[2]}px;
+            border-left-width: {self.theme.line_edit.border_width[3]}px;
+            background-color: {self.theme.line_edit.background_color};
+            border-color: {self.theme.line_edit.border_color}
         """)
 
-        panel_layout.addWidget(container)
+        line_edit.setTextMargins(
+            self.theme.line_edit.text_margin[0],
+            self.theme.line_edit.text_margin[1],
+            self.theme.line_edit.text_margin[2],
+            self.theme.line_edit.text_margin[3]
+        )
+
+        layout.addWidget(line_edit)
+        panel_layout.addWidget(container, alignment=Qt.AlignmentFlag.AlignTop)
 
     def get_screen_size(self) -> tuple[int, int]:
         screen = QGuiApplication.primaryScreen()

@@ -10,13 +10,35 @@ border_color = "#313244"
 
 
 [window_switch_panel]
-[window_switch_panel.search_box]
-padding = [0, 0, 0, 0] # top, right, bottom, left
+
+[window_switch_panel.window_panel]
+window_width = 300
 background_color = "#1e1e2e"
 
+[window_switch_panel.search_box]
+height = 50
+background_color = "blue" # transparent
+
 [window_switch_panel.search_box.line_edit]
-corner_radius = 3
-border_width = 2
-padding = [0, 0, 0, 0] # [top, right, bottom, left]
-background_color = "#1e1e2e"
+
+# 1. none: No border.
+# 2. solid: A continuous, unbroken line.
+# 3. dashed: A series of short dashes.
+# 4. dotted: A series of round dots.
+# 5. double: Two solid lines that add up to the width specified.
+# 6. groove: Creates a 3D grooved effect (depends heavily on the operating system or widget style).
+# 7. ridge: Creates a 3D ridged effect, the opposite of groove.
+# 8. inset: Creates a 3D embedded/sunken effect.
+# 9. outset: Creates a 3D embossed/raised effect.
+border_style = "solid"
+
+# int only
+border_radius = 3
+
+# [top, right, bottom, left]
+border_width = [2, 2, 2, 2]
+margin = [0, 0, 0, 0]
+text_margin = [0, 0, 0, 0]
+
+background_color = "red"
 border_color = "#bac2de"

@@ -1,20 +1,23 @@
 from dataclasses import dataclass, field
-from turtle import back
+from turtle import back, window_width
 
 @dataclass
 class Panel:
     background_color: str = ""
+    window_width: int = 300
 
 @dataclass
 class SearchBox:
-    padding: list = field(default_factory=lambda: [0, 0, 0, 0])
+    height: int = 30
     background_color: str = ""
 
 @dataclass
 class LineEdit:
-    corner_radius: int = 3
-    border_width: int = 2
-    padding: list = field(default_factory=lambda: [0, 0, 0, 0]) # [top, right, bottom, left]
+    border_style: str = "solid"
+    border_radius: int = 3
+    border_width: list = field(default_factory=lambda: [0, 0, 0, 0]) # [top, right, bottom, left]
+    margin: list = field(default_factory=lambda: [0, 0, 0, 0]) # [top, right, bottom, left]
+    text_margin: list = field(default_factory=lambda: [0, 0, 0, 0])
     background_color: str = "#1e1e2e"
     border_color: str = "#bac2de"
 
@@ -28,8 +31,11 @@ class WindowSwitchPanelTheme:
 
     def create_panel(self, data) -> Panel:
 
+        window_panel_dict = data["window_panel"]
+
         panel: Panel = Panel(
-            background_color=data["background_color"]
+            window_width=window_panel_dict["window_width"],
+            background_color=window_panel_dict["background_color"]
         )
         return panel
 
@@ -37,7 +43,8 @@ class WindowSwitchPanelTheme:
         search_box_dict = data["search_box"]
 
         search_box = SearchBox(
-            padding=search_box_dict["padding"]
+            height=search_box_dict["height"],
+            background_color=search_box_dict["background_color"]
         )
         return search_box
 
@@ -45,10 +52,12 @@ class WindowSwitchPanelTheme:
         line_edit_dict = data["search_box"]["line_edit"]
 
         line_edit = LineEdit(
-            corner_radius=line_edit_dict["corner_radius"],
+            border_style=line_edit_dict["border_style"],
+            border_radius=line_edit_dict["border_radius"],
             border_width=line_edit_dict["border_width"],
             border_color=line_edit_dict["border_color"],
-            padding=line_edit_dict["padding"],
+            margin=line_edit_dict["margin"],
+            text_margin=line_edit_dict["text_margin"],
             background_color=line_edit_dict["background_color"]
         )
 
