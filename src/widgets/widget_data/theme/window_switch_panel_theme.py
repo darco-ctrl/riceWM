@@ -1,25 +1,50 @@
 from dataclasses import dataclass, field
+from operator import is_, truediv
 from turtle import back, window_width
 
-@dataclass
+from PySide6.QtGui import QFont
+
+FONT_CLASS = {
+    "Thin": QFont.Weight.Thin,
+    "Light": QFont.Weight.Light,
+    "Normal": QFont.Weight.Normal,
+    "Medium": QFont.Weight.Medium,
+    "Bold": QFont.Weight.Bold,
+    "Black": QFont.Weight.Black
+}
+
+@dataclass(frozen=True)
 class Panel:
-    background_color: str = ""
-    window_width: int = 300
+    background_color: str
+    window_width: int
 
-@dataclass
+@dataclass(frozen=True)
 class SearchBox:
-    height: int = 30
-    background_color: str = ""
+    height: int
+    background_color: str
 
-@dataclass
+@dataclass(frozen=True)
+class FontStyle:
+
+    family: str
+    weight: str
+    color: str
+    letter_spacing: float
+    pixel_size: int
+    is_bold: bool
+    is_italic: bool
+    is_underline: bool
+    is_strike_out: bool = True
+
+@dataclass(frozen=True)
 class LineEdit:
-    border_style: str = "solid"
-    border_radius: int = 3
-    border_width: list = field(default_factory=lambda: [0, 0, 0, 0]) # [top, right, bottom, left]
-    margin: list = field(default_factory=lambda: [0, 0, 0, 0]) # [top, right, bottom, left]
-    text_margin: list = field(default_factory=lambda: [0, 0, 0, 0])
-    background_color: str = "#1e1e2e"
-    border_color: str = "#bac2de"
+    border_style: str
+    border_radius: int
+    border_width: list
+    margin: list
+    text_margin: list
+    background_color: str
+    border_color: str
 
 class WindowSwitchPanelTheme:
     def __init__(self, data: dict):
@@ -28,6 +53,7 @@ class WindowSwitchPanelTheme:
         self.main_panel: Panel = self.create_panel(data)
         self.search_box: SearchBox = self.create_search_box(data)
         self.line_edit: LineEdit = self.create_line_edit(data)
+        self.font_style: FontStyle = self.create_font_style(data)
 
     def create_panel(self, data) -> Panel:
 
@@ -62,3 +88,20 @@ class WindowSwitchPanelTheme:
         )
 
         return line_edit
+
+    def create_font_style(self, data) -> FontStyle:
+        font_style_dict = data["search_box"]["line_edit"]["font_style"]
+
+        font_style = FontStyle(
+            family=font_style_dict["family"],
+            weight=font_style_dict["weight"],
+            color=font_style_dict["color"],
+            pixel_size=font_style_dict["size"],
+            letter_spacing=font_style_dict["letter_spacing"],
+            is_bold=font_style_dict["is_bold"],
+            is_italic=font_style_dict["is_italic"],
+            is_underline=font_style_dict["is_underline"],
+            is_strike_out=font_style_dict["is_strike_out"]
+        )
+
+        return font_style

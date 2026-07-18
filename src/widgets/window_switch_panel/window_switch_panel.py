@@ -1,7 +1,7 @@
 from typing import cast
 
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QGuiApplication
+from PySide6.QtGui import QFont, QGuiApplication
 from PySide6.QtWidgets import QHBoxLayout, QLineEdit, QSizePolicy, QVBoxLayout, QWidget
 
 from widgets.widget_data.theme.window_switch_panel_theme import WindowSwitchPanelTheme
@@ -104,7 +104,8 @@ class WindowSwitchPanelWidget(QWidget):
             border-bottom-width: {self.theme.line_edit.border_width[2]}px;
             border-left-width: {self.theme.line_edit.border_width[3]}px;
             background-color: {self.theme.line_edit.background_color};
-            border-color: {self.theme.line_edit.border_color}
+            border-color: {self.theme.line_edit.border_color};
+            color: {self.theme.font_style.color}
         """)
 
         line_edit.setTextMargins(
@@ -113,6 +114,17 @@ class WindowSwitchPanelWidget(QWidget):
             self.theme.line_edit.text_margin[2],
             self.theme.line_edit.text_margin[3]
         )
+
+        font = line_edit.font()
+        font.setFamily(self.theme.font_style.family)
+        font.setPixelSize(self.theme.font_style.pixel_size)
+        font.setLetterSpacing(QFont.SpacingType.AbsoluteSpacing, self.theme.font_style.letter_spacing)
+        font.setBold(self.theme.font_style.is_bold)
+        font.setItalic(self.theme.font_style.is_italic)
+        font.setUnderline(self.theme.font_style.is_underline)
+        font.setStrikeOut(self.theme.font_style.is_strike_out)
+
+        line_edit.setFont(font)
 
         layout.addWidget(line_edit)
         panel_layout.addWidget(container, alignment=Qt.AlignmentFlag.AlignTop)
