@@ -14,3 +14,5 @@ config_dir = rice_config_path / "config"
 
 cache_dir = rice_config_path / "cache"
 window_cache_icon_dir = cache_dir / "icons"
+
+wait_icon = assets_dir / "default_app_icon.png"

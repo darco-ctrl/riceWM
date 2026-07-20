@@ -1,9 +1,11 @@
 from typing import cast
 
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QFont, QGuiApplication
-from PySide6.QtWidgets import QHBoxLayout, QLineEdit, QSizePolicy, QVBoxLayout, QWidget
+from PySide6.QtCore import QSize, QVersionNumber, QWaitCondition, Qt
+from PySide6.QtGui import QFont, QGuiApplication, QPixmap
+from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QLineEdit, QScrollArea, QSizePolicy, QVBoxLayout, QWidget
 
+import app.paths as rice_paths
+from windows.window_scanner import WindowScanner
 from widgets.widget_data.theme.window_switch_panel_theme import WindowSwitchPanelTheme
 from widgets.widget_data.config.window_switch_panel_config import WindowSwitchPanelConfig
 from windows.window_manager import WindowManager
@@ -15,14 +17,17 @@ class WindowSwitchPanelWidget(QWidget):
         self.config = WindowSwitchPanelConfig(config_dict)
         self.theme = WindowSwitchPanelTheme(theme_dict)
 
-        self.window_manager = WindowManager()
+        self.window_scanner = WindowScanner()
 
         self.root_layout = QVBoxLayout(self)
 
         self.main_panel: QWidget = self.create_window()
 
-        self.create_search_box()
 
+        self.create_search_box()
+        self.scroll_container: QWidget = self.create_list_scroller()
+
+        self.create_items()
 
     def create_window(self) -> QWidget:
 
@@ -99,10 +104,10 @@ class WindowSwitchPanelWidget(QWidget):
         line_edit.setStyleSheet(f"""
             border-style: {self.theme.line_edit.border_style};
             border-radius: {self.theme.line_edit.border_radius}px;
-            border-top-width: {self.theme.line_edit.border_width[0]}px;
-            border-right-width: {self.theme.line_edit.border_width[1]}px;
-            border-bottom-width: {self.theme.line_edit.border_width[2]}px;
-            border-left-width: {self.theme.line_edit.border_width[3]}px;
+            border-left-width: {self.theme.line_edit.border_width[0]}px;
+            border-top-width: {self.theme.line_edit.border_width[1]}px;
+            border-right-width: {self.theme.line_edit.border_width[2]}px;
+            border-bottom-width: {self.theme.line_edit.border_width[3]}px;
             background-color: {self.theme.line_edit.background_color};
             border-color: {self.theme.line_edit.border_color};
             color: {self.theme.font_style.color}
@@ -129,13 +134,74 @@ class WindowSwitchPanelWidget(QWidget):
         layout.addWidget(line_edit)
         panel_layout.addWidget(container, alignment=Qt.AlignmentFlag.AlignTop)
 
+    def create_list_scroller(self) -> QWidget:
+        panel_layout: QVBoxLayout = cast(QVBoxLayout, self.main_panel.layout())
+
+        scroll: QScrollArea = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+
+        container: QWidget = QWidget()
+        layout: QVBoxLayout  = QVBoxLayout(container)
+        layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        layout.setContentsMargins(0,0,0,0)
+
+        container.setStyleSheet(
+            "background-color: blue;"
+        )
+
+        scroll.setWidget(container)
+
+        panel_layout.addWidget(scroll)
+
+        return container
+
+    def create_items(self):
+
+        layout: QVBoxLayout = cast(QVBoxLayout, self.scroll_container.layout())
+
+        frame: QFrame = QFrame()
+        frame.setFixedHeight(100)
+
+        frame_layout: QHBoxLayout = QHBoxLayout(frame)
+        frame_layout.setContentsMargins(0,0,0,0)
+        frame_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+
+        frame.setStyleSheet("background-color: red;")
+
+        selection_indicator: QWidget = QWidget()
+        selection_indicator.setFixedSize(QSize(30, 50))
+        selection_indicator.setStyleSheet("background-color: blue;")
+
+        frame_layout.addWidget(selection_indicator)
+
+        icon_label: QLabel = QLabel()
+        icon_label.setFixedSize(QSize(70, 70))
+
+        pixmap = QPixmap(str(rice_paths.wait_icon))
+        scaled_pixmap = pixmap.scaled(
+            icon_label.size(),
+            Qt.AspectRatioMode.IgnoreAspectRatio,
+            Qt.TransformationMode.SmoothTransformation
+        )
+
+        icon_label.setPixmap(scaled_pixmap)
+
+        frame_layout.addWidget(icon_label)
+
+        #windows_info: list[WindowInfo] = self.window_scanner.get_windows_info()
+
+
+
+        layout.addWidget(frame)
+
     def get_screen_size(self) -> tuple[int, int]:
         screen = QGuiApplication.primaryScreen()
         return screen.size().width(), screen.size().height()
 
     def start(self):
         print("start")
-        for window_info in self.window_manager.windows:
+        for window_info in self.window_scanner.get_windows_info():
             print(f"title: {window_info.title}")
 
         self.show()

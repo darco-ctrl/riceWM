@@ -17,7 +17,7 @@ background_color = "#1e1e2e"
 
 [window_switch_panel.search_box]
 height = 50
-background_color = "blue" # transparent
+background_color = "transparent" # transparent
 
 [window_switch_panel.search_box.line_edit]
 
@@ -40,5 +40,25 @@ border_width = [2, 2, 2, 2]
 margin = [0, 0, 0, 0]
 text_margin = [0, 0, 0, 0]
 
-background_color = "red"
+background_color = "transparent"
 border_color = "#bac2de"
+
+# 25346301
+[window_switch_panel.search_box.line_edit.font_style]
+color = "#cdd6f4"
+family = "JetBrains Mono"
+size = 16
+letter_spacing = 2 # float
+is_bold = false
+is_italic = false
+is_underline = false
+is_strike_out = false
+
+# Font Weights
+# 1. Thin
+# 2. Light
+# 3. Normal
+# 4. Medium
+# 5. bold
+# 6. Black
+weight = "Normal"
