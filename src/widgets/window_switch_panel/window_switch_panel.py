@@ -160,6 +160,7 @@ class WindowSwitchPanelWidget(QWidget):
 
         layout: QVBoxLayout = cast(QVBoxLayout, self.scroll_container.layout())
 
+        # Main frame for item
         frame: QFrame = QFrame()
         frame.setFixedHeight(100)
 
@@ -169,12 +170,14 @@ class WindowSwitchPanelWidget(QWidget):
 
         frame.setStyleSheet("background-color: red;")
 
+        # Selection indicator shown on the left side of the frame
         selection_indicator: QWidget = QWidget()
         selection_indicator.setFixedSize(QSize(30, 50))
         selection_indicator.setStyleSheet("background-color: blue;")
 
         frame_layout.addWidget(selection_indicator)
 
+        # Icon label to show icon of the window
         icon_label: QLabel = QLabel()
         icon_label.setFixedSize(QSize(70, 70))
 
@@ -189,9 +192,22 @@ class WindowSwitchPanelWidget(QWidget):
 
         frame_layout.addWidget(icon_label)
 
+        # Window title label
+        title_label: QLabel = QLabel()
+        title_label.setText("Hello, World!")
+        title_label.setStyleSheet("background-color: green;")
+        frame_layout.addWidget(title_label, stretch=1)
+
+        # Key bind label to show key bind of the window
+        key_bind_label: QLabel = QLabel()
+        key_bind_label.setText(" Alt + T")
+        key_bind_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        key_bind_label.setFixedWidth(50)
+        key_bind_label.setStyleSheet("background-color: blue")
+
+        frame_layout.addWidget(key_bind_label)
+
         #windows_info: list[WindowInfo] = self.window_scanner.get_windows_info()
-
-
 
         layout.addWidget(frame)
 
