@@ -1,0 +1,19 @@
+{
+  "window_switch_panel": {
+    "window_width": 300,
+    "background_color": "#1e1e2e",
+    "search_box": {
+      "height": 50,
+      "background_color": "transparent",
+      "line_edit": {
+        "margin": [0, 0, 0, 0],
+        "text_margin": [0, 0, 0, 0],
+        "border" : {
+          "style": "solid",
+          "radius": 2,
+          "width": [2, 2, 2, 2]
+        }
+      }
+    }
+  }
+}
