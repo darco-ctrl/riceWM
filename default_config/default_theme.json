@@ -1,4 +1,5 @@
 {
+  "name": "RiceWM Defualt Theme",
   "window_switch_panel": {
     "window_width": 300,
     "background_color": "#1e1e2e",
@@ -8,10 +9,23 @@
       "line_edit": {
         "margin": [0, 0, 0, 0],
         "text_margin": [0, 0, 0, 0],
+        "background_color": "transparent",
         "border" : {
           "style": "solid",
           "radius": 2,
-          "width": [2, 2, 2, 2]
+          "width": [2, 2, 2, 2],
+          "color": "#bac2de"
+        },
+        "font": {
+          "family": "JetBrains Mono",
+          "size": 18,
+          "letter_spacing": 1.0,
+          "color": "#cdd6f4",
+          "is_bold": false,
+          "is_italic": false,
+          "is_underline": false,
+          "is_strike_out": false,
+          "weight": "Normal"
         }
       }
     }

@@ -1,15 +1,16 @@
-from data.data_manager import Theme, Config
+from data.data_manager import ThemeLoader, ConfigLoader
 from widgets.widget_data.theme.widget_theme import WidgetTheme
 from widgets.window_switch_panel.window_switch_panel import WindowSwitchPanelWidget
 
 
 class WidgetManager:
-    def __init__(self, config: Config, theme: Theme):
+    def __init__(self, config: ConfigLoader, theme: ThemeLoader):
         self.config = config
         self.theme = theme
         self.widgets = {}
 
         self.load_widgets()
+        
 
     def load_widgets(self):
         self.widgets["window_switch_panel"] = WindowSwitchPanelWidget(
