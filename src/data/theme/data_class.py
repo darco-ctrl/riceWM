@@ -76,6 +76,45 @@ class SearchBox:
 
 
 @dataclass
+class KeyBindLabel:
+    width: int
+    height: int
+    background_color: str
+    color: str
+
+
+@dataclass
+class TitleLabel:
+    preload_text: str
+    background_color: str
+    color: str
+
+
+@dataclass
+class WindowIconLabel:
+    width: int
+    height: int
+
+
+@dataclass
+class SelectionIndicator:
+    width: int
+    height: int
+    background_color: str
+
+
+@dataclass
+class WindowItemFrame:
+    height: int
+    contents_margin: list
+    background_color: str
+    selection_indicator: SelectionIndicator
+    icon_label: WindowIconLabel
+    title_label: TitleLabel
+    key_bind_lable: KeyBindLabel
+
+
+@dataclass
 class T_WindowSwitchPanel:
     window_width: int
     background_color: str

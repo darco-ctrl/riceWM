@@ -4,9 +4,14 @@ from dataclasses import dataclass
 from data.theme.data_class import (
     Border,
     FontStyle,
+    KeyBindLabel,
     LineEdit,
     SearchBox,
+    SelectionIndicator,
     T_WindowSwitchPanel,
+    TitleLabel,
+    WindowIconLabel,
+    WindowItemFrame,
 )
 
 
@@ -18,6 +23,7 @@ class Theme:
 
         self.name: str
         self.window_switch_panel: T_WindowSwitchPanel
+        self.window_item_frame: WindowItemFrame
 
     def reload(self):
         self.load()
@@ -39,6 +45,12 @@ class Theme:
         line_edit_dict = search_box_dict["line_edit"]
         border_style_dict = line_edit_dict["border"]
         font_style_dict = line_edit_dict["font"]
+        window_item_dict = data["window_item"]
+        frame_dict = window_item_dict["frame"]
+        selection_indicator_dict = frame_dict["selection_indicator"]
+        icon_label_dict = frame_dict["icon_label"]
+        title_label_dict = frame_dict["title_label"]
+        key_bind_label_dict = frame_dict["key_bind_label"]
         # FontSyle
 
         font_style: FontStyle = FontStyle(
@@ -70,11 +82,44 @@ class Theme:
             text_margin=line_edit_dict["text_margin"],
         )
 
-        # SearchBox
+        # SearchBoxgit add .
         search_box_style: SearchBox = SearchBox(
             background_color=search_box_dict["background_color"],
             height=search_box_dict["height"],
             line_edit=line_edit_style,
+        )
+
+        key_bind_label: KeyBindLabel = KeyBindLabel(
+            background_color=key_bind_label_dict["background_color"],
+            color=key_bind_label_dict["color"],
+            height=key_bind_label_dict["height"],
+            width=key_bind_label_dict["width"],
+        )
+
+        title_label: TitleLabel = TitleLabel(
+            background_color=title_label_dict["background_color"],
+            color=title_label_dict["color"],
+            preload_text=title_label_dict["preload_text"],
+        )
+
+        icon_label: WindowIconLabel = WindowIconLabel(
+            height=icon_label_dict["height"], width=icon_label_dict["width"]
+        )
+
+        selection_indicator: SelectionIndicator = SelectionIndicator(
+            background_color=selection_indicator_dict["background_color"],
+            height=selection_indicator_dict["height"],
+            width=selection_indicator_dict["width"],
+        )
+
+        self.window_item_frame = WindowItemFrame(
+            background_color=frame_dict["background_color"],
+            contents_margin=frame_dict["contents_margin"],
+            height=frame_dict["height"],
+            icon_label=icon_label,
+            key_bind_lable=key_bind_label,
+            selection_indicator=selection_indicator,
+            title_label=title_label,
         )
 
         # Window Switch Panel
