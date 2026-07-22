@@ -1,20 +1,19 @@
-from data.data_manager import ThemeLoader, ConfigLoader
-from widgets.widget_data.theme.widget_theme import WidgetTheme
+from data.config.config import Config
+from data.theme.theme import Theme
 from widgets.window_switch_panel.window_switch_panel import WindowSwitchPanelWidget
 
 
 class WidgetManager:
-    def __init__(self, config: ConfigLoader, theme: ThemeLoader):
+    def __init__(self, config: Config, theme: Theme):
         self.config = config
         self.theme = theme
         self.widgets = {}
 
         self.load_widgets()
-        
 
     def load_widgets(self):
         self.widgets["window_switch_panel"] = WindowSwitchPanelWidget(
-            self.config.data["window_switch_panel"], self.theme.data["window_switch_panel"]
+            config=self.config.window_switch_panel, theme=self.theme.window_switch_panel
         )
 
         # self.widgets["dock"] = DockWidget(WidgetTheme(self.theme.data["dock"]))
@@ -30,7 +29,3 @@ class WidgetManager:
     def hide_widget(self, widget_name: str):
         if widget_name in self.widgets:
             self.widgets[widget_name].hide()
-
-    def update_theme(self):
-        for widget in self.widgets.values():
-            widget.set_theme(WidgetTheme(self.theme.data[widget.name]))

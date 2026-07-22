@@ -21,7 +21,7 @@ def on_exit():
 def main():
 
     application = QApplication(sys.argv)
-    #application.setQuitOnLastWindowClosed(False)
+    # application.setQuitOnLastWindowClosed(False)
 
     def quit_application():
         on_exit()
@@ -36,14 +36,13 @@ def main():
     data_manager = DataManager(
         app_config=app_config,
         config_dir=rice_paths.config_dir,
-        themes_dir=rice_paths.themes_dir
+        themes_dir=rice_paths.themes_dir,
     )
 
-    theme = data_manager.load_current_theme()
-    config = data_manager.load_current_config()
-
     # Create WidgetManager with theme and show widgets
-    widget_manager = WidgetManager(config=config, theme=theme)
+    widget_manager = WidgetManager(
+        config=data_manager.active_config, theme=data_manager.active_theme
+    )
     widget_manager.show_widgets()
 
     # Create system tray icon
