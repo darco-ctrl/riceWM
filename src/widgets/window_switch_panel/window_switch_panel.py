@@ -173,7 +173,7 @@ class WindowSwitchPanelWidget(QWidget):
             Qt.TransformationMode.SmoothTransformation,
         )
 
-        icon_label.setPixmap(scaled_pixmap)
+        icon_label.setPixmap(scaled_pixmap)git c
 
         frame_layout.addWidget(icon_label)
 

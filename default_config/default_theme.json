@@ -10,6 +10,7 @@
                 "margin": [0, 0, 0, 0],
                 "text_margin": [0, 0, 0, 0],
                 "background_color": "transparent",
+                "color": "#cdd6f4",
                 "border": {
                     "style": "solid",
                     "radius": 2,
@@ -20,12 +21,39 @@
                     "family": "JetBrains Mono",
                     "size": 18,
                     "letter_spacing": 1.0,
-                    "color": "#cdd6f4",
                     "is_bold": false,
                     "is_italic": false,
                     "is_underline": false,
                     "is_strike_out": false,
                     "weight": "Normal"
+                }
+            }
+        },
+        "window_item": {
+            "frame": {
+                "height": 100,
+                "background_color": "red",
+                "layout": {
+                    "contents_margin": [0, 0, 0, 0]
+                },
+                "selection_indicator": {
+                    "width": 30,
+                    "height": 50,
+                    "background_color": "red"
+                },
+                "icon_label": {
+                    "width": 70,
+                    "height": 70
+                },
+                "title_label": {
+                    "default_text": "Loading Title",
+                    "background_color": "green",
+                    "color": "white"
+                },
+                "key_bind_label": {
+                    "width": 50,
+                    "height": 20,
+                    "background_color": "blue"
                 }
             }
         }
