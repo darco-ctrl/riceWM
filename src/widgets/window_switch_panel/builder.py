@@ -1,9 +1,15 @@
-from PySide6.QtCore import QSize
-from PySide6.QtGui import Qt
-from PySide6.QtWidgets import QFrame, QHBoxLayout, QLayout, QVBoxLayout, QWidget
+from typing import cast
 
-from src.data.config.data_class import C_WindowSwitchPanel
-from src.data.theme.data_class import T_WindowSwitchPanel, WindowItemFrame
+from PySide6.QtCore import QSize
+from PySide6.QtGui import QPixmap, Qt
+from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QLayout, QVBoxLayout, QWidget
+
+import app.paths as rice_paths
+from data.config.data_class import C_WindowSwitchPanel
+from data.theme.data_class import T_WindowSwitchPanel, WindowItemFrame
+from widgets.window_switch_panel.window_item import WindowItem
+from windows.window import WindowInfo
+from windows.window_scanner import WindowScanner
 
 
 class Builder:
@@ -11,7 +17,52 @@ class Builder:
         self.theme = theme
         self.config = config
 
-    def create_item_frame(self, layout: QVBoxLayout) -> QFrame:
+    def creat_window_items_list(
+        self, window_scanner: WindowScanner, m_layout: QVBoxLayout
+    ) -> list[WindowItem]:
+        windows_info: list[WindowInfo] = window_scanner.get_windows_info()
+
+        window_items: list[WindowItem] = []
+
+        count = 1
+        for window in windows_info:
+            window_item: WindowItem = self.create_window_item(count, window, m_layout)
+            window_item.load()
+
+            count += 1
+            window_items.append(window_item)
+
+        return window_items
+
+    def create_window_item(
+        self, count: int, window_info: WindowInfo, m_layout: QVBoxLayout
+    ) -> WindowItem:  # m layout is main scroller layout
+        frame = self.create_item_frame()
+        f_layout: QHBoxLayout = cast(QHBoxLayout, frame.layout())
+
+        selection_indicator = self.create_selection_indicator(f_layout)
+        icon_label = self.create_icon_label(f_layout)
+        title_label = self.create_window_title_label(f_layout)
+        key_bind_label = self.create_key_bind_label(f_layout)
+
+        m_layout.addWidget(frame)
+
+        window_item: WindowItem = WindowItem(
+            hwnd=window_info.hwnd,
+            name=window_info.name,
+            title=window_info.title,
+            icon_path=window_info.icon_path,
+            index=count,
+            frame=frame,
+            key_bind_label=key_bind_label,
+            icon_label=icon_label,
+            selection_indicator=selection_indicator,
+            title_label=title_label,
+        )
+
+        return window_item
+
+    def create_item_frame(self) -> QFrame:
         frame_style: WindowItemFrame = self.theme.window_item_frame
 
         frame = QFrame()
@@ -31,7 +82,7 @@ class Builder:
             """)
         return frame
 
-    def create_selection_indicator(self):
+    def create_selection_indicator(self, layout: QHBoxLayout) -> QWidget:
         style = self.theme.window_item_frame.selection_indicator
 
         indicator: QWidget = QWidget()
@@ -40,4 +91,52 @@ class Builder:
             background-color: {style.background_color};
         """)
 
+        layout.addWidget(indicator)
+
         return indicator
+
+    def create_icon_label(self, layout: QHBoxLayout) -> QLabel:
+        style = self.theme.window_item_frame.icon_label
+
+        icon_label: QLabel = QLabel()
+        icon_label.setFixedSize(QSize(style.width, style.height))
+
+        pixmap = QPixmap(str(rice_paths.wait_icon))
+        scaled_pixmap = pixmap.scaled(
+            icon_label.size(),
+            Qt.AspectRatioMode.IgnoreAspectRatio,
+            Qt.TransformationMode.SmoothTransformation,
+        )
+
+        icon_label.setPixmap(scaled_pixmap)
+
+        layout.addWidget(icon_label)
+
+        return icon_label
+
+    def create_window_title_label(self, layout: QHBoxLayout) -> QLabel:
+        style = self.theme.window_item_frame.title_label
+
+        title_label: QLabel = QLabel()
+        title_label.setText(style.preload_text)
+        title_label.setStyleSheet(f"""
+            background-color: {style.background_color};
+        """)
+
+        layout.addWidget(title_label, stretch=1)
+
+        return title_label
+
+    def create_key_bind_label(self, layout: QHBoxLayout) -> QLabel:
+        style = self.theme.window_item_frame.key_bind_lable
+
+        key_bind_label: QLabel = QLabel()
+        key_bind_label.setText(" Alt + T")
+        key_bind_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        key_bind_label.setFixedWidth(style.width)
+        key_bind_label.setFixedHeight(style.height)
+        key_bind_label.setStyleSheet(f"background-color: {style.background_color}")
+
+        layout.addWidget(key_bind_label)
+
+        return key_bind_label

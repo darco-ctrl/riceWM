@@ -44,7 +44,7 @@ class Theme:
         line_edit_dict = search_box_dict["line_edit"]
         border_style_dict = line_edit_dict["border"]
         font_style_dict = line_edit_dict["font"]
-        window_item_dict = data["window_item"]
+        window_item_dict = window_switch_panel_dict["window_item"]
         frame_dict = window_item_dict["frame"]
         selection_indicator_dict = frame_dict["selection_indicator"]
         icon_label_dict = frame_dict["icon_label"]

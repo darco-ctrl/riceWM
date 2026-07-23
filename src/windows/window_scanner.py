@@ -141,6 +141,13 @@ class WindowScanner:
 
         return windows
 
+    def get_app_name(self, pid) -> str:
+        try:
+            process = psutil.Process(pid)
+            return process.name()
+        except psutil.NoSuchProcess:
+            return ""
+
     def create_window_info(self, window_data: dict) -> WindowInfo:
         #                "process_name": process_name,
         # "title": title,
@@ -150,17 +157,21 @@ class WindowScanner:
         # "pwa_arg": pwa_arg,
         #
 
-        hwnd = window_data["hwnd"]
-        title = window_data["title"]
-        pid = window_data["pid"]
-        is_pwa = window_data["is_pwa"]
-        pwa_arg = window_data["pwa_arg"]
-        icon_path = icon_service.get_icon_path(hwnd)
+        hwnd: int = window_data["hwnd"]
+        title: str = window_data["title"]
+        pid: int = window_data["pid"]
+        is_pwa: bool = window_data["is_pwa"]
+        pwa_arg: str = window_data["pwa_arg"]
+        icon_path: str = icon_service.get_icon_path(hwnd)
+
+        name = ""
+        if not is_pwa:
+            self.get_app_name(pid=pid)
 
         window_info = WindowInfo(
             hwnd=hwnd,
+            name=name,
             title=title,
-            process_id=pid,
             is_pwa=is_pwa,
             pwa_arg=pwa_arg,
             icon_path=icon_path,

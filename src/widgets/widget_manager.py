@@ -29,4 +29,3 @@ class WidgetManager:
     def hide_widget(self, widget_name: str):
         if widget_name in self.widgets:
             self.widgets[widget_name].hide()
-how to 

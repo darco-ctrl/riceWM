@@ -16,6 +16,8 @@ from PySide6.QtWidgets import (
 import app.paths as rice_paths
 from data.config.data_class import C_WindowSwitchPanel
 from data.theme.data_class import T_WindowSwitchPanel, WindowItemFrame
+from widgets.window_switch_panel.builder import Builder
+from widgets.window_switch_panel.window_item import WindowItem
 from windows.window_manager import WindowManager
 from windows.window_scanner import WindowScanner
 
@@ -25,6 +27,7 @@ class WindowSwitchPanelWidget(QWidget):
         super().__init__()
         self.config = config
         self.theme = theme
+        self.builder = Builder(config=self.config, theme=self.theme)
 
         self.window_scanner = WindowScanner()
 
@@ -35,7 +38,16 @@ class WindowSwitchPanelWidget(QWidget):
         self.create_search_box()
         self.scroll_container: QWidget = self.create_list_scroller()
 
-        self.create_items()
+        self.window_items: list[WindowItem] = self.create_window_items_list()
+
+    def create_window_items_list(self) -> list[WindowItem]:
+
+        m_layout = cast(QVBoxLayout, self.scroll_container.layout())
+        window_items = self.builder.creat_window_items_list(
+            m_layout=m_layout, window_scanner=self.window_scanner
+        )
+
+        return window_items
 
     def create_window(self) -> QWidget:
 
@@ -140,70 +152,6 @@ class WindowSwitchPanelWidget(QWidget):
         panel_layout.addWidget(scroll)
 
         return container
-
-    def create_items(self):
-
-        layout: QVBoxLayout = cast(QVBoxLayout, self.scroll_container.layout())
-
-        # Main frame for item
-        frame_style: WindowItemFrame = self.theme.window_item_frame
-
-        frame: QFrame = QFrame()
-        frame.setFixedHeight(frame_style.height)
-
-        frame_layout: QHBoxLayout = QHBoxLayout(frame)
-        frame_layout.setContentsMargins(
-            frame_style.contents_margin[0],
-            frame_style.contents_margin[1],
-            frame_style.contents_margin[2],
-            frame_style.contents_margin[3],
-        )
-        frame_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
-
-        frame.setStyleSheet(f"""
-            background-color: {frame_style.background_color};
-            """)
-
-        # Selection indicator shown on the left side of the frame
-        selection_indicator: QWidget = QWidget()
-        selection_indicator.setFixedSize(QSize(30, 50))
-        selection_indicator.setStyleSheet("background-color: blue;")
-
-        frame_layout.addWidget(selection_indicator)
-
-        # Icon label to show icon of the window
-        icon_label: QLabel = QLabel()
-        icon_label.setFixedSize(QSize(70, 70))
-
-        pixmap = QPixmap(str(rice_paths.wait_icon))
-        scaled_pixmap = pixmap.scaled(
-            icon_label.size(),
-            Qt.AspectRatioMode.IgnoreAspectRatio,
-            Qt.TransformationMode.SmoothTransformation,
-        )
-
-        icon_label.setPixmap(scaled_pixmap)
-
-        frame_layout.addWidget(icon_label)
-
-        # Window title label
-        title_label: QLabel = QLabel()
-        title_label.setText("Hello, World!")
-        title_label.setStyleSheet("background-color: green;")
-        frame_layout.addWidget(title_label, stretch=1)
-
-        # Key bind label to show key bind of the window
-        key_bind_label: QLabel = QLabel()
-        key_bind_label.setText(" Alt + T")
-        key_bind_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        key_bind_label.setFixedWidth(50)
-        key_bind_label.setStyleSheet("background-color: blue")
-
-        frame_layout.addWidget(key_bind_label)
-
-        # windows_info: list[WindowInfo] = self.window_scanner.get_windows_info()
-
-        layout.addWidget(frame)
 
     def get_screen_size(self) -> tuple[int, int]:
         screen = QGuiApplication.primaryScreen()
