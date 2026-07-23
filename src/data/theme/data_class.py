@@ -119,3 +119,4 @@ class T_WindowSwitchPanel:
     window_width: int
     background_color: str
     search_box: SearchBox
+    window_item_frame: WindowItemFrame

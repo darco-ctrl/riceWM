@@ -23,7 +23,6 @@ class Theme:
 
         self.name: str
         self.window_switch_panel: T_WindowSwitchPanel
-        self.window_item_frame: WindowItemFrame
 
     def reload(self):
         self.load()
@@ -112,7 +111,7 @@ class Theme:
             width=selection_indicator_dict["width"],
         )
 
-        self.window_item_frame = WindowItemFrame(
+        window_item_frame = WindowItemFrame(
             background_color=frame_dict["background_color"],
             contents_margin=frame_dict["contents_margin"],
             height=frame_dict["height"],
@@ -127,4 +126,5 @@ class Theme:
             background_color=window_switch_panel_dict["background_color"],
             search_box=search_box_style,
             window_width=window_switch_panel_dict["window_width"],
+            window_item_frame=window_item_frame,
         )

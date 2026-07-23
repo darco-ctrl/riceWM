@@ -15,7 +15,7 @@ from PySide6.QtWidgets import (
 
 import app.paths as rice_paths
 from data.config.data_class import C_WindowSwitchPanel
-from data.theme.data_class import T_WindowSwitchPanel
+from data.theme.data_class import T_WindowSwitchPanel, WindowItemFrame
 from windows.window_manager import WindowManager
 from windows.window_scanner import WindowScanner
 
@@ -146,14 +146,23 @@ class WindowSwitchPanelWidget(QWidget):
         layout: QVBoxLayout = cast(QVBoxLayout, self.scroll_container.layout())
 
         # Main frame for item
+        frame_style: WindowItemFrame = self.theme.window_item_frame
+
         frame: QFrame = QFrame()
-        frame.setFixedHeight(100)
+        frame.setFixedHeight(frame_style.height)
 
         frame_layout: QHBoxLayout = QHBoxLayout(frame)
-        frame_layout.setContentsMargins(0, 0, 0, 0)
+        frame_layout.setContentsMargins(
+            frame_style.contents_margin[0],
+            frame_style.contents_margin[1],
+            frame_style.contents_margin[2],
+            frame_style.contents_margin[3],
+        )
         frame_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
-        frame.setStyleSheet("background-color: red;")
+        frame.setStyleSheet(f"""
+            background-color: {frame_style.background_color};
+            """)
 
         # Selection indicator shown on the left side of the frame
         selection_indicator: QWidget = QWidget()
@@ -173,7 +182,7 @@ class WindowSwitchPanelWidget(QWidget):
             Qt.TransformationMode.SmoothTransformation,
         )
 
-        icon_label.setPixmap(scaled_pixmap)git c
+        icon_label.setPixmap(scaled_pixmap)
 
         frame_layout.addWidget(icon_label)
 
