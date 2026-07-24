@@ -17,6 +17,7 @@ import app.paths as rice_paths
 from data.config.data_class import C_WindowSwitchPanel
 from data.theme.data_class import T_WindowSwitchPanel, WindowItemFrame
 from widgets.window_switch_panel.builder import Builder
+from widgets.window_switch_panel.search import TitleSearcher
 from widgets.window_switch_panel.window_item import WindowItem
 from windows.window_manager import WindowManager
 from windows.window_scanner import WindowScanner
@@ -35,10 +36,12 @@ class WindowSwitchPanelWidget(QWidget):
 
         self.main_panel: QWidget = self.create_window()
 
-        self.create_search_box()
+        self.search_line_edit: QLineEdit = self.create_search_box()
         self.scroll_container: QWidget = self.create_list_scroller()
 
         self.window_items: list[WindowItem] = self.create_window_items_list()
+
+        self.title_searcher = TitleSearcher()
 
     def create_window_items_list(self) -> list[WindowItem]:
 
@@ -87,7 +90,7 @@ class WindowSwitchPanelWidget(QWidget):
 
         return main_panel
 
-    def create_search_box(self):
+    def create_search_box(self) -> QLineEdit:
         panel_layout: QVBoxLayout = cast(QVBoxLayout, self.main_panel.layout())
 
         if not panel_layout:
@@ -130,8 +133,12 @@ class WindowSwitchPanelWidget(QWidget):
         font = self.theme.search_box.line_edit.font.to_qfont(line_edit.font())
         line_edit.setFont(font)
 
+        line_edit.returnPressed.connect(self.on_search)
+
         layout.addWidget(line_edit)
         panel_layout.addWidget(container, alignment=Qt.AlignmentFlag.AlignTop)
+
+        return line_edit
 
     def create_list_scroller(self) -> QWidget:
         panel_layout: QVBoxLayout = cast(QVBoxLayout, self.main_panel.layout())
@@ -152,6 +159,11 @@ class WindowSwitchPanelWidget(QWidget):
         panel_layout.addWidget(scroll)
 
         return container
+
+    def on_search(self):
+
+        query = self.search_line_edit.text()
+        self.title_searcher.search(query)
 
     def get_screen_size(self) -> tuple[int, int]:
         screen = QGuiApplication.primaryScreen()

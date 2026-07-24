@@ -1,12 +1,13 @@
 from widgets.window_switch_panel.window_item import WindowItem
 
 
-class TitleSearch:
-    def __init__(self, window_items: list[WindowItem]) -> None:
-
-        self.window_items: list[WindowItem] = window_items
+class TitleSearcher:
+    def __init__(self) -> None:
+        pass
 
     def search(self, text: str) -> list[WindowItem]:
         result: list[WindowItem] = []
+
+        print(f" the user wants to search: {text}.")
 
         return result
