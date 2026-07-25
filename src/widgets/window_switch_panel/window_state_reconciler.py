@@ -16,7 +16,7 @@ class StateReconciler:
     def __init__(self, window_scanner: WindowScanner):
         self.window_scanner = window_scanner
 
-    def update_window_items(self, window_item_lists: list[WindowItem]) -> TaskList:
+    def get_plan(self, window_item_lists: list[WindowItem]) -> TaskList:
 
         open_windows: list[WindowInfo] = self.window_scanner.get_windows_info()
 

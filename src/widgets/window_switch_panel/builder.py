@@ -7,20 +7,51 @@ from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QLayout, QVBoxLayout,
 import app.paths as rice_paths
 from data.config.data_class import C_WindowSwitchPanel
 from data.theme.data_class import T_WindowSwitchPanel, WindowItemFrame
+from src.widgets.window_switch_panel.window_state_reconciler import (
+    StateReconciler,
+    TaskList,
+)
 from widgets.window_switch_panel.window_item import WindowItem
 from windows.window import WindowInfo
 from windows.window_scanner import WindowScanner
 
 
 class Builder:
-    def __init__(self, theme: T_WindowSwitchPanel, config: C_WindowSwitchPanel) -> None:
-        self.theme = theme
-        self.config = config
+    def __init__(
+        self,
+        theme: T_WindowSwitchPanel,
+        config: C_WindowSwitchPanel,
+        window_scanner: WindowScanner,
+        scroller_layout: QVBoxLayout,
+    ) -> None:
+        self.theme: T_WindowSwitchPanel = theme
+        self.config: C_WindowSwitchPanel = config
+        self.window_scanner: WindowScanner = window_scanner
+        self.scroller_layout: QVBoxLayout = scroller_layout
 
-    def creat_window_items_list(
-        self, window_scanner: WindowScanner, m_layout: QVBoxLayout
-    ) -> list[WindowItem]:
-        windows_info: list[WindowInfo] = window_scanner.get_windows_info()
+        self.state_reconciler = StateReconciler(self.window_scanner)
+
+    def sync_window_items(self, window_items: list[WindowItem]):
+
+        task_list: TaskList = self.state_reconciler.get_plan(window_items)
+
+        self.update_window_items(task_list.update)
+        self.create_window_items(task_list.new)
+        self.delete_window_items(task_list.delete)
+
+    def update_window_items(self, items: list[int]):
+
+        for item_index in items:
+            pass
+
+    def create_window_items(self, window_items: list[WindowInfo]):
+        pass
+
+    def delete_window_items(self, items: list[int]):
+        pass
+
+    def creat_window_items_list(self, m_layout: QVBoxLayout) -> list[WindowItem]:
+        windows_info: list[WindowInfo] = self.window_scanner.get_windows_info()
 
         window_items: list[WindowItem] = []
 
