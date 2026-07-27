@@ -28,7 +28,6 @@ class WindowSwitchPanelWidget(QWidget):
         super().__init__()
         self.config = config
         self.theme = theme
-        self.builder = Builder(config=self.config, theme=self.theme)
 
         self.window_scanner = WindowScanner()
 
@@ -39,18 +38,17 @@ class WindowSwitchPanelWidget(QWidget):
         self.search_line_edit: QLineEdit = self.create_search_box()
         self.scroll_container: QWidget = self.create_list_scroller()
 
-        self.window_items: list[WindowItem] = self.create_window_items_list()
+        self.window_items: list[WindowItem] = []
 
         self.title_searcher = TitleSearcher()
 
-    def create_window_items_list(self) -> list[WindowItem]:
-
-        m_layout = cast(QVBoxLayout, self.scroll_container.layout())
-        window_items = self.builder.creat_window_items_list(
-            m_layout=m_layout, window_scanner=self.window_scanner
+        self.builder = Builder(
+            config=self.config,
+            theme=self.theme,
+            scroller_widget=self.scroll_container,
+            window_scanner=self.window_scanner,
         )
-
-        return window_items
+        self.builder.sync_window_items(window_items=self.window_items)
 
     def create_window(self) -> QWidget:
 

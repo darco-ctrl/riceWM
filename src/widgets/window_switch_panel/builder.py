@@ -7,11 +7,11 @@ from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QLayout, QVBoxLayout,
 import app.paths as rice_paths
 from data.config.data_class import C_WindowSwitchPanel
 from data.theme.data_class import T_WindowSwitchPanel, WindowItemFrame
-from src.widgets.window_switch_panel.window_state_reconciler import (
+from widgets.window_switch_panel.window_item import WindowItem
+from widgets.window_switch_panel.window_state_reconciler import (
     StateReconciler,
     TaskList,
 )
-from widgets.window_switch_panel.window_item import WindowItem
 from windows.window import WindowInfo
 from windows.window_scanner import WindowScanner
 
@@ -22,12 +22,12 @@ class Builder:
         theme: T_WindowSwitchPanel,
         config: C_WindowSwitchPanel,
         window_scanner: WindowScanner,
-        scroller_layout: QVBoxLayout,
+        scroller_widget: QWidget,
     ) -> None:
         self.theme: T_WindowSwitchPanel = theme
         self.config: C_WindowSwitchPanel = config
         self.window_scanner: WindowScanner = window_scanner
-        self.scroller_layout: QVBoxLayout = scroller_layout
+        self.scroller_layout: QVBoxLayout = cast(QVBoxLayout, scroller_widget.layout())
 
         self.state_reconciler = StateReconciler(self.window_scanner)
 
@@ -35,29 +35,32 @@ class Builder:
 
         task_list: TaskList = self.state_reconciler.get_plan(window_items)
 
-        self.update_window_items(task_list.update)
-        self.create_window_items(task_list.new)
-        self.delete_window_items(task_list.delete)
+        self.update_window_items(task_list.update, window_items)
+        self.create_window_items(task_list.new, window_items)
+        self.delete_window_items(task_list.delete, window_items)
 
-    def update_window_items(self, items: list[int]):
+        self.sort(window_items)
+
+    def update_window_items(self, items: list[int], windows: list[WindowItem]):
 
         for item_index in items:
-            pass
+            windows[item_index].update()
 
-    def create_window_items(self, window_items: list[WindowInfo]):
-        pass
+    def delete_window_items(self, items: list[int], window_items: list[WindowItem]):
 
-    def delete_window_items(self, items: list[int]):
-        pass
+        for index in sorted(items, reverse=True):
+            print(f"removing index: {index}")
 
-    def creat_window_items_list(self, m_layout: QVBoxLayout) -> list[WindowItem]:
-        windows_info: list[WindowInfo] = self.window_scanner.get_windows_info()
+            window_items[index].delete()
+            del window_items[index]
 
-        window_items: list[WindowItem] = []
+    def create_window_items(
+        self, windows_info: list[WindowInfo], window_items: list[WindowItem]
+    ):
 
         count = 1
         for window in windows_info:
-            window_item: WindowItem = self.create_window_item(count, window, m_layout)
+            window_item: WindowItem = self.create_window_item(count, window)
             window_item.load()
 
             count += 1
@@ -66,7 +69,7 @@ class Builder:
         return window_items
 
     def create_window_item(
-        self, count: int, window_info: WindowInfo, m_layout: QVBoxLayout
+        self, count: int, window_info: WindowInfo
     ) -> WindowItem:  # m layout is main scroller layout
         frame = self.create_item_frame()
         f_layout: QHBoxLayout = cast(QHBoxLayout, frame.layout())
@@ -76,7 +79,7 @@ class Builder:
         title_label = self.create_window_title_label(f_layout)
         key_bind_label = self.create_key_bind_label(f_layout)
 
-        m_layout.addWidget(frame)
+        # self.scroller_layout.addWidget(frame)
 
         window_item: WindowItem = WindowItem(
             hwnd=window_info.hwnd,
@@ -171,3 +174,15 @@ class Builder:
         layout.addWidget(key_bind_label)
 
         return key_bind_label
+
+    def hide(self, window_items: list[WindowItem]):
+        for window_item in window_items:
+            window_item.frame.setParent(None)
+
+    def sort(self, window_items: list[WindowItem]):
+        print(" sorting ")
+
+        window_items.sort(key=lambda item: item.title)
+
+        for window_item in window_items:
+            self.scroller_layout.addWidget(window_item.frame)

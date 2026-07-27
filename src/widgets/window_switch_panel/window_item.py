@@ -1,3 +1,4 @@
+import win32gui
 from PySide6.QtGui import QPixmap, Qt
 from PySide6.QtWidgets import QFrame, QLabel, QWidget
 
@@ -35,17 +36,21 @@ class WindowItem:
     def reload(self):
         self.load()
 
+    def update(self):
+
+        self.title = win32gui.GetWindowText(self.hwnd)
+
+        self.update_title_label()
+
+    def delete(self):
+        self.frame.deleteLater()
+
     def update_title_label(self):
 
         if not self.title_label:
             print("Title Label of window item is Empty refrence.")
 
-        text = ""
-        if not self.name == "":
-            text = f"{self.name} - "
-
-        text += self.title
-        self.title_label.setText(text)
+        self.title_label.setText(self.title)
 
     def update_window_icon(self):
 
