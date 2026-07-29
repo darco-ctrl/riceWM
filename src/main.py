@@ -3,31 +3,29 @@ import sys
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import QApplication, QMenu, QSystemTrayIcon
 
-import app.bootstrap as bootstrap
 import app.paths as rice_paths
+from app.bootstrap import BootStrap
 from config.app_config import AppConfig
+from core.hotkey.hotkey_mananger import HotKeyManager
 from data.data_manager import DataManager
 from widgets.widget_manager import WidgetManager
 
 
-def ensure_config():
-    bootstrap.ensure_config()
-
-
-def on_exit():
-    bootstrap.delete_cache()
-
-
 def main():
 
+    bootstrap: BootStrap = BootStrap()
+
     application = QApplication(sys.argv)
-    # application.setQuitOnLastWindowClosed(False)
+    application.setQuitOnLastWindowClosed(False)
 
     def quit_application():
-        on_exit()
+        bootstrap.delete_cache()
         application.quit()
 
-    ensure_config()
+    bootstrap.ensure_config()
+
+    hotkey_manager = HotKeyManager()
+    hotkey_manager.start()
 
     # Create AppConfig after config is ensured
     app_config = AppConfig(rice_paths.app_config_path)

@@ -14,6 +14,7 @@ from PySide6.QtWidgets import (
 )
 
 import app.paths as rice_paths
+from core.hotkey.event_bus import events
 from data.config.data_class import C_WindowSwitchPanel
 from data.theme.data_class import T_WindowSwitchPanel, WindowItemFrame
 from widgets.window_switch_panel.builder import Builder
@@ -49,6 +50,18 @@ class WindowSwitchPanelWidget(QWidget):
             window_scanner=self.window_scanner,
         )
         self.builder.sync_window_items(window_items=self.window_items)
+
+        self.connect_event()
+
+    def connect_event(self):
+        events.helloRequested.connect(self.toggle_window)
+
+    def toggle_window(self):
+        if self.isVisible():
+            self.hide()
+
+        else:
+            self.show()
 
     def create_window(self) -> QWidget:
 

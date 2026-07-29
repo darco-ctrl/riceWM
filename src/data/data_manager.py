@@ -11,11 +11,16 @@ from data.theme.theme import Theme
 
 class DataManager:
     def __init__(
-        self, app_config: AppConfig, config_dir: Path, themes_dir: Path
+        self,
+        app_config: AppConfig,
+        config_dir: Path,
+        themes_dir: Path,
+        keybinds_file: Path,
     ) -> None:
         self.app_config = app_config
         self.config_dir = config_dir
         self.themes_dir = themes_dir
+        self.keybinds_file = keybinds_file
 
         self.active_config: Config = Config(
             config_path=str(self.get_active_config_Path())
@@ -27,6 +32,7 @@ class DataManager:
         theme_name = self.app_config.get_current_theme
         return self.themes_dir / theme_name
 
-    def get_active_config_Path(self) -> Path:
+    def get_active_config_Path(self) -> Path: 
         config_name = self.app_config.get_current_config
         return self.config_dir / config_name
+                                                                                                                                                                                                                                                                                                                                                                                                                                       

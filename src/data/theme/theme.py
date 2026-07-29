@@ -30,7 +30,7 @@ class Theme:
     def load(self):
         with open(self.theme_file_path, "r") as file:
             print(f"Loading Theme: {self.theme_file_path}.")
-
+        
             data = json.load(file)
             self.create_data_classes(data)
 
