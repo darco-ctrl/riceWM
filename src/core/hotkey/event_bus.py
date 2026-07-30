@@ -2,7 +2,7 @@ from PySide6.QtCore import QObject, Signal
 
 
 class EventBus(QObject):
-    helloRequested = Signal()
+    windowSwitchPanelRequested = Signal()
 
 
 events = EventBus()

@@ -18,11 +18,10 @@ from data.theme.data_class import (
 class Theme:
     def __init__(self, theme_path: str):
         self.theme_file_path = theme_path
-
-        self.load()
-
         self.name: str
         self.window_switch_panel: T_WindowSwitchPanel
+
+        self.load()
 
     def reload(self):
         self.load()
@@ -30,7 +29,7 @@ class Theme:
     def load(self):
         with open(self.theme_file_path, "r") as file:
             print(f"Loading Theme: {self.theme_file_path}.")
-        
+
             data = json.load(file)
             self.create_data_classes(data)
 

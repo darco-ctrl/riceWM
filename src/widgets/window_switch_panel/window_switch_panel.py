@@ -54,7 +54,7 @@ class WindowSwitchPanelWidget(QWidget):
         self.connect_event()
 
     def connect_event(self):
-        events.helloRequested.connect(self.toggle_window)
+        events.windowSwitchPanelRequested.connect(self.toggle_window)
 
     def toggle_window(self):
         if self.isVisible():

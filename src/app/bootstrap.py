@@ -51,9 +51,7 @@ class BootStrap:
             )
 
         if not (rice_paths.keybinds_file).exists():
-            shutil.copyfile(
-                rice_paths.default_keybinds_path, rice_paths.rice_config_path
-            )
+            shutil.copyfile(rice_paths.default_keymap_path, rice_paths.rice_config_path)
 
     def check_window_icon_dir(self):
         if not rice_paths.window_cache_icon_dir.exists():

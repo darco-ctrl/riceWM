@@ -8,10 +8,9 @@ class Config:
     def __init__(self, config_path: str):
         self.config_path = config_path
 
-        self.load()
-
         self.name: str
         self.window_switch_panel: C_WindowSwitchPanel
+        self.load()
 
     def reload(self):
         self.load()

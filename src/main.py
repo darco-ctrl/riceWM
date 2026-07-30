@@ -24,9 +24,6 @@ def main():
 
     bootstrap.ensure_config()
 
-    hotkey_manager = HotKeyManager()
-    hotkey_manager.start()
-
     # Create AppConfig after config is ensured
     app_config = AppConfig(rice_paths.app_config_path)
 
@@ -35,7 +32,11 @@ def main():
         app_config=app_config,
         config_dir=rice_paths.config_dir,
         themes_dir=rice_paths.themes_dir,
+        keybinds_file=rice_paths.keybinds_file,
     )
+
+    hotkey_manager = HotKeyManager(data_manager.key_map)
+    hotkey_manager.start()
 
     # Create WidgetManager with theme and show widgets
     widget_manager = WidgetManager(

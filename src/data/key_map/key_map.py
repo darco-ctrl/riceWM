@@ -1,13 +1,15 @@
 import json
 
-from src.data.keybinds.data_class import WindowSwitchPanel
+from data.key_map.data_class import WindowSwitchPanel
 
 
-class KeyBinds:
+class KeyMap:
     def __init__(self, json_path: str) -> None:
         self.path = json_path
 
         self.window_switch_panel: WindowSwitchPanel
+
+        self.load()
 
     def load(self):
         with open(self.path, "r") as file:
