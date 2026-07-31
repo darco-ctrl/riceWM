@@ -10,3 +10,4 @@ class Behavior:
 @dataclass
 class C_WindowSwitchPanel:
     behavior: Behavior
+    window_width: int

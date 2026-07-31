@@ -17,6 +17,7 @@ import app.paths as rice_paths
 from core.hotkey.event_bus import events
 from data.config.data_class import C_WindowSwitchPanel
 from data.theme.data_class import T_WindowSwitchPanel, WindowItemFrame
+from src.widgets.window_switch_panel.panel import Panel
 from widgets.window_switch_panel.builder import Builder
 from widgets.window_switch_panel.search import TitleSearcher
 from widgets.window_switch_panel.window_item import WindowItem
@@ -33,6 +34,8 @@ class WindowSwitchPanelWidget(QWidget):
         self.window_scanner = WindowScanner()
 
         self.root_layout = QVBoxLayout(self)
+
+        self.panel: Panel = Panel(self.theme, self.root_layout)
 
         self.main_panel: QWidget = self.create_window()
 
@@ -73,36 +76,18 @@ class WindowSwitchPanelWidget(QWidget):
         self.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint)
 
         window_margin = 12
-
         screen_width, screen_height = self.get_screen_size()
-
         window_height = int(screen_height * 0.9)
 
-        position_x = int((screen_width / 2) - (self.theme.window_width / 2))
+        position_x = int((screen_width / 2) - (self.config.window_width / 2))
         position_y = int((screen_height / 2) - (window_height / 2))
 
-        self.setFixedWidth(self.theme.window_width)
+        self.setFixedWidth(self.config.window_width)
         self.setFixedHeight(window_height)
         self.move(position_x, position_y)
 
         # Main panel
-        main_panel = QWidget()
-
-        main_panel.setStyleSheet(f"""
-            background-color: {self.theme.background_color};
-        """)
-
-        # main_panel.setFixedHeight(100)
-
-        # Main panel layout
-        main_panel_layout = QVBoxLayout(main_panel)
-        main_panel_layout.setContentsMargins(0, 0, 0, 0)
-        main_panel_layout.setSpacing(0)
-
-        self.root_layout.setContentsMargins(0, 0, 0, 0)
-        self.root_layout.setSpacing(0)
-        self.root_layout.addWidget(main_panel)
-
+        main_panel = self.panel.create_panel()
         return main_panel
 
     def create_search_box(self) -> QLineEdit:

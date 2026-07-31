@@ -27,7 +27,8 @@ class Config:
     def create_data_classes(self, data: dict):
         self.name = data["name"]
 
-        behavior_dict = data["window_switch_panel"]["behavior"]
+        wsp_dict = data["window_swtich_panel"]
+        behavior_dict = wsp_dict["behavior"]
         # Behavior
         behavior: Behavior = Behavior(
             auto_adjust_height=behavior_dict["auto_adjust_height"],
@@ -35,4 +36,6 @@ class Config:
         )
 
         # Window Switch Panel
-        self.window_switch_panel = C_WindowSwitchPanel(behavior=behavior)
+        self.window_switch_panel = C_WindowSwitchPanel(
+            behavior=behavior, window_width=wsp_dict["window_width"]
+        )
