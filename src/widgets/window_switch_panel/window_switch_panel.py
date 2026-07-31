@@ -17,7 +17,7 @@ import app.paths as rice_paths
 from core.hotkey.event_bus import events
 from data.config.data_class import C_WindowSwitchPanel
 from data.theme.data_class import T_WindowSwitchPanel, WindowItemFrame
-from src.widgets.window_switch_panel.panel import Panel
+from src.widgets.window_switch_panel.panel_constructor import PanelConstructor
 from widgets.window_switch_panel.builder import Builder
 from widgets.window_switch_panel.search import TitleSearcher
 from widgets.window_switch_panel.window_item import WindowItem
@@ -35,7 +35,7 @@ class WindowSwitchPanelWidget(QWidget):
 
         self.root_layout = QVBoxLayout(self)
 
-        self.panel: Panel = Panel(self.theme, self.root_layout)
+        self.panel: PanelConstructor = PanelConstructor(self.theme, self.root_layout)
 
         self.main_panel: QWidget = self.create_window()
 
@@ -91,52 +91,8 @@ class WindowSwitchPanelWidget(QWidget):
         return main_panel
 
     def create_search_box(self) -> QLineEdit:
-        panel_layout: QVBoxLayout = cast(QVBoxLayout, self.main_panel.layout())
-
-        if not panel_layout:
-            return
-
-        container = QWidget()
-
-        container.setFixedHeight(self.theme.search_box.height)
-
-        container.setStyleSheet(f"""
-            background-color: {self.theme.search_box.background_color};
-        """)
-
-        layout = QVBoxLayout(container)
-        layout.setContentsMargins(
-            self.theme.search_box.line_edit.margin[0],
-            self.theme.search_box.line_edit.margin[1],
-            self.theme.search_box.line_edit.margin[2],
-            self.theme.search_box.line_edit.margin[3],
-        )
-        layout.setSpacing(0)
-
-        line_edit = QLineEdit()
-
-        # line_edit.setFixedHeight(self.theme.search_box.height)
-
-        size_policy = line_edit.sizePolicy()
-        size_policy.setVerticalPolicy(QSizePolicy.Policy.Expanding)
-        line_edit.setSizePolicy(size_policy)
-
-        line_edit.setStyleSheet(self.theme.search_box.line_edit.to_style_sheet())
-
-        line_edit.setTextMargins(
-            self.theme.search_box.line_edit.text_margin[0],
-            self.theme.search_box.line_edit.text_margin[1],
-            self.theme.search_box.line_edit.text_margin[2],
-            self.theme.search_box.line_edit.text_margin[3],
-        )
-
-        font = self.theme.search_box.line_edit.font.to_qfont(line_edit.font())
-        line_edit.setFont(font)
-
+        line_edit = self.panel.create_searchbox()
         line_edit.returnPressed.connect(self.on_search)
-
-        layout.addWidget(line_edit)
-        panel_layout.addWidget(container, alignment=Qt.AlignmentFlag.AlignTop)
 
         return line_edit
 
