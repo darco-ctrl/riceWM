@@ -11,6 +11,7 @@ class BootStrap:
         self.check_theme_dir()
         self.check_config_dir()
         self.check_window_icon_dir()
+        self.check_keymap_file()
 
     def check_config(self):
         if not rice_paths.rice_config_path.exists():
@@ -32,24 +33,29 @@ class BootStrap:
             rice_paths.themes_dir.mkdir(parents=True, exist_ok=True)
 
         # copy the default theme to the themes directory
-        if not (rice_paths.themes_dir / "default_theme.toml").exists():
+        if not (rice_paths.themes_dir / "default_theme.json").exists():
             shutil.copyfile(
                 rice_paths.default_theme_path,
-                rice_paths.themes_dir / "default_theme.toml",
+                rice_paths.themes_dir / "default_theme.json",
             )
 
     def check_config_dir(self):
         # create the themes directory if it doesn't exist
         if not rice_paths.config_dir.exists():
             rice_paths.config_dir.mkdir(parents=True, exist_ok=True)
+            print(
+                f"create parents becuase file '{rice_paths.config_dir}' does not exists"
+            )
 
         # copy the default theme to the themes directory
-        if not (rice_paths.config_dir / "default_theme.json").exists():
+        if not (rice_paths.config_dir / "default_config.json").exists():
             shutil.copyfile(
                 rice_paths.default_config_path,
                 rice_paths.config_dir / "default_config.json",
             )
+            print(f"copying json '{rice_paths.config_dir}' does not exists")
 
+    def check_keymap_file(self):
         if not (rice_paths.key_map_file).exists():
             shutil.copyfile(rice_paths.default_keymap_path, rice_paths.rice_config_path)
 

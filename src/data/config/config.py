@@ -27,7 +27,7 @@ class Config:
     def create_data_classes(self, data: dict):
         self.name = data["name"]
 
-        wsp_dict = data["window_swtich_panel"]
+        wsp_dict = data["window_switch_panel"]
         behavior_dict = wsp_dict["behavior"]
         # Behavior
         behavior: Behavior = Behavior(

@@ -13,7 +13,7 @@ class WidgetManager:
 
     def load_widgets(self):
         self.widgets["window_switch_panel"] = WindowSwitchPanelWidget(
-            config=self.config.window_switch_panel, theme=self.theme.window_switch_panel
+            config=self.config, theme=self.theme
         )
 
         # self.widgets["dock"] = DockWidget(WidgetTheme(self.theme.data["dock"]))

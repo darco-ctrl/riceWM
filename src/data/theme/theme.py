@@ -26,14 +26,17 @@ class Theme:
 
     def reload(self):
         print("reloading themes")
-
         self.load()
         events.reloadWSPThemeRequested.emit()
+        print(f"applying new theme: {self.name}")
 
     def load(self):
         with open(self.theme_file_path, "r") as file:
+            text = file.read()
+            print(f"\n\n {text} \n\n")
             print(f"Loading Theme: {self.theme_file_path}.")
 
+            file.seek(0)
             data = json.load(file)
             self.create_data_classes(data)
 
@@ -128,6 +131,5 @@ class Theme:
         self.window_switch_panel = T_WindowSwitchPanel(
             background_color=window_switch_panel_dict["background_color"],
             search_box=search_box_style,
-            window_width=window_switch_panel_dict["window_width"],
             window_item_frame=window_item_frame,
         )
