@@ -32,7 +32,7 @@ def main():
         app_config=app_config,
         config_dir=rice_paths.config_dir,
         themes_dir=rice_paths.themes_dir,
-        keybinds_file=rice_paths.keybinds_file,
+        keybinds_file=rice_paths.key_map_file,
     )
 
     hotkey_manager = HotKeyManager(data_manager.key_map)

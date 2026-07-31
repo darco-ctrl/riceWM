@@ -12,7 +12,7 @@ default_keymap_path = PROJECT_ROOT / "default_config" / "key_map.json"
 app_config_path = rice_config_path / "app.toml"
 themes_dir = rice_config_path / "themes"
 config_dir = rice_config_path / "config"
-keybinds_file = rice_config_path / "keybinds.json"
+key_map_file = rice_config_path / "key_map.json"
 
 cache_dir = rice_config_path / "cache"
 window_cache_icon_dir = cache_dir / "icons"

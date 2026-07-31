@@ -50,7 +50,7 @@ class BootStrap:
                 rice_paths.config_dir / "default_config.json",
             )
 
-        if not (rice_paths.keybinds_file).exists():
+        if not (rice_paths.key_map_file).exists():
             shutil.copyfile(rice_paths.default_keymap_path, rice_paths.rice_config_path)
 
     def check_window_icon_dir(self):

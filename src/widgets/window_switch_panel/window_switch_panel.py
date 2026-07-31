@@ -54,7 +54,11 @@ class WindowSwitchPanelWidget(QWidget):
         self.connect_event()
 
     def connect_event(self):
-        events.windowSwitchPanelRequested.connect(self.toggle_window)
+        events.wspToggleRequested.connect(self.toggle_window)
+        events.reloadWSPThemeRequested.connect(self.reload_theme)
+
+    def reload_theme(self):
+        print("reloading theme")
 
     def toggle_window(self):
         if self.isVisible():

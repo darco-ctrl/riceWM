@@ -5,6 +5,7 @@ import tomllib
 
 import app.paths as rice_paths
 from config.app_config import AppConfig
+from core.hotkey.event_bus import events
 from data.config.config import Config
 from data.key_map.key_map import KeyMap
 from data.theme.theme import Theme
@@ -28,6 +29,15 @@ class DataManager:
         )
         self.active_theme: Theme = Theme(theme_path=str(self.get_active_theme_path()))
         self.key_map: KeyMap = KeyMap(json_path=str(keybinds_file))
+
+        self.connect_events()
+
+    def connect_events(self):
+        events.dataReloadRequested.connect(self.reload)
+
+    def reload(self):
+        # self.active_config.reload()
+        self.active_theme.reload()
 
     # Returns the path to the active theme and congfig based on the app config.
     def get_active_theme_path(self) -> Path:

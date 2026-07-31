@@ -1,6 +1,7 @@
 import json
 from dataclasses import dataclass
 
+from core.hotkey.event_bus import events
 from data.theme.data_class import (
     Border,
     FontStyle,
@@ -18,13 +19,16 @@ from data.theme.data_class import (
 class Theme:
     def __init__(self, theme_path: str):
         self.theme_file_path = theme_path
-        self.name: str
+        self.name: str = ""
         self.window_switch_panel: T_WindowSwitchPanel
 
         self.load()
 
     def reload(self):
+        print("reloading themes")
+
         self.load()
+        events.reloadWSPThemeRequested.emit()
 
     def load(self):
         with open(self.theme_file_path, "r") as file:

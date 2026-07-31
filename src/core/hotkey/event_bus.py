@@ -2,7 +2,10 @@ from PySide6.QtCore import QObject, Signal
 
 
 class EventBus(QObject):
-    windowSwitchPanelRequested = Signal()
+    wspToggleRequested = Signal()
+    dataReloadRequested = Signal()
+
+    reloadWSPThemeRequested = Signal()
 
 
 events = EventBus()
