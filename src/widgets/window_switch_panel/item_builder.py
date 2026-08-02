@@ -98,7 +98,7 @@ class ItemBuilder:
         return window_item
 
     def create_item_frame(self) -> QFrame:
-        style = self.theme.window_switch_panel.window_item_frame
+        style = self.theme.window_switch_panel.window_item_container.item_frame
 
         frame = QFrame()
         frame.setFixedHeight(style.height)
@@ -109,7 +109,7 @@ class ItemBuilder:
         return frame
 
     def create_selection_indicator(self, layout: QHBoxLayout) -> QWidget:
-        style = self.theme.window_switch_panel.window_item_frame.selection_indicator
+        style = self.theme.window_switch_panel.window_item_container.item_frame.selection_indicator
 
         indicator: QWidget = QWidget()
 
@@ -118,7 +118,9 @@ class ItemBuilder:
         return indicator
 
     def create_icon_label(self, layout: QHBoxLayout) -> QLabel:
-        style = self.theme.window_switch_panel.window_item_frame.icon_label
+        style = (
+            self.theme.window_switch_panel.window_item_container.item_frame.icon_label
+        )
 
         icon_label: QLabel = QLabel()
         icon_label.setFixedSize(QSize(style.width, style.height))
@@ -137,7 +139,9 @@ class ItemBuilder:
         return icon_label
 
     def create_window_title_label(self, layout: QHBoxLayout) -> QLabel:
-        style = self.theme.window_switch_panel.window_item_frame.title_label
+        style = (
+            self.theme.window_switch_panel.window_item_container.item_frame.title_label
+        )
 
         title_label: QLabel = QLabel()
         title_label.setText(style.preload_text)
@@ -147,7 +151,7 @@ class ItemBuilder:
         return title_label
 
     def create_key_bind_label(self, layout: QHBoxLayout) -> QLabel:
-        style = self.theme.window_switch_panel.window_item_frame.key_bind_lable
+        style = self.theme.window_switch_panel.window_item_container.item_frame.key_bind_lable
 
         key_bind_label: QLabel = QLabel()
         key_bind_label.setText(" Alt + T")
@@ -173,7 +177,7 @@ class ItemBuilder:
             self.recolor_item(window_item)
 
     def recolor_item(self, window_item: WindowItem):
-        style = self.theme.window_switch_panel.window_item_frame
+        style = self.theme.window_switch_panel.window_item_container.item_frame
 
         print(f"changing: background_color: {style.background_color}")
         self.recolor_frame(window_item.frame)
@@ -183,7 +187,7 @@ class ItemBuilder:
         self.recolor_keybind_label(window_item.key_bind_label)
 
     def recolor_frame(self, frame: QWidget):
-        frame_style = self.theme.window_switch_panel.window_item_frame
+        frame_style = self.theme.window_switch_panel.window_item_container.item_frame
 
         frame.setFixedHeight(frame_style.height)
         frame.setStyleSheet(f"""
@@ -198,7 +202,7 @@ class ItemBuilder:
         )
 
     def recolor_selection_indicator(self, selection_indicator: QWidget):
-        style = self.theme.window_switch_panel.window_item_frame.selection_indicator
+        style = self.theme.window_switch_panel.window_item_container.item_frame.selection_indicator
 
         selection_indicator.setFixedSize(QSize(style.width, style.height))
         selection_indicator.setStyleSheet(f"""
@@ -206,12 +210,16 @@ class ItemBuilder:
         """)
 
     def recolor_icon_label(self, icon_label: QLabel):
-        style = self.theme.window_switch_panel.window_item_frame.icon_label
+        style = (
+            self.theme.window_switch_panel.window_item_container.item_frame.icon_label
+        )
 
         icon_label.setFixedSize(QSize(style.width, style.height))
 
     def recolor_title_label(self, label: QLabel):
-        style = self.theme.window_switch_panel.window_item_frame.title_label
+        style = (
+            self.theme.window_switch_panel.window_item_container.item_frame.title_label
+        )
 
         label.setStyleSheet(f"""
             background-color: {style.background_color};
@@ -219,7 +227,7 @@ class ItemBuilder:
         """)
 
     def recolor_keybind_label(self, label: QLabel):
-        style = self.theme.window_switch_panel.window_item_frame.key_bind_lable
+        style = self.theme.window_switch_panel.window_item_container.item_frame.key_bind_lable
 
         label.setFixedSize(QSize(style.width, style.height))
         label.setStyleSheet(f"""

@@ -3,16 +3,28 @@ from dataclasses import dataclass
 from PySide6.QtGui import QFont
 
 
-@dataclass
 class FontStyle:
-    family: str
-    pixel_size: int
-    letter_spacing: float
-    is_bold: bool
-    is_italic: bool
-    is_underline: bool
-    is_strike_out: bool
-    weight: str
+    def __init__(self, style: dict):
+        self.family: str
+        self.pixel_size: int
+        self.letter_spacing: float
+        self.is_bold: bool
+        self.is_italic: bool
+        self.is_underline: bool
+        self.is_strike_out: bool
+        self.weight: str
+
+        self.load(style)
+
+    def load(self, style: dict):
+        self.family = style["family"]
+        self.pixel_size = style["size"]
+        self.letter_spacing = style["letter_spacing"]
+        self.is_bold = style["is_bold"]
+        self.is_italic = style["is_italic"]
+        self.is_underline = style["is_underline"]
+        self.is_strike_out = style["is_strike_out"]
+        self.weight = style["weight"]
 
     def to_qfont(self, qfont: QFont) -> QFont:
 
@@ -37,22 +49,38 @@ class FontStyle:
         return qfont
 
 
-@dataclass
 class Border:
-    style: str
-    radius: int
-    width: list
-    color: str
+    def __init__(self, style: dict) -> None:
+        self.style: str
+        self.radius: int
+        self.width: list
+        self.color: str
+
+        self.load(style)
+
+    def load(self, style: dict):
+        self.style = style["style"]
+        self.radius = style["radius"]
+        self.width = style["width"]
+        self.color = style["color"]
 
 
-@dataclass
 class LineEdit:
-    margin: list
-    text_margin: list
-    background_color: str
-    color: str
-    border: Border
-    font: FontStyle
+    def __init__(self, style: dict, font: FontStyle, border: Border) -> None:
+        self.margin: list
+        self.text_margin: list
+        self.background_color: str
+        self.color: str
+        self.border: Border = border
+        self.font: FontStyle = font
+
+        self.load(style)
+
+    def load(self, style: dict):
+        self.margin = style["margin"]
+        self.text_margin = style["text_margin"]
+        self.background_color = style["background_color"]
+        self.color = style["color"]
 
     def to_style_sheet(self) -> str:
         return f"""
@@ -70,53 +98,125 @@ class LineEdit:
 
 @dataclass
 class SearchBox:
-    height: int
-    background_color: str
-    line_edit: LineEdit
+    def __init__(self, style: dict, line_edit: LineEdit) -> None:
+        self.height: int
+        self.background_color: str
+        self.line_edit: LineEdit = line_edit
+
+        self.load(style)
+
+    def load(self, style: dict):
+        self.height = style["height"]
+        self.background_color = style["background_color"]
 
 
-@dataclass
 class KeyBindLabel:
-    width: int
-    height: int
-    background_color: str
-    color: str
+    def __init__(self, style: dict) -> None:
+        self.width: int
+        self.height: int
+        self.background_color: str
+        self.color: str
+        self.font_style: FontStyle
+
+        self.load(style)
+
+    def load(self, style: dict):
+        self.width = style["width"]
+        self.height = style["height"]
+        self.background_color = style["background_color"]
+        self.color = style["color"]
 
 
-@dataclass
 class TitleLabel:
-    preload_text: str
-    background_color: str
-    color: str
+    def __init__(self, style: dict) -> None:
+        self.preload_text: str
+        self.background_color: str
+        self.color: str
+        self.font_style: FontStyle
+
+        self.load(style)
+
+    def load(self, style: dict):
+        self.preload_text = style["preload_text"]
+        self.background_color = style["background_color"]
+        self.color = style["color"]
 
 
-@dataclass
 class WindowIconLabel:
-    width: int
-    height: int
+    def __init__(self, style: dict) -> None:
+        self.width: int
+        self.height: int
+
+        self.load(style)
+
+    def load(self, style: dict):
+        self.width = style["width"]
+        self.height = style["height"]
 
 
-@dataclass
 class SelectionIndicator:
-    width: int
-    height: int
-    background_color: str
+    def __init__(self, style: dict) -> None:
+        self.width: int
+        self.height: int
+        self.background_color: str
+
+        self.load(style)
+
+    def load(self, style: dict):
+        self.width = style["width"]
+        self.height = style["height"]
+        self.background_color = style["background_color"]
 
 
-@dataclass
-class WindowItemFrame:
-    height: int
-    contents_margin: list
-    background_color: str
-    selection_indicator: SelectionIndicator
-    icon_label: WindowIconLabel
-    title_label: TitleLabel
-    key_bind_lable: KeyBindLabel
+class ItemFrame:
+    def __init__(
+        self,
+        style: dict,
+        selection_indicator: SelectionIndicator,
+        icon_label: WindowIconLabel,
+        title_label: TitleLabel,
+        key_bind_label: KeyBindLabel,
+    ) -> None:
+        self.height: int
+        self.contents_margin: list
+        self.background_color: str
+        self.selection_indicator: SelectionIndicator = selection_indicator
+        self.icon_label: WindowIconLabel = icon_label
+        self.title_label: TitleLabel = title_label
+        self.key_bind_lable: KeyBindLabel = key_bind_label
+
+        self.load(style)
+
+    def load(self, style: dict):
+        self.height = style["height"]
+        self.contents_margin = style["contents_margin"]
+        self.background_color = style["background_color"]
 
 
-@dataclass
+class WindowItemsContainer:
+    def __init__(self, style: dict, item_frame: ItemFrame) -> None:
+        self.background_color: str
+        self.item_frame: ItemFrame = item_frame
+
+        # self.load(style)
+
+    def load(self, style: dict):
+        self.background_color = style["background_color"]
+
+
 class T_WindowSwitchPanel:
-    # window_width: int
-    background_color: str
-    search_box: SearchBox
-    window_item_frame: WindowItemFrame
+    def __init__(
+        self,
+        style: dict,
+        search_box: SearchBox,
+        window_item_container: WindowItemsContainer,
+    ) -> None:
+        # window_width: int
+        self.background_color: str
+        self.search_box: SearchBox = search_box
+        self.window_item_container: WindowItemsContainer = window_item_container
+
+        self.load(style)
+
+    def load(self, style: dict):
+        self.background_color = style["background_color"]
