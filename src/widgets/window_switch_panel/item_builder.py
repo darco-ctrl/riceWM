@@ -2,7 +2,15 @@ from typing import cast
 
 from PySide6.QtCore import QSize
 from PySide6.QtGui import QPixmap, Qt
-from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QLayout, QVBoxLayout, QWidget
+from PySide6.QtWidgets import (
+    QFrame,
+    QHBoxLayout,
+    QLabel,
+    QLayout,
+    QSizePolicy,
+    QVBoxLayout,
+    QWidget,
+)
 
 import app.paths as rice_paths
 from data.config.config import Config
@@ -76,7 +84,7 @@ class ItemBuilder:
         f_layout: QHBoxLayout = cast(QHBoxLayout, frame.layout())
 
         selection_indicator = self.create_selection_indicator(f_layout)
-        icon_label = self.create_icon_label(f_layout)
+        icon_container, c_layout, icon_label = self.create_icon_label(f_layout)
         title_label = self.create_window_title_label(f_layout)
         key_bind_label = self.create_key_bind_label(f_layout)
 
@@ -90,6 +98,8 @@ class ItemBuilder:
             index=count,
             frame=frame,
             key_bind_label=key_bind_label,
+            icon_container=icon_container,
+            c_layout=c_layout,
             icon_label=icon_label,
             selection_indicator=selection_indicator,
             title_label=title_label,
@@ -115,18 +125,32 @@ class ItemBuilder:
         indicator: QWidget = QWidget()
         indicator.setObjectName("selectionIndicator")
 
-        layout.addWidget(indicator)
+        layout.addWidget(indicator, alignment=Qt.AlignmentFlag.AlignVCenter)
 
         return indicator
 
-    def create_icon_label(self, layout: QHBoxLayout) -> QLabel:
-        style = (
-            self.theme.window_switch_panel.window_item_container.item_frame.icon_label
-        )
+    def create_icon_label(
+        self, layout: QHBoxLayout
+    ) -> tuple[QWidget, QVBoxLayout, QLabel]:
+        style = self.theme.window_switch_panel.window_item_container.item_frame.icon_container
+
+        container: QWidget = QWidget()
+        container.setObjectName("iconContainer")
+        container.setFixedSize(QSize(style.width, style.height))
+
+        c_layout: QVBoxLayout = QVBoxLayout(container)
+
+        icon_width = style.width - style.margin[0] - style.margin[2]
+        icon_height = style.height - style.margin[1] - style.margin[3]
 
         icon_label: QLabel = QLabel()
         icon_label.setObjectName("iconLabel")
-        icon_label.setFixedSize(QSize(style.width, style.height))
+        icon_label.setFixedSize(QSize(icon_width, icon_height))
+        icon_label.setSizePolicy(
+            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
+        )
+
+        c_layout.addWidget(icon_label)
 
         pixmap = QPixmap(str(rice_paths.wait_icon))
         scaled_pixmap = pixmap.scaled(
@@ -137,9 +161,9 @@ class ItemBuilder:
 
         icon_label.setPixmap(scaled_pixmap)
 
-        layout.addWidget(icon_label)
+        layout.addWidget(container, alignment=Qt.AlignmentFlag.AlignVCenter)
 
-        return icon_label
+        return container, c_layout, icon_label
 
     def create_window_title_label(self, layout: QHBoxLayout) -> QLabel:
         style = (
@@ -150,7 +174,9 @@ class ItemBuilder:
         title_label.setObjectName("titleLabel")
         title_label.setText(style.preload_text)
 
-        layout.addWidget(title_label, stretch=1)
+        layout.addWidget(
+            title_label, stretch=1, alignment=Qt.AlignmentFlag.AlignVCenter
+        )
 
         return title_label
 
@@ -161,7 +187,7 @@ class ItemBuilder:
         key_bind_label.setObjectName("keyBindLabel")
         key_bind_label.setText(" Alt + T")
         key_bind_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(key_bind_label)
+        layout.addWidget(key_bind_label, alignment=Qt.AlignmentFlag.AlignVCenter)
 
         return key_bind_label
 
@@ -180,13 +206,18 @@ class ItemBuilder:
     def reapply_theme(self, window_items: list[WindowItem]):
         for window_item in window_items:
             self.recolor_item(window_item)
+            window_item.reload()
 
     def recolor_item(self, window_item: WindowItem):
 
         # print(f"changing: background_color: {style.background_color}")
         self.recolor_frame(window_item.frame)
         self.recolor_selection_indicator(window_item.selection_indicator)
-        self.recolor_icon_label(window_item.icon_label)
+        self.recolor_icon_label(
+            container=window_item.icon_container,
+            layout=window_item.icon_layout,
+            icon_label=window_item.icon_label,
+        )
         self.recolor_title_label(window_item.title_label)
         self.recolor_keybind_label(window_item.key_bind_label)
 
@@ -225,12 +256,35 @@ class ItemBuilder:
             }}
         """)
 
-    def recolor_icon_label(self, icon_label: QLabel):
-        style = (
-            self.theme.window_switch_panel.window_item_container.item_frame.icon_label
+    def recolor_icon_label(
+        self, container: QWidget, layout: QVBoxLayout, icon_label: QLabel
+    ):
+
+        style = self.theme.window_switch_panel.window_item_container.item_frame.icon_container
+
+        container.setFixedSize(QSize(style.width, style.height))
+        container.setStyleSheet(f"""
+            #iconContainer {{
+                border-style: {style.border_style.style};
+                border-radius: {style.border_style.radius}px;
+                border-left-width: {style.border_style.width[0]}px;
+                border-top-width: {style.border_style.width[1]}px;
+                border-right-width: {style.border_style.width[2]}px;
+                border-bottom-width: {style.border_style.width[3]}px;
+                background-color: {style.background_color};
+            }}
+        """)
+        layout.setContentsMargins(
+            style.margin[0],
+            style.margin[1],
+            style.margin[2],
+            style.margin[3],
         )
 
-        icon_label.setFixedSize(QSize(style.width, style.height))
+        icon_width = style.width - style.margin[0] - style.margin[2]
+        icon_height = style.height - style.margin[1] - style.margin[3]
+
+        icon_label.setFixedSize(QSize(icon_width, icon_height))
 
     def recolor_title_label(self, label: QLabel):
         style = (

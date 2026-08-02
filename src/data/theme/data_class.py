@@ -142,16 +142,21 @@ class TitleLabel:
         self.color = style["color"]
 
 
-class WindowIconLabel:
-    def __init__(self, style: dict) -> None:
+class IconContainer:
+    def __init__(self, style: dict, border_style: BorderStyle) -> None:
         self.width: int
         self.height: int
+        self.margin: list
+        self.background_color: str
+        self.border_style: BorderStyle = border_style
 
         self.load(style)
 
-    def load(self, style: dict):
+    def load(self, style):
         self.width = style["width"]
         self.height = style["height"]
+        self.margin = style["margin"]
+        self.background_color = style["background_color"]
 
 
 class SelectionIndicator:
@@ -174,7 +179,7 @@ class ItemFrame:
         style: dict,
         border_Style: BorderStyle,
         selection_indicator: SelectionIndicator,
-        icon_label: WindowIconLabel,
+        icon_container: IconContainer,
         title_label: TitleLabel,
         key_bind_label: KeyBindLabel,
     ) -> None:
@@ -183,7 +188,7 @@ class ItemFrame:
         self.background_color: str
         self.border_style: BorderStyle = border_Style
         self.selection_indicator: SelectionIndicator = selection_indicator
-        self.icon_label: WindowIconLabel = icon_label
+        self.icon_container: IconContainer = icon_container
         self.title_label: TitleLabel = title_label
         self.key_bind_lable: KeyBindLabel = key_bind_label
 

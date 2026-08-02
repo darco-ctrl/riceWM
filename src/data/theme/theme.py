@@ -5,6 +5,7 @@ from core.hotkey.event_bus import events
 from data.theme.data_class import (
     BorderStyle,
     FontStyle,
+    IconContainer,
     ItemFrame,
     KeyBindLabel,
     LineEdit,
@@ -12,7 +13,6 @@ from data.theme.data_class import (
     SelectionIndicator,
     T_WindowSwitchPanel,
     TitleLabel,
-    WindowIconLabel,
     WindowItemsContainer,
 )
 
@@ -55,7 +55,8 @@ class Theme:
         frame_dict = window_item_container["frame"]
         frame_border_dict = frame_dict["border"]
         selection_indicator_dict = frame_dict["selection_indicator"]
-        icon_label_dict = frame_dict["icon_label"]
+        icon_conatiner_dict = frame_dict["icon_container"]
+        icon_container_border_dict = icon_conatiner_dict["border"]
         title_label_dict = frame_dict["title_label"]
         key_bind_label_dict = frame_dict["key_bind_label"]
 
@@ -74,7 +75,10 @@ class Theme:
 
         title_label: TitleLabel = TitleLabel(title_label_dict)
 
-        icon_label: WindowIconLabel = WindowIconLabel(style=icon_label_dict)
+        i_container_border: BorderStyle = BorderStyle(style=icon_container_border_dict)
+        i_container: IconContainer = IconContainer(
+            style=icon_conatiner_dict, border_style=i_container_border
+        )
 
         selection_indicator: SelectionIndicator = SelectionIndicator(
             style=selection_indicator_dict
@@ -86,7 +90,7 @@ class Theme:
             style=frame_dict,
             border_Style=cn_border_style,
             key_bind_label=key_bind_label,
-            icon_label=icon_label,
+            icon_container=i_container,
             selection_indicator=selection_indicator,
             title_label=title_label,
         )

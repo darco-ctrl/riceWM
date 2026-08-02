@@ -1,6 +1,6 @@
 import win32gui
 from PySide6.QtGui import QPixmap, Qt
-from PySide6.QtWidgets import QFrame, QLabel, QWidget
+from PySide6.QtWidgets import QFrame, QLabel, QVBoxLayout, QWidget
 
 
 class WindowItem:
@@ -13,6 +13,8 @@ class WindowItem:
         index: int,
         frame: QFrame,
         selection_indicator: QWidget,
+        icon_container: QWidget,
+        c_layout: QVBoxLayout,
         icon_label: QLabel,
         title_label: QLabel,
         key_bind_label: QLabel,
@@ -24,6 +26,8 @@ class WindowItem:
         self.index: int = index
         self.frame: QFrame = frame
         self.selection_indicator: QWidget = selection_indicator
+        self.icon_container: QWidget = icon_container
+        self.icon_layout: QVBoxLayout = c_layout
         self.icon_label: QLabel = icon_label
         self.title_label: QLabel = title_label
         self.key_bind_label: QLabel = key_bind_label
