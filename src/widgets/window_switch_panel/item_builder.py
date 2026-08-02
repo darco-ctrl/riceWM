@@ -101,6 +101,7 @@ class ItemBuilder:
         style = self.theme.window_switch_panel.window_item_container.item_frame
 
         frame = QFrame()
+        frame.setObjectName("itemFrame")
         frame.setFixedHeight(style.height)
 
         frame_layout: QHBoxLayout = QHBoxLayout(frame)
@@ -112,6 +113,7 @@ class ItemBuilder:
         style = self.theme.window_switch_panel.window_item_container.item_frame.selection_indicator
 
         indicator: QWidget = QWidget()
+        indicator.setObjectName("selectionIndicator")
 
         layout.addWidget(indicator)
 
@@ -123,6 +125,7 @@ class ItemBuilder:
         )
 
         icon_label: QLabel = QLabel()
+        icon_label.setObjectName("iconLabel")
         icon_label.setFixedSize(QSize(style.width, style.height))
 
         pixmap = QPixmap(str(rice_paths.wait_icon))
@@ -144,6 +147,7 @@ class ItemBuilder:
         )
 
         title_label: QLabel = QLabel()
+        title_label.setObjectName("titleLabel")
         title_label.setText(style.preload_text)
 
         layout.addWidget(title_label, stretch=1)
@@ -154,6 +158,7 @@ class ItemBuilder:
         style = self.theme.window_switch_panel.window_item_container.item_frame.key_bind_lable
 
         key_bind_label: QLabel = QLabel()
+        key_bind_label.setObjectName("keyBindLabel")
         key_bind_label.setText(" Alt + T")
         key_bind_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(key_bind_label)
@@ -177,9 +182,8 @@ class ItemBuilder:
             self.recolor_item(window_item)
 
     def recolor_item(self, window_item: WindowItem):
-        style = self.theme.window_switch_panel.window_item_container.item_frame
 
-        print(f"changing: background_color: {style.background_color}")
+        # print(f"changing: background_color: {style.background_color}")
         self.recolor_frame(window_item.frame)
         self.recolor_selection_indicator(window_item.selection_indicator)
         self.recolor_icon_label(window_item.icon_label)
@@ -188,10 +192,20 @@ class ItemBuilder:
 
     def recolor_frame(self, frame: QWidget):
         frame_style = self.theme.window_switch_panel.window_item_container.item_frame
+        border_style = frame_style.border_style
 
         frame.setFixedHeight(frame_style.height)
         frame.setStyleSheet(f"""
-            background-color: {frame_style.background_color}
+        #itemFrame {{
+                border-style: {border_style.style};
+                border-radius: {border_style.radius}px;
+                border-left-width: {border_style.width[0]}px;
+                border-top-width: {border_style.width[1]}px;
+                border-right-width: {border_style.width[2]}px;
+                border-bottom-width: {border_style.width[3]}px;
+                border-color: {border_style.color};
+                background-color: {frame_style.background_color};
+            }}
         """)
         frame_layout: QHBoxLayout = cast(QHBoxLayout, frame.layout())
         frame_layout.setContentsMargins(
@@ -206,7 +220,9 @@ class ItemBuilder:
 
         selection_indicator.setFixedSize(QSize(style.width, style.height))
         selection_indicator.setStyleSheet(f"""
-            background-color: {style.background_color};
+        #selectionIndicator {{
+                background-color: {style.background_color};
+            }}
         """)
 
     def recolor_icon_label(self, icon_label: QLabel):
@@ -222,8 +238,10 @@ class ItemBuilder:
         )
 
         label.setStyleSheet(f"""
+        #titleLabel {{
             background-color: {style.background_color};
             color: {style.color};
+        }}
         """)
 
     def recolor_keybind_label(self, label: QLabel):
@@ -231,6 +249,8 @@ class ItemBuilder:
 
         label.setFixedSize(QSize(style.width, style.height))
         label.setStyleSheet(f"""
+        #keybindLabel {{
             background-color: {style.background_color};
             color: {style.color}
+        }}
         """)

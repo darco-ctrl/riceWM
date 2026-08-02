@@ -65,6 +65,15 @@ class WindowSwitchPanelWidget(QWidget):
 
         self.panel_constructor.reapply_theme()
         self.item_builder.reapply_theme(self.window_items)
+        self.recolor_container()
+
+    def recolor_container(self):
+        container_style = self.theme.window_switch_panel.window_item_container
+        self.scroll_container.setStyleSheet(f"""
+        #scrollContainer {{
+            background-color: {container_style.background_color};
+        }}
+        """)
 
     def toggle_window(self):
         if self.isVisible():
@@ -102,6 +111,8 @@ class WindowSwitchPanelWidget(QWidget):
         return line_edit
 
     def create_list_scroller(self) -> QWidget:
+        container_style = self.theme.window_switch_panel.window_item_container
+
         panel_layout: QVBoxLayout = cast(QVBoxLayout, self.main_panel.layout())
 
         scroll: QScrollArea = QScrollArea()
@@ -109,11 +120,17 @@ class WindowSwitchPanelWidget(QWidget):
         scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
         container: QWidget = QWidget()
+        container.setObjectName("scrollContainer")
+
         layout: QVBoxLayout = QVBoxLayout(container)
         layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         layout.setContentsMargins(0, 0, 0, 0)
 
-        container.setStyleSheet("background-color: blue;")
+        container.setStyleSheet(f"""
+        #scrollContainer {{
+            background-color: {container_style.background_color};
+        }}
+        """)
 
         scroll.setWidget(container)
 

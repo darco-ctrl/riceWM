@@ -49,7 +49,7 @@ class FontStyle:
         return qfont
 
 
-class Border:
+class BorderStyle:
     def __init__(self, style: dict) -> None:
         self.style: str
         self.radius: int
@@ -66,13 +66,13 @@ class Border:
 
 
 class LineEdit:
-    def __init__(self, style: dict, font: FontStyle, border: Border) -> None:
+    def __init__(self, style: dict, font: FontStyle, border: BorderStyle) -> None:
         self.margin: list
         self.text_margin: list
         self.background_color: str
         self.color: str
-        self.border: Border = border
-        self.font: FontStyle = font
+        self.border_style: BorderStyle = border
+        self.font_style: FontStyle = font
 
         self.load(style)
 
@@ -84,14 +84,14 @@ class LineEdit:
 
     def to_style_sheet(self) -> str:
         return f"""
-            border-style: {self.border.style};
-            border-radius: {self.border.radius}px;
-            border-left-width: {self.border.width[0]}px;
-            border-top-width: {self.border.width[1]}px;
-            border-right-width: {self.border.width[2]}px;
-            border-bottom-width: {self.border.width[3]}px;
+            border-style: {self.border_style.style};
+            border-radius: {self.border_style.radius}px;
+            border-left-width: {self.border_style.width[0]}px;
+            border-top-width: {self.border_style.width[1]}px;
+            border-right-width: {self.border_style.width[2]}px;
+            border-bottom-width: {self.border_style.width[3]}px;
             background-color: {self.background_color};
-            border-color: {self.border.color};
+            border-color: {self.border_style.color};
             color: {self.color}
         """
 
@@ -172,6 +172,7 @@ class ItemFrame:
     def __init__(
         self,
         style: dict,
+        border_Style: BorderStyle,
         selection_indicator: SelectionIndicator,
         icon_label: WindowIconLabel,
         title_label: TitleLabel,
@@ -180,6 +181,7 @@ class ItemFrame:
         self.height: int
         self.contents_margin: list
         self.background_color: str
+        self.border_style: BorderStyle = border_Style
         self.selection_indicator: SelectionIndicator = selection_indicator
         self.icon_label: WindowIconLabel = icon_label
         self.title_label: TitleLabel = title_label
@@ -198,7 +200,7 @@ class WindowItemsContainer:
         self.background_color: str
         self.item_frame: ItemFrame = item_frame
 
-        # self.load(style)
+        self.load(style)
 
     def load(self, style: dict):
         self.background_color = style["background_color"]

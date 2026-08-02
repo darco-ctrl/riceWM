@@ -20,6 +20,7 @@ class PanelConstructor:
     def create_panel(self) -> QWidget:
 
         panel = QWidget()
+        panel.setObjectName("Panel")
 
         # main_panel.setFixedHeight(100)
 
@@ -41,16 +42,20 @@ class PanelConstructor:
         style = self.theme.window_switch_panel
 
         self.panel.widget.setStyleSheet(f"""
+        #Panel {{
             background-color: {style.background_color};
+        }}
         """)
 
     def create_searchbox(self) -> QLineEdit:
         container = QWidget()
+        container.setObjectName("searchBox")
 
         layout = QVBoxLayout(container)
         layout.setSpacing(0)
 
         line_edit = QLineEdit()
+        line_edit.setObjectName("lineEdit")
 
         # line_edit.setFixedHeight(self.theme.search_box.height)
 
@@ -74,7 +79,9 @@ class PanelConstructor:
         self.search_box.container.setFixedHeight(style.height)
 
         self.search_box.container.setStyleSheet(f"""
+        #searchBox {{
             background-color: {style.background_color};
+        }}
         """)
 
         self.search_box.layout.setContentsMargins(
@@ -84,7 +91,9 @@ class PanelConstructor:
             style.line_edit.margin[3],
         )
 
-        self.search_box.line_edit.setStyleSheet(style.line_edit.to_style_sheet())
+        self.search_box.line_edit.setStyleSheet(f"""#lineEdit {{
+            {style.line_edit.to_style_sheet()}
+        }}""")
 
         self.search_box.line_edit.setTextMargins(
             style.line_edit.text_margin[0],
@@ -93,5 +102,5 @@ class PanelConstructor:
             style.line_edit.text_margin[3],
         )
 
-        font = style.line_edit.font.to_qfont(self.search_box.line_edit.font())
+        font = style.line_edit.font_style.to_qfont(self.search_box.line_edit.font())
         self.search_box.line_edit.setFont(font)

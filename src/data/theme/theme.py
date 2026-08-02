@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 from core.hotkey.event_bus import events
 from data.theme.data_class import (
-    Border,
+    BorderStyle,
     FontStyle,
     ItemFrame,
     KeyBindLabel,
@@ -53,16 +53,17 @@ class Theme:
         font_style_dict = line_edit_dict["font"]
         window_item_container = window_switch_panel_dict["window_item_container"]
         frame_dict = window_item_container["frame"]
+        frame_border_dict = frame_dict["border"]
         selection_indicator_dict = frame_dict["selection_indicator"]
         icon_label_dict = frame_dict["icon_label"]
         title_label_dict = frame_dict["title_label"]
         key_bind_label_dict = frame_dict["key_bind_label"]
 
         font_style: FontStyle = FontStyle(style=font_style_dict)
-        border_style: Border = Border(style=border_style_dict)
+        ln_border_style: BorderStyle = BorderStyle(style=border_style_dict)
 
         line_edit_style: LineEdit = LineEdit(
-            style=line_edit_dict, border=border_style, font=font_style
+            style=line_edit_dict, border=ln_border_style, font=font_style
         )
         search_box_style: SearchBox = SearchBox(
             style=search_box_dict,
@@ -79,8 +80,11 @@ class Theme:
             style=selection_indicator_dict
         )
 
+        cn_border_style: BorderStyle = BorderStyle(style=frame_border_dict)
+
         item_frame = ItemFrame(
             style=frame_dict,
+            border_Style=cn_border_style,
             key_bind_label=key_bind_label,
             icon_label=icon_label,
             selection_indicator=selection_indicator,
