@@ -111,12 +111,16 @@ class SearchBox:
 
 
 class KeyBindLabel:
-    def __init__(self, style: dict) -> None:
+    def __init__(
+        self, style: dict, font_style: FontStyle, border_style: BorderStyle
+    ) -> None:
         self.width: int
         self.height: int
         self.background_color: str
         self.color: str
-        self.font_style: FontStyle
+        self.margin: int
+        self.font_style: FontStyle = font_style
+        self.border_style: BorderStyle = border_style
 
         self.load(style)
 
@@ -125,6 +129,7 @@ class KeyBindLabel:
         self.height = style["height"]
         self.background_color = style["background_color"]
         self.color = style["color"]
+        self.margin = style["margin"]
 
 
 class TitleLabel:

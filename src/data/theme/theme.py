@@ -33,8 +33,8 @@ class Theme:
 
     def load(self):
         with open(self.theme_file_path, "r") as file:
-            text = file.read()
-            print(f"\n\n {text} \n\n")
+            # text = file.read()
+            # print(f"\n\n {text} \n\n")
             print(f"Loading Theme: {self.theme_file_path}.")
 
             file.seek(0)
@@ -59,6 +59,8 @@ class Theme:
         icon_container_border_dict = icon_conatiner_dict["border"]
         title_label_dict = frame_dict["title_label"]
         key_bind_label_dict = frame_dict["key_bind_label"]
+        kbl_font_dict = key_bind_label_dict["font"]
+        kbl_border_dict = key_bind_label_dict["border"]
 
         font_style: FontStyle = FontStyle(style=font_style_dict)
         ln_border_style: BorderStyle = BorderStyle(style=border_style_dict)
@@ -71,7 +73,14 @@ class Theme:
             line_edit=line_edit_style,
         )
 
-        key_bind_label: KeyBindLabel = KeyBindLabel(key_bind_label_dict)
+        kbl_font_style = FontStyle(kbl_font_dict)
+        kbl_border_style = BorderStyle(kbl_border_dict)
+
+        key_bind_label: KeyBindLabel = KeyBindLabel(
+            style=key_bind_label_dict,
+            border_style=kbl_border_style,
+            font_style=kbl_font_style,
+        )
 
         title_label: TitleLabel = TitleLabel(title_label_dict)
 

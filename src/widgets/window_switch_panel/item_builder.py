@@ -271,6 +271,7 @@ class ItemBuilder:
                 border-top-width: {style.border_style.width[1]}px;
                 border-right-width: {style.border_style.width[2]}px;
                 border-bottom-width: {style.border_style.width[3]}px;
+                border-color: {style.border_style.color};
                 background-color: {style.background_color};
             }}
         """)
@@ -301,10 +302,23 @@ class ItemBuilder:
     def recolor_keybind_label(self, label: QLabel):
         style = self.theme.window_switch_panel.window_item_container.item_frame.key_bind_lable
 
+        print(f"setting keybind label background color to : {style.background_color}")
         label.setFixedSize(QSize(style.width, style.height))
         label.setStyleSheet(f"""
-        #keybindLabel {{
+        #keyBindLabel {{
+            border-style: {style.border_style.style};
+            border-radius: {style.border_style.radius}px;
+            border-left-width: {style.border_style.width[0]}px;
+            border-top-width: {style.border_style.width[1]}px;
+            border-right-width: {style.border_style.width[2]}px;
+            border-bottom-width: {style.border_style.width[3]}px;
+            border-color: {style.border_style.color};
             background-color: {style.background_color};
             color: {style.color}
         }}
         """)
+
+        label.setMargin(style.margin)
+
+        font = style.font_style.to_qfont(label.font())
+        label.setFont(font)
