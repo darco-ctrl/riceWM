@@ -1,6 +1,7 @@
 {
-    "name": "RiceWM Default Config.",
+    "name": "RiceWM Default Config",
     "window_switch_panel": {
+        "window_width": 600,
         "behavior": {
             "max_results_shown": 5,
             "auto_adjust_height": false

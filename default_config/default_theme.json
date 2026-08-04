@@ -1,25 +1,25 @@
 {
     "name": "RiceWM Defualt Theme",
     "window_switch_panel": {
-        "window_width": 300,
         "background_color": "#1e1e2e",
         "search_box": {
             "height": 50,
             "background_color": "transparent",
             "line_edit": {
+                "place_holder_text": "Search window...",
                 "margin": [0, 0, 0, 0],
-                "text_margin": [0, 0, 0, 0],
+                "text_margin": [5, 0, 0, 5],
                 "background_color": "transparent",
                 "color": "#cdd6f4",
                 "border": {
                     "style": "solid",
                     "radius": 2,
                     "width": [2, 2, 2, 2],
-                    "color": "#bac2de"
+                    "color": "#cba6f7"
                 },
                 "font": {
                     "family": "JetBrains Mono",
-                    "size": 18,
+                    "size": 15,
                     "letter_spacing": 1.0,
                     "is_bold": false,
                     "is_italic": false,
@@ -29,30 +29,80 @@
                 }
             }
         },
-        "window_item": {
+        "window_item_container": {
+            "background_color": "#1e1e2e",
             "frame": {
-                "height": 60,
-                "background_color": "red",
-                "contents_margin": [0, 0, 0, 0],
-                "selection_indicator": {
-                    "width": 10,
-                    "height": 50,
-                    "background_color": "white"
+                "height": 64,
+                "background_color": "transparent",
+                "contents_margin": [0, 0, 10, 0],
+                "border": {
+                    "style": "solid",
+                    "radius": 0,
+                    "width": [0, 0, 0, 0],
+                    "color": "#45475a"
                 },
-                "icon_label": {
-                    "width": 36,
-                    "height": 36
+                "selection_indicator": {
+                    "width": 5,
+                    "height": 30,
+                    "background_color": "#cba6f7",
+                    "border_radius": 6
+                },
+                "icon_container": {
+                    "width": 38,
+                    "height": 38,
+                    "background_color": "#313244",
+                    "margin": [5, 5, 5, 5],
+                    "border": {
+                        "style": "solid",
+                        "radius": 6,
+                        "width": [0, 0, 0, 0],
+                        "color": "#45475a"
+                    }
                 },
                 "title_label": {
-                    "preload_text": "Loading Title",
-                    "background_color": "green",
-                    "color": "white"
+                    "preload_text": "Loading...",
+                    "background_color": "transparent",
+                    "color": "#cdd6f4",
+                    "margin": 0,
+                    "font": {
+                        "family": "JetBrains Mono",
+                        "size": 11,
+                        "letter_spacing": 1.0,
+                        "is_bold": false,
+                        "is_italic": false,
+                        "is_underline": false,
+                        "is_strike_out": false,
+                        "weight": "Bold"
+                    },
+                    "border": {
+                        "style": "solid",
+                        "radius": 6,
+                        "width": [0, 0, 0, 0],
+                        "color": "#313244"
+                    }
                 },
                 "key_bind_label": {
-                    "width": 50,
-                    "height": 20,
-                    "background_color": "blue",
-                    "color": "white"
+                    "width": 80,
+                    "height": 30,
+                    "background_color": "#181825",
+                    "color": "white",
+                    "margin": 0,
+                    "font": {
+                        "family": "JetBrains Mono",
+                        "size": 12,
+                        "letter_spacing": 1.0,
+                        "is_bold": false,
+                        "is_italic": false,
+                        "is_underline": false,
+                        "is_strike_out": false,
+                        "weight": "Normal"
+                    },
+                    "border": {
+                        "style": "solid",
+                        "radius": 6,
+                        "width": [1, 1, 1, 1],
+                        "color": "#313244"
+                    }
                 }
             }
         }
