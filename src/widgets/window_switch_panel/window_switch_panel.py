@@ -85,13 +85,19 @@ class WindowSwitchPanelWidget(QWidget):
     def create_window(self) -> QWidget:
 
         config = self.config.window_switch_panel
+        theme = self.theme.window_switch_panel
 
-        # self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
-        self.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        self.setWindowFlags(
+            Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.FramelessWindowHint
+        )
 
         window_margin = 12
         screen_width, screen_height = self.get_screen_size()
-        window_height = int(screen_height * 0.9)
+        window_height = theme.search_box.height + (
+            theme.window_item_container.item_frame.height
+            * config.behavior.max_results_shown
+        )
 
         position_x = int((screen_width / 2) - (config.window_width / 2))
         position_y = int((screen_height / 2) - (window_height / 2))

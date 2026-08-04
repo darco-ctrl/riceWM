@@ -67,6 +67,7 @@ class BorderStyle:
 
 class LineEdit:
     def __init__(self, style: dict, font: FontStyle, border: BorderStyle) -> None:
+        self.place_holder_text: str
         self.margin: list
         self.text_margin: list
         self.background_color: str
@@ -77,6 +78,7 @@ class LineEdit:
         self.load(style)
 
     def load(self, style: dict):
+        self.place_holder_text = style["place_holder_text"]
         self.margin = style["margin"]
         self.text_margin = style["text_margin"]
         self.background_color = style["background_color"]
@@ -133,11 +135,15 @@ class KeyBindLabel:
 
 
 class TitleLabel:
-    def __init__(self, style: dict) -> None:
+    def __init__(
+        self, style: dict, font_style: FontStyle, border_style: BorderStyle
+    ) -> None:
         self.preload_text: str
         self.background_color: str
         self.color: str
-        self.font_style: FontStyle
+        self.margin: int
+        self.font_style: FontStyle = font_style
+        self.border_style: BorderStyle = border_style
 
         self.load(style)
 
@@ -145,6 +151,7 @@ class TitleLabel:
         self.preload_text = style["preload_text"]
         self.background_color = style["background_color"]
         self.color = style["color"]
+        self.margin = style["margin"]
 
 
 class IconContainer:

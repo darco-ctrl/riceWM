@@ -174,6 +174,13 @@ class ItemBuilder:
         title_label.setObjectName("titleLabel")
         title_label.setText(style.preload_text)
 
+        title_label.setWordWrap(True)
+
+        title_label.setSizePolicy(
+            QSizePolicy.Policy.Expanding,
+            QSizePolicy.Policy.Fixed,
+        )
+
         layout.addWidget(
             title_label, stretch=1, alignment=Qt.AlignmentFlag.AlignVCenter
         )
@@ -292,12 +299,27 @@ class ItemBuilder:
             self.theme.window_switch_panel.window_item_container.item_frame.title_label
         )
 
+        # label.setFixedSize(QSize(style.width, style.height))
         label.setStyleSheet(f"""
         #titleLabel {{
+            border-style: {style.border_style.style};
+            border-radius: {style.border_style.radius}px;
+            border-left-width: {style.border_style.width[0]}px;
+            border-top-width: {style.border_style.width[1]}px;
+            border-right-width: {style.border_style.width[2]}px;
+            border-bottom-width: {style.border_style.width[3]}px;
+            border-color: {style.border_style.color};
             background-color: {style.background_color};
-            color: {style.color};
+            color: {style.color}
         }}
         """)
+
+        label.setMargin(style.margin)
+
+        font = style.font_style.to_qfont(label.font())
+        label.setFont(font)
+
+        print("reapplied theme to window title...")
 
     def recolor_keybind_label(self, label: QLabel):
         style = self.theme.window_switch_panel.window_item_container.item_frame.key_bind_lable

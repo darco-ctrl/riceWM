@@ -95,6 +95,8 @@ class PanelConstructor:
             {style.line_edit.to_style_sheet()}
         }}""")
 
+        self.search_box.line_edit.setPlaceholderText(style.line_edit.place_holder_text)
+
         self.search_box.line_edit.setTextMargins(
             style.line_edit.text_margin[0],
             style.line_edit.text_margin[1],

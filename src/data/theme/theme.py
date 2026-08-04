@@ -58,6 +58,8 @@ class Theme:
         icon_conatiner_dict = frame_dict["icon_container"]
         icon_container_border_dict = icon_conatiner_dict["border"]
         title_label_dict = frame_dict["title_label"]
+        tl_font_dict = title_label_dict["font"]
+        tl_border_dict = title_label_dict["border"]
         key_bind_label_dict = frame_dict["key_bind_label"]
         kbl_font_dict = key_bind_label_dict["font"]
         kbl_border_dict = key_bind_label_dict["border"]
@@ -82,7 +84,13 @@ class Theme:
             font_style=kbl_font_style,
         )
 
-        title_label: TitleLabel = TitleLabel(title_label_dict)
+        tl_font_style = FontStyle(tl_font_dict)
+        tl_border_style = BorderStyle(tl_border_dict)
+        title_label: TitleLabel = TitleLabel(
+            style=title_label_dict,
+            border_style=tl_border_style,
+            font_style=tl_font_style,
+        )
 
         i_container_border: BorderStyle = BorderStyle(style=icon_container_border_dict)
         i_container: IconContainer = IconContainer(
