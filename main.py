@@ -6,8 +6,8 @@ from PySide6.QtWidgets import QApplication, QMenu, QSystemTrayIcon
 import src.app.paths as rice_paths
 from src.app.bootstrap import BootStrap
 from src.config.app_config import AppConfig
+from src.core.data_manager import DataManager
 from src.core.hotkey.hotkey_mananger import HotKeyManager
-from src.data.data_manager import DataManager
 from src.widgets.widget_manager import WidgetManager
 
 

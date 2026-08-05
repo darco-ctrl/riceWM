@@ -1,7 +1,7 @@
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QLineEdit, QSizePolicy, QVBoxLayout, QWidget
 
-from src.data.theme.theme import Theme
+from src.core.theme.theme import Theme
 from src.widgets.search_window.widgets import Panel, SearchBox
 
 

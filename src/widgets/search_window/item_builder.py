@@ -13,8 +13,8 @@ from PySide6.QtWidgets import (
 )
 
 import src.app.paths as rice_paths
-from src.data.config.config import Config
-from src.data.theme.theme import Theme
+from src.core.config.config import Config
+from src.core.theme.theme import Theme
 from src.widgets.search_window.item import WindowItem
 from src.widgets.search_window.reconciler import (
     StateReconciler,

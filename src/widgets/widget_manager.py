@@ -1,5 +1,5 @@
-from src.data.config.config import Config
-from src.data.theme.theme import Theme
+from src.core.config.config import Config
+from src.core.theme.theme import Theme
 from src.widgets.search_window.search_window import SearchWindow
 
 

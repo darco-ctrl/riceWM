@@ -5,10 +5,10 @@ import tomllib
 
 import src.app.paths as rice_paths
 from src.config.app_config import AppConfig
+from src.core.config.config import Config
 from src.core.hotkey.event_bus import events
-from src.data.config.config import Config
-from src.data.key_map.key_map import KeyMap
-from src.data.theme.theme import Theme
+from src.core.key_map.key_map import KeyMap
+from src.core.theme.theme import Theme
 
 
 class DataManager:

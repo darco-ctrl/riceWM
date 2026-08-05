@@ -1,7 +1,7 @@
 import json
 from dataclasses import dataclass
 
-from src.data.config.data_class import Behavior, C_WindowSwitchPanel
+from src.core.config.data_class import Behavior, C_WindowSwitchPanel
 
 
 class Config:
