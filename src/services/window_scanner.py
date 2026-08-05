@@ -6,8 +6,8 @@ import win32gui
 import win32process
 from pyvda import AppView, VirtualDesktop
 
-from src.windows import icon_service
-from src.windows.window import WindowInfo
+from src.services import icon_service
+from src.services.window import WindowInfo
 
 user32 = ctypes.windll.user32
 

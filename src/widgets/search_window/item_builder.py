@@ -20,8 +20,8 @@ from src.widgets.search_window.reconciler import (
     StateReconciler,
     TaskList,
 )
-from src.windows.window import WindowInfo
-from src.windows.window_scanner import WindowScanner
+from src.services.window import WindowInfo
+from src.services.window_scanner import WindowScanner
 
 
 class ItemBuilder:
