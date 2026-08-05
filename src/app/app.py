@@ -7,7 +7,7 @@ from src.app.bootstrap import BootStrap
 from src.config.app_config import AppConfig
 from src.core.data_manager import DataManager
 from src.core.hotkey.hotkey_mananger import HotKeyManager
-from src.ui.manager import UIManager
+from src.ui.ui_manager import UIManager
 from src.ui.tray.tray import Tray
 
 

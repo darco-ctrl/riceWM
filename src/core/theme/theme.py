@@ -1,8 +1,7 @@
 import json
-from dataclasses import dataclass
 
 from src.core.events.event_bus import events
-from src.core.theme.data_class import (
+from src.core.theme.models import (
     BorderStyle,
     FontStyle,
     IconContainer,
@@ -11,7 +10,7 @@ from src.core.theme.data_class import (
     LineEdit,
     SearchBox,
     SelectionIndicator,
-    T_WindowSwitchPanel,
+    T_WindowSearch,
     TitleLabel,
     WindowItemsContainer,
 )
@@ -21,7 +20,7 @@ class Theme:
     def __init__(self, theme_path: str):
         self.theme_file_path = theme_path
         self.name: str = ""
-        self.window_switch_panel: T_WindowSwitchPanel
+        self.window_switch_panel: T_WindowSearch
 
         self.load()
 
@@ -117,7 +116,7 @@ class Theme:
         )
 
         # Window Switch Panel
-        self.window_switch_panel = T_WindowSwitchPanel(
+        self.window_switch_panel = T_WindowSearch(
             style=window_switch_panel_dict,
             search_box=search_box_style,
             window_item_container=window_items_container,

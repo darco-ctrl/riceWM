@@ -8,6 +8,6 @@ class Behavior:
 
 
 @dataclass
-class C_WindowSwitchPanel:
+class C_WindowSearch:
     behavior: Behavior
     window_width: int
