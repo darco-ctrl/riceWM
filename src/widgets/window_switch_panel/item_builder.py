@@ -207,7 +207,11 @@ class ItemBuilder:
 
         window_items.sort(key=lambda item: item.title)
 
-        for window_item in window_items:
+        for i in range(len(window_items)):
+            window_item = window_items[i]
+            window_item.index = i + 1
+            window_item.update_key_bind_label()
+
             self.scroller_layout.addWidget(window_item.frame)
 
     def reapply_theme(self, window_items: list[WindowItem]):

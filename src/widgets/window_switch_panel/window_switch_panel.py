@@ -77,10 +77,17 @@ class WindowSwitchPanelWidget(QWidget):
 
     def toggle_window(self):
         if self.isVisible():
-            self.hide()
+            self.hide_window()
 
         else:
-            self.show()
+            self.show_window()
+
+    def hide_window(self):
+        self.hide()
+
+    def show_window(self):
+        self.item_builder.sync_window_items(self.window_items)
+        self.show()
 
     def create_window(self) -> QWidget:
 
@@ -157,5 +164,3 @@ class WindowSwitchPanelWidget(QWidget):
         print("start")
         for window_info in self.window_scanner.get_windows_info():
             print(f"title: {window_info.title}")
-
-        self.show()
