@@ -1,6 +1,6 @@
 from typing import cast
 
-from PySide6.QtCore import QSize, Qt, QVersionNumber, QWaitCondition
+from PySide6.QtCore import QEvent, QSize, Qt, QVersionNumber, QWaitCondition
 from PySide6.QtGui import QFont, QGuiApplication, QPixmap
 from PySide6.QtWidgets import (
     QFrame,
@@ -82,12 +82,25 @@ class WindowSwitchPanelWidget(QWidget):
         else:
             self.show_window()
 
+    def event(self, event):
+
+        if event.type() == QEvent.Type.WindowDeactivate:
+            self.hide_window()
+
+        return super().event(event)
+
     def hide_window(self):
         self.hide()
+        self.search_line_edit.setText("")
 
     def show_window(self):
         self.item_builder.sync_window_items(self.window_items)
+
         self.show()
+        self.raise_()
+        self.activateWindow()
+
+        self.search_line_edit.setFocus()
 
     def create_window(self) -> QWidget:
 
@@ -96,7 +109,9 @@ class WindowSwitchPanelWidget(QWidget):
 
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setWindowFlags(
-            Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.FramelessWindowHint
+            Qt.WindowType.WindowStaysOnTopHint
+            | Qt.WindowType.FramelessWindowHint
+            | Qt.WindowType.Tool
         )
 
         window_margin = 12
