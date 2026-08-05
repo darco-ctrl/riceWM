@@ -1,9 +1,9 @@
-from src.widgets.search_window.item import WindowItem
-from src.widgets.search_window.search_window import SearchWindow
+from src.ui.window_search.item import WindowItem
+from src.ui.window_search.window_search import WindowSearch
 
 
 class WindowStateController:
-    def __init__(self, window: SearchWindow):
+    def __init__(self, window: WindowSearch):
         self.window = window
         self.focus_window: WindowItem | None = None
 
