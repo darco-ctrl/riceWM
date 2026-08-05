@@ -2,10 +2,10 @@ from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QLineEdit, QSizePolicy, QVBoxLayout, QWidget
 
 from data.theme.theme import Theme
-from widgets.window_switch_panel.widgets import Panel, SearchBox
+from widgets.search_window.widgets import Panel, SearchBox
 
 
-class PanelConstructor:
+class PanelBuilder:
     def __init__(self, theme: Theme, root_layout: QVBoxLayout) -> None:
         self.theme = theme
         self.root_layout: QVBoxLayout = root_layout
