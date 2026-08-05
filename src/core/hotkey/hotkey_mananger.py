@@ -1,8 +1,8 @@
 from pynput import keyboard
 
-from core.hotkey.event_bus import events
-from data.key_map.data_class import DataManager, WindowSwitchPanel
-from data.key_map.key_map import KeyMap
+from src.core.events.event_bus import events
+from src.core.key_map.models import DataManager, WindowSwitchPanel
+from src.core.key_map.key_map import KeyMap
 
 
 class HotKeyManager:

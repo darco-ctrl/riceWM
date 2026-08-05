@@ -3,12 +3,12 @@ from pathlib import Path
 
 import tomllib
 
-import app.paths as rice_paths
-from config.app_config import AppConfig
-from core.hotkey.event_bus import events
-from data.config.config import Config
-from data.key_map.key_map import KeyMap
-from data.theme.theme import Theme
+import src.app.paths as rice_paths
+from src.config.app_config import AppConfig
+from src.core.config.config import Config
+from src.core.events.event_bus import events
+from src.core.key_map.key_map import KeyMap
+from src.core.theme.theme import Theme
 
 
 class DataManager:

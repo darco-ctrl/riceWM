@@ -1,4 +1,4 @@
-from widgets.search_window.item import WindowItem
+from src.ui.window_search.item import WindowItem
 
 
 class TitleSearcher:

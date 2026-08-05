@@ -3,7 +3,7 @@ from pathlib import Path
 
 import tomllib
 
-import app.paths as rice_paths
+import src.app.paths as rice_paths
 
 
 class AppConfig:

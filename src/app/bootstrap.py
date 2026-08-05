@@ -1,7 +1,7 @@
 import shutil
 from pathlib import Path
 
-import app.paths as rice_paths
+import src.app.paths as rice_paths
 
 
 class BootStrap:

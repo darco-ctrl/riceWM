@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 
-from widgets.search_window.item import WindowItem
-from windows.window import WindowInfo
-from windows.window_scanner import WindowScanner
+from src.services.window import WindowInfo
+from src.services.window_scanner import WindowScanner
+from src.ui.window_search.item import WindowItem
 
 
 @dataclass

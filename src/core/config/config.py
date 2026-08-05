@@ -1,7 +1,6 @@
 import json
-from dataclasses import dataclass
 
-from data.config.data_class import Behavior, C_WindowSwitchPanel
+from src.core.config.models import Behavior, C_WindowSearch
 
 
 class Config:
@@ -9,7 +8,7 @@ class Config:
         self.config_path = config_path
 
         self.name: str
-        self.window_switch_panel: C_WindowSwitchPanel
+        self.window_switch_panel: C_WindowSearch
         self.load()
 
     def reload(self):
@@ -36,6 +35,6 @@ class Config:
         )
 
         # Window Switch Panel
-        self.window_switch_panel = C_WindowSwitchPanel(
+        self.window_switch_panel = C_WindowSearch(
             behavior=behavior, window_width=wsp_dict["window_width"]
         )

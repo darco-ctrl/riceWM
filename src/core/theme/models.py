@@ -223,7 +223,7 @@ class WindowItemsContainer:
         self.background_color = style["background_color"]
 
 
-class T_WindowSwitchPanel:
+class T_WindowSearch:
     def __init__(
         self,
         style: dict,

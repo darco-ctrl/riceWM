@@ -3,7 +3,7 @@ import win32gui
 import win32ui
 from PIL import Image, ImageChops, ImageDraw, ImageWin
 
-import app.paths as rice_paths
+import src.app.paths as rice_paths
 
 
 def get_hicon_from_hwnd(hwnd: int):

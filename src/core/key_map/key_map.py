@@ -1,6 +1,6 @@
 import json
 
-from data.key_map.data_class import DataManager, WindowSwitchPanel
+from src.core.key_map.models import DataManager, WindowSwitchPanel
 
 
 class KeyMap:
