@@ -32,6 +32,15 @@ class WindowItem:
         self.title_label: QLabel = title_label
         self.key_bind_label: QLabel = key_bind_label
 
+        self.is_selected: bool = False
+        self.is_focus_window: bool = False
+
+    def set_selected(self, selected: bool):
+        self.is_selected = selected
+
+    def set_focused(self, focused: bool):
+        self.is_focus_window = focused
+
     def load(self):
         self.update_title_label()
         self.update_window_icon()

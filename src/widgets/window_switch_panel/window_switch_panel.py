@@ -44,6 +44,8 @@ class WindowSwitchPanelWidget(QWidget):
         self.scroll_container: QWidget = self.create_list_scroller()
 
         self.window_items: list[WindowItem] = []
+        self.focus_window_item: WindowItem | None = None
+        self.selected_window_item: WindowItem | None = None
 
         self.title_searcher = TitleSearcher()
 
