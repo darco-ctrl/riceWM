@@ -3,12 +3,12 @@ import sys
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import QApplication, QMenu, QSystemTrayIcon
 
-import app.paths as rice_paths
-from app.bootstrap import BootStrap
-from config.app_config import AppConfig
-from core.hotkey.hotkey_mananger import HotKeyManager
-from data.data_manager import DataManager
-from widgets.widget_manager import WidgetManager
+import src.app.paths as rice_paths
+from src.app.bootstrap import BootStrap
+from src.config.app_config import AppConfig
+from src.core.hotkey.hotkey_mananger import HotKeyManager
+from src.data.data_manager import DataManager
+from src.widgets.widget_manager import WidgetManager
 
 
 def main():

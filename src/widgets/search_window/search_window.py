@@ -13,15 +13,15 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-import app.paths as rice_paths
-from core.hotkey.event_bus import events
-from data.config.config import Config
-from data.theme.theme import Theme
-from widgets.search_window.item import WindowItem
-from widgets.search_window.item_builder import ItemBuilder
-from widgets.search_window.panel_builder import PanelBuilder
-from widgets.search_window.search import TitleSearcher
-from windows.window_scanner import WindowScanner
+import src.app.paths as rice_paths
+from src.core.hotkey.event_bus import events
+from src.data.config.config import Config
+from src.data.theme.theme import Theme
+from src.widgets.search_window.item import WindowItem
+from src.widgets.search_window.item_builder import ItemBuilder
+from src.widgets.search_window.panel_builder import PanelBuilder
+from src.widgets.search_window.search import TitleSearcher
+from src.windows.window_scanner import WindowScanner
 
 
 class SearchWindow(QWidget):

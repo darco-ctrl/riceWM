@@ -1,5 +1,5 @@
-from widgets.search_window.item import WindowItem
-from widgets.search_window.search_window import SearchWindow
+from src.widgets.search_window.item import WindowItem
+from src.widgets.search_window.search_window import SearchWindow
 
 
 class WindowStateController:

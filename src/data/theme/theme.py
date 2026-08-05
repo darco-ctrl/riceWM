@@ -1,8 +1,8 @@
 import json
 from dataclasses import dataclass
 
-from core.hotkey.event_bus import events
-from data.theme.data_class import (
+from src.core.hotkey.event_bus import events
+from src.data.theme.data_class import (
     BorderStyle,
     FontStyle,
     IconContainer,

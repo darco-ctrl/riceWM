@@ -12,16 +12,16 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-import app.paths as rice_paths
-from data.config.config import Config
-from data.theme.theme import Theme
-from widgets.search_window.item import WindowItem
-from widgets.search_window.reconciler import (
+import src.app.paths as rice_paths
+from src.data.config.config import Config
+from src.data.theme.theme import Theme
+from src.widgets.search_window.item import WindowItem
+from src.widgets.search_window.reconciler import (
     StateReconciler,
     TaskList,
 )
-from windows.window import WindowInfo
-from windows.window_scanner import WindowScanner
+from src.windows.window import WindowInfo
+from src.windows.window_scanner import WindowScanner
 
 
 class ItemBuilder:

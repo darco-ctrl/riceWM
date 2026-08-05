@@ -1,8 +1,8 @@
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QLineEdit, QSizePolicy, QVBoxLayout, QWidget
 
-from data.theme.theme import Theme
-from widgets.search_window.widgets import Panel, SearchBox
+from src.data.theme.theme import Theme
+from src.widgets.search_window.widgets import Panel, SearchBox
 
 
 class PanelBuilder:

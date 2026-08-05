@@ -1,6 +1,6 @@
-from data.config.config import Config
-from data.theme.theme import Theme
-from widgets.search_window.search_window import SearchWindow
+from src.data.config.config import Config
+from src.data.theme.theme import Theme
+from src.widgets.search_window.search_window import SearchWindow
 
 
 class WidgetManager:
