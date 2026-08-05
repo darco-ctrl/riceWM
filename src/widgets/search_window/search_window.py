@@ -17,14 +17,14 @@ import app.paths as rice_paths
 from core.hotkey.event_bus import events
 from data.config.config import Config
 from data.theme.theme import Theme
-from widgets.window_switch_panel.item_builder import ItemBuilder
-from widgets.window_switch_panel.panel_constructor import PanelConstructor
-from widgets.window_switch_panel.search import TitleSearcher
-from widgets.window_switch_panel.window_item import WindowItem
+from widgets.search_window.item import WindowItem
+from widgets.search_window.item_builder import ItemBuilder
+from widgets.search_window.panel_builder import PanelBuilder
+from widgets.search_window.search import TitleSearcher
 from windows.window_scanner import WindowScanner
 
 
-class WindowSwitchPanelWidget(QWidget):
+class SearchWindow(QWidget):
     def __init__(self, config: Config, theme: Theme):
         super().__init__()
         self.config = config
@@ -34,9 +34,7 @@ class WindowSwitchPanelWidget(QWidget):
 
         self.root_layout = QVBoxLayout(self)
 
-        self.panel_constructor: PanelConstructor = PanelConstructor(
-            self.theme, self.root_layout
-        )
+        self.panel_constructor = PanelBuilder(self.theme, self.root_layout)
 
         self.main_panel: QWidget = self.create_window()
 

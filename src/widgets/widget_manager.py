@@ -1,6 +1,6 @@
 from data.config.config import Config
 from data.theme.theme import Theme
-from widgets.window_switch_panel.window_switch_panel import WindowSwitchPanelWidget
+from widgets.search_window.search_window import SearchWindow
 
 
 class WidgetManager:
@@ -12,7 +12,7 @@ class WidgetManager:
         self.load_widgets()
 
     def load_widgets(self):
-        self.widgets["window_switch_panel"] = WindowSwitchPanelWidget(
+        self.widgets["window_switch_panel"] = SearchWindow(
             config=self.config, theme=self.theme
         )
 

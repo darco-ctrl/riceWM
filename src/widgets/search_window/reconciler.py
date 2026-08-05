@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from widgets.window_switch_panel.window_item import WindowItem
+from widgets.search_window.item import WindowItem
 from windows.window import WindowInfo
 from windows.window_scanner import WindowScanner
 

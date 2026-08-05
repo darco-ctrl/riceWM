@@ -15,8 +15,8 @@ from PySide6.QtWidgets import (
 import app.paths as rice_paths
 from data.config.config import Config
 from data.theme.theme import Theme
-from widgets.window_switch_panel.window_item import WindowItem
-from widgets.window_switch_panel.window_state_reconciler import (
+from widgets.search_window.item import WindowItem
+from widgets.search_window.reconciler import (
     StateReconciler,
     TaskList,
 )

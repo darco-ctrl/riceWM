@@ -1,4 +1,4 @@
-from widgets.window_switch_panel.window_item import WindowItem
+from widgets.search_window.item import WindowItem
 
 
 class TitleSearcher:
