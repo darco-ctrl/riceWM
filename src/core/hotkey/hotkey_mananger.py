@@ -1,6 +1,6 @@
 from pynput import keyboard
 
-from src.core.events.event_bus import events
+from src.core.events.event_bus import eventBus
 from src.core.key_map.models import DataManager, WindowSwitchPanel
 from src.core.key_map.key_map import KeyMap
 
@@ -27,7 +27,7 @@ class HotKeyManager:
         self.listner.start()
 
     def on_data_reload(self):
-        events.dataReloadRequested.emit()
+        eventBus.dataReloadRequested.emit()
 
     def on_wsp_toggle(self):
-        events.wspToggleRequested.emit()
+        eventBus.wspToggleRequested.emit()

@@ -1,6 +1,6 @@
 import json
 
-from src.core.events.event_bus import events
+from src.core.events.event_bus import eventBus
 from src.core.theme.models import (
     BorderStyle,
     FontStyle,
@@ -27,7 +27,7 @@ class Theme:
     def reload(self):
         print("reloading themes")
         self.load()
-        events.reloadWSPThemeRequested.emit()
+        eventBus.reloadWSPThemeRequested.emit()
         print(f"applying new theme: {self.name}")
 
     def load(self):

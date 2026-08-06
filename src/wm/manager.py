@@ -1,5 +1,5 @@
 from src.models.window import WindowInfo
-from src.services.window_scanner import WindowScanner
+from src.services.window.scanner import WindowScanner
 from src.wm.controller import WindowController
 
 
