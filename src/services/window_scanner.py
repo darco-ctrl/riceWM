@@ -6,8 +6,8 @@ import win32gui
 import win32process
 from pyvda import AppView, VirtualDesktop
 
+from src.models.window import WindowInfo
 from src.services import icon_service
-from src.services.window import WindowInfo
 
 user32 = ctypes.windll.user32
 
@@ -93,7 +93,7 @@ class WindowScanner:
             pass
 
         if not self.is_window_on_current_desktop(hwnd):
-            return False
+            return self.is_window_on_current_desktop(hwnd)
 
         return True
 
@@ -135,9 +135,16 @@ class WindowScanner:
         windows = []
 
         windows_dict = self.get_open_windows()
+        focused_window_hwnd = win32gui.GetForegroundWindow()
 
         for info in windows_dict.values():
-            windows.append(self.create_window_info(info))
+            window_info = self.create_window_info(info)
+            if window_info.hwnd == focused_window_hwnd:
+                window_info.set_focused(True)
+            else:
+                window_info.set_focused(False)
+
+            windows.append(window_info)
 
         return windows
 

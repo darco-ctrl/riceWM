@@ -7,8 +7,9 @@ from src.app.bootstrap import BootStrap
 from src.config.app_config import AppConfig
 from src.core.data_manager import DataManager
 from src.core.hotkey.hotkey_mananger import HotKeyManager
-from src.ui.ui_manager import UIManager
 from src.ui.tray.tray import Tray
+from src.ui.ui_manager import UIManager
+from src.wm.manager import WindowManager
 
 
 class App:
@@ -18,15 +19,22 @@ class App:
         self.app_config = self.create_app_config()
         self.data_manager = self.create_data_manager()
         self.hotkey_manager = self.create_hotkey_manager()
+        self.window_manager = self.create_window_manager()
         self.ui_manager = self.create_ui_manager()
         self.tray = self.create_tray()
 
     def run(self):
         self.bootstrap.ensure_config()
         self.hotkey_manager.start()
+        self.window_manager.initalize_wm()
         self.ui_manager.load()
 
         sys.exit(self.application.exec())
+
+    def create_window_manager(self) -> WindowManager:
+        window_manager = WindowManager()
+
+        return window_manager
 
     def create_application(self) -> QApplication:
         application = QApplication(sys.argv)

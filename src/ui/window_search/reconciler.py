@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from src.services.window import WindowInfo
+from src.models.window import WindowInfo
 from src.services.window_scanner import WindowScanner
 from src.ui.window_search.item import WindowItem
 
