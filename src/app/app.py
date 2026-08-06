@@ -7,6 +7,7 @@ from src.app.bootstrap import BootStrap
 from src.config.app_config import AppConfig
 from src.core.data_manager import DataManager
 from src.core.hotkey.hotkey_mananger import HotKeyManager
+from src.services.window.scanner import WindowScanner
 from src.ui.tray.tray import Tray
 from src.ui.ui_manager import UIManager
 from src.wm.manager import WindowManager
@@ -15,6 +16,7 @@ from src.wm.manager import WindowManager
 class App:
     def __init__(self):
         self.application = self.create_application()
+        self.window_scanner = self.create_window_scanner()
         self.bootstrap = self.create_bootstrap()
         self.app_config = self.create_app_config()
         self.data_manager = self.create_data_manager()
@@ -31,8 +33,11 @@ class App:
 
         sys.exit(self.application.exec())
 
+    def create_window_scanner(self) -> WindowScanner:
+        return WindowScanner()
+
     def create_window_manager(self) -> WindowManager:
-        window_manager = WindowManager()
+        window_manager = WindowManager(self.window_scanner)
 
         return window_manager
 
@@ -69,7 +74,8 @@ class App:
     def create_ui_manager(self) -> UIManager:
         ui_manager = UIManager(
             config=self.data_manager.active_config,
-            theme=self.data_manager.active_theme
+            theme=self.data_manager.active_theme,
+            window_scanner=self.window_scanner
         )
 
         return ui_manager

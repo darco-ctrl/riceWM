@@ -92,8 +92,8 @@ class WindowScanner:
         if win32gui.IsIconic(hwnd):  # Minimized windows are fine, they're in taskbar
             pass
 
-        if not self.is_window_on_current_desktop(hwnd):
-            return self.is_window_on_current_desktop(hwnd)
+        # if not self.is_window_on_current_desktop(hwnd):
+            # return self.is_window_on_current_desktop(hwnd)
 
         return True
 

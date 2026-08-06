@@ -1,14 +1,14 @@
 from src.models.window import WindowInfo
 from src.services.window.scanner import WindowScanner
 from src.wm.controller import WindowController
+from src.wm.registry import WindowRegistry
 
 
 class WindowManager:
-    def __init__(self) -> None:
-        self.controller = WindowController()
-        self.window_scanner = WindowScanner()
-
-        self.focused_window: WindowInfo | None = None
+    def __init__(self, window_scanner: WindowScanner) -> None:
+        self.registry = WindowRegistry()
+        self.controller = WindowController(self.registry)
+        self.window_Scanner = window_scanner
 
     def initalize_wm(self):
         windows = self.window_scanner.get_windows_info()
@@ -27,9 +27,9 @@ class WindowManager:
             self.controller.minimize(hwnd)
             return
 
-        if self.focused_window:
-            self.focused_window.set_focused(False)
-            self.controller.minimize(self.focused_window.hwnd)
+        if self.registry.focused_window:
+            self.registry.focused_window.set_focused(False)
+            self.controller.minimize(self.registry.focused_window.hwnd)
 
-        self.focused_window = window
+        self.registry.focused_window = window
         self.controller.maximize(hwnd)
