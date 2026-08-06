@@ -19,11 +19,32 @@ class RVirtualDesktop:
         windows = self.window_scanner.get_windows_info()
         return windows
 
-    def get_window_info(self, hwnd) -> WindowInfo | None:
-        for window in self.windows:
-            if hwnd != window.hwnd:
+    def get_window_index(self, hwnd) -> int:
+        for i in range(len(self.windows)):
+            window = self.windows[i]
+
+            if window.hwnd != hwnd:
                 continue
 
-            return window
+            return i
 
-        return None
+        return -1
+
+    def get_window(self, hwnd) -> WindowInfo | None:
+        window_index = self.get_window_index(hwnd)
+        if window_index == -1:
+            return None
+
+        window = self.windows[window_index]
+
+        return window
+
+    def remove_window(self, hwnd) -> WindowInfo | None:
+        window_index = self.get_window_index(hwnd)
+
+        if window_index == -1:
+            return None
+        
+        window = self.windows.pop(window_index)
+
+        return window

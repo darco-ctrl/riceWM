@@ -155,6 +155,36 @@ class WindowScanner:
         except psutil.NoSuchProcess:
             return ""
 
+    def window_by_hwnd(self, hwnd: int) -> WindowInfo | None:
+        if not self.is_regular_window(hwnd):
+            return None
+
+        title = win32gui.GetWindowText(hwnd).strip()
+
+        _, pid = win32process.GetWindowThreadProcessId(hwnd)
+
+        is_pwa, pwa_arg = self.is_pwa_process(pid)
+
+        try:
+            process = psutil.Process(pid)
+            process_name = process.name()
+
+        except psutil.Error:
+            return None
+
+        win_data = {
+            "process_name": process_name,
+            "title": title,
+            "pid": pid,
+            "hwnd": hwnd,
+            "is_pwa": is_pwa,
+            "pwa_arg": pwa_arg,
+        }
+
+        window: WindowInfo = self.create_window_info(win_data)
+
+        return window
+
     def create_window_info(self, window_data: dict) -> WindowInfo:
         #                "process_name": process_name,
         # "title": title,

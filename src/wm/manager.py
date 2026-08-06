@@ -6,9 +6,13 @@ from src.wm.registry import WindowRegistry
 
 class WindowManager:
     def __init__(self, window_scanner: WindowScanner) -> None:
-        self.registry = WindowRegistry()
-        self.controller = WindowController(self.registry)
-        self.window_Scanner = window_scanner
+        self.registry = WindowRegistry(
+            window_scanner=window_scanner
+        )
+        self.controller = WindowController(
+            self.registry, window_scanner
+        )
+        self.window_scanner = window_scanner
 
     def initalize_wm(self):
         windows = self.window_scanner.get_windows_info()
