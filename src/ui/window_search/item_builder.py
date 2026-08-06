@@ -15,8 +15,8 @@ from PySide6.QtWidgets import (
 import src.app.paths as rice_paths
 from src.core.config.config import Config
 from src.core.theme.theme import Theme
-from src.services.window import WindowInfo
-from src.services.window_scanner import WindowScanner
+from src.models.window import WindowInfo
+from src.services.window.scanner import WindowScanner
 from src.ui.window_search.item import WindowItem
 from src.ui.window_search.reconciler import (
     StateReconciler,

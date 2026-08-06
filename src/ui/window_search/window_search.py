@@ -15,9 +15,9 @@ from PySide6.QtWidgets import (
 
 import src.app.paths as rice_paths
 from src.core.config.config import Config
-from src.core.events.event_bus import events
+from src.core.events.event_bus import eventBus
 from src.core.theme.theme import Theme
-from src.services.window_scanner import WindowScanner
+from src.services.window.scanner import WindowScanner
 from src.ui.window_search.item import WindowItem
 from src.ui.window_search.item_builder import ItemBuilder
 from src.ui.window_search.panel_builder import PanelBuilder
@@ -25,12 +25,12 @@ from src.ui.window_search.search import TitleSearcher
 
 
 class WindowSearch(QWidget):
-    def __init__(self, config: Config, theme: Theme):
+    def __init__(self, config: Config, theme: Theme, window_scanner: WindowScanner):
         super().__init__()
         self.config = config
         self.theme = theme
 
-        self.window_scanner = WindowScanner()
+        self.window_scanner = window_scanner
 
         self.root_layout = QVBoxLayout(self)
 
@@ -58,8 +58,8 @@ class WindowSearch(QWidget):
         self.connect_event()
 
     def connect_event(self):
-        events.wspToggleRequested.connect(self.toggle_window)
-        events.reloadWSPThemeRequested.connect(self.reload_theme)
+        eventBus.wspToggleRequested.connect(self.toggle_window)
+        eventBus.reloadWSPThemeRequested.connect(self.reload_theme)
 
     def reload_theme(self):
 

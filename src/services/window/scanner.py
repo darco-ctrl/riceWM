@@ -6,8 +6,8 @@ import win32gui
 import win32process
 from pyvda import AppView, VirtualDesktop
 
+from src.models.window import WindowInfo
 from src.services import icon_service
-from src.services.window import WindowInfo
 
 user32 = ctypes.windll.user32
 
@@ -92,8 +92,8 @@ class WindowScanner:
         if win32gui.IsIconic(hwnd):  # Minimized windows are fine, they're in taskbar
             pass
 
-        if not self.is_window_on_current_desktop(hwnd):
-            return False
+        # if not self.is_window_on_current_desktop(hwnd):
+            # return self.is_window_on_current_desktop(hwnd)
 
         return True
 
@@ -135,9 +135,16 @@ class WindowScanner:
         windows = []
 
         windows_dict = self.get_open_windows()
+        focused_window_hwnd = win32gui.GetForegroundWindow()
 
         for info in windows_dict.values():
-            windows.append(self.create_window_info(info))
+            window_info = self.create_window_info(info)
+            if window_info.hwnd == focused_window_hwnd:
+                window_info.set_focused(True)
+            else:
+                window_info.set_focused(False)
+
+            windows.append(window_info)
 
         return windows
 
@@ -147,6 +154,36 @@ class WindowScanner:
             return process.name()
         except psutil.NoSuchProcess:
             return ""
+
+    def window_by_hwnd(self, hwnd: int) -> WindowInfo | None:
+        if not self.is_regular_window(hwnd):
+            return None
+
+        title = win32gui.GetWindowText(hwnd).strip()
+
+        _, pid = win32process.GetWindowThreadProcessId(hwnd)
+
+        is_pwa, pwa_arg = self.is_pwa_process(pid)
+
+        try:
+            process = psutil.Process(pid)
+            process_name = process.name()
+
+        except psutil.Error:
+            return None
+
+        win_data = {
+            "process_name": process_name,
+            "title": title,
+            "pid": pid,
+            "hwnd": hwnd,
+            "is_pwa": is_pwa,
+            "pwa_arg": pwa_arg,
+        }
+
+        window: WindowInfo = self.create_window_info(win_data)
+
+        return window
 
     def create_window_info(self, window_data: dict) -> WindowInfo:
         #                "process_name": process_name,

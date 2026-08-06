@@ -6,7 +6,7 @@ import tomllib
 import src.app.paths as rice_paths
 from src.config.app_config import AppConfig
 from src.core.config.config import Config
-from src.core.events.event_bus import events
+from src.core.events.event_bus import eventBus
 from src.core.key_map.key_map import KeyMap
 from src.core.theme.theme import Theme
 
@@ -33,7 +33,7 @@ class DataManager:
         self.connect_events()
 
     def connect_events(self):
-        events.dataReloadRequested.connect(self.reload)
+        eventBus.dataReloadRequested.connect(self.reload)
 
     def reload(self):
         # self.active_config.reload()
