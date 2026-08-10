@@ -112,7 +112,7 @@ def create_png_from_hwnd(hwnd: int) -> str | None:
     image.putalpha(alpha)
 
     icon_path = rice_paths.window_cache_icon_dir / f"hwnd_{hwnd}.png"
-    print(f"icon_path: {icon_path}")
+    # print(f"icon_path: {icon_path}")
     image.save(icon_path)
 
     return str(icon_path)

@@ -22,36 +22,39 @@ class WindowController:
         eventBus.windowMinimized.connect(self.window_minimized)
         eventBus.windowFullscreen.connect(self.window_fullscreen)
         eventBus.windowFocused.connect(self.window_focused)
-
-    
+        eventBus.windowShow.connect(self.window_show)
 
     def window_created(self, hwnd: int):
-
-        window: WindowInfo | None = self.window_scanner.window_by_hwnd(hwnd)
-        
+        pass
+    
+    def window_show(self, hwnd: int):
+        window: WindowInfo | None = self.window_scanner.get_window_info(hwnd)
 
         if not window:
             return
-        print(f"creating window: {window.title}")
+        # print("window shwn")
         
         self.set_focused_window(window)
-
+        
     def window_deystroyed(self, hwnd: int):
+        """
         window = self.registry.virtual_desktop.remove_window(hwnd)
 
         if not window: return
         if window != self.registry.focused_window: return
         
         self.registry.focused_window = None
-        window.set_focused(False)
+        window.set_focused(False)"""
 
     def window_maximized(self, hwnd: int):
+        """
         window = self.registry.virtual_desktop.get_window(hwnd)
 
         if not window: return
-        self.set_focused_window(window)
+        self.set_focused_window(window)"""
 
     def window_minimized(self, hwnd: int):
+        """
         window = self.registry.virtual_desktop.get_window(hwnd)
         f_window = self.registry.focused_window
     
@@ -61,31 +64,31 @@ class WindowController:
         if window.hwnd != f_window.hwnd:
             return
     
-        self.clear_focused_window()
+        self.clear_focused_window()"""
 
     def window_fullscreen(self, hwnd: int):
+        """
         window = self.registry.virtual_desktop.get_window(hwnd)
     
         if not window:
             return
     
-        self.set_focused_window(window)
+        self.set_focused_window(window)"""
 
     def window_focused(self, hwnd: int):
+        """
         window = self.registry.virtual_desktop.get_window(hwnd)
     
         if not window:
             return
     
         self.set_focused_window(window)
+        """
 
     def minimize(self, hwnd: int):
-        print("Focused:", self.registry.focused_window.title if self.registry.focused_window else None)
-        print("Minimized event:", hwnd)
         win32gui.ShowWindow(hwnd, win32con.SW_MINIMIZE)
 
     def maximize(self, hwnd: int):
-        win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
         win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
 
     def fullscreen(self, hwnd: int):

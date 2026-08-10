@@ -3,6 +3,7 @@ from PySide6.QtCore import QObject, Signal
 
 class EventBus(QObject):
     windowCreated = Signal(int)
+    windowShow = Signal(int)
     windowDeystroyed = Signal(int)
     windowMaximized = Signal(int)
     windowMinimized = Signal(int)

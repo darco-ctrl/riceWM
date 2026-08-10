@@ -20,6 +20,7 @@ EVENT_SYSTEM_MINIMIZEEND = 0x0017
 EVENT_OBJECT_CREATE = 0x8000
 EVENT_OBJECT_DESTROY = 0x8001
 EVENT_OBJECT_LOCATIONCHANGE = 0x800B
+EVENT_OBJECT_SHOW = 0x8002
 
 OBJID_WINDOW = 0
 WINEVENT_OUTOFCONTEXT = 0x0000
@@ -82,6 +83,7 @@ class WindowListener:
             EVENT_OBJECT_CREATE,
             EVENT_OBJECT_DESTROY,
             EVENT_OBJECT_LOCATIONCHANGE,
+            EVENT_OBJECT_SHOW,
         ):
             hook = user32.SetWinEventHook(
                 event,
@@ -125,6 +127,9 @@ class WindowListener:
 
         elif event == EVENT_SYSTEM_MINIMIZEEND:
             eventBus.windowRestore.emit(hwnd)
+
+        elif event == EVENT_OBJECT_SHOW:
+            eventBus.windowShow.emit(hwnd)
 
         elif event == EVENT_OBJECT_LOCATIONCHANGE:
             if user32.IsIconic(hwnd):

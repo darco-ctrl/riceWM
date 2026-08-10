@@ -42,10 +42,12 @@ class WindowScanner:
 
     def is_regular_window(self, hwnd: int) -> bool:
         if not win32gui.IsWindowVisible(hwnd):
+            # print(" returning window is not visible ")
             return False
 
         title = win32gui.GetWindowText(hwnd).strip()
         if not title:
+            # print(" window title is empty ")
             return False
 
         ex_style = win32gui.GetWindowLong(hwnd, win32con.GWL_EXSTYLE)
@@ -54,11 +56,13 @@ class WindowScanner:
         is_app_window = bool(ex_style & win32con.WS_EX_APPWINDOW)
 
         if is_tool_window:
+            # print(" return. window is tool window ")
             return False
 
         owner = win32gui.GetWindow(hwnd, win32con.GW_OWNER)
 
         if owner and not is_app_window:
+            # print("return is not app and has owner")
             return False
 
         class_name = win32gui.GetClassName(hwnd)
@@ -74,6 +78,7 @@ class WindowScanner:
         }
 
         if class_name in exclude_classes:
+            # print(f"return beucase its in exclude class: {class_name}")
             return False
 
         if class_name == "ApplicationFrameWindow":
@@ -81,12 +86,16 @@ class WindowScanner:
             def find_content_window(h, _):
                 child_class = win32gui.GetClassName(h)
                 if child_class == "Windows.UI.Core.CoreWindow":
+                    print("child class is CoreWindows tool")
                     return False  # Stop enumeration
+
+                print("returning True valid window")
                 return True
 
             win32gui.EnumChildWindows(hwnd, find_content_window, None)
             # If this is just a frame without content, skip it
             #
+            print(" skip if this is just a frame wihtout a content")
             return False
 
         if win32gui.IsIconic(hwnd):  # Minimized windows are fine, they're in taskbar
@@ -97,39 +106,48 @@ class WindowScanner:
 
         return True
 
+    def get_window_data(self, hwnd: int) -> dict | None:
+        title = win32gui.GetWindowText(hwnd).strip()
+        # print(f" checking if window is regular: {title}")
+        if not self.is_regular_window(hwnd):
+            return None
+    
+    
+        _, pid = win32process.GetWindowThreadProcessId(hwnd)
+    
+        is_pwa, pwa_arg = self.is_pwa_process(pid)
+    
+        try:
+            process = psutil.Process(pid)
+            process_name = process.name()
+        except psutil.Error:
+            return None
+    
+        return {
+            "process_name": process_name,
+            "title": title,
+            "pid": pid,
+            "hwnd": hwnd,
+            "is_pwa": is_pwa,
+            "pwa_arg": pwa_arg,
+        }
+
     def get_open_windows(self) -> dict[int, dict]:
-        open_windows = dict[int, dict]()
-
+        open_windows: dict[int, dict] = {}
+    
         def callback(hwnd: int, _extra) -> bool:
-            if not self.is_regular_window(hwnd):
+            window_data = self.get_window_data(hwnd)
+    
+            if window_data is None:
                 return True
-
-            title = win32gui.GetWindowText(hwnd).strip()
-
-            _, pid = win32process.GetWindowThreadProcessId(hwnd)
-
-            is_pwa, pwa_arg = self.is_pwa_process(pid)
-
-            try:
-                process = psutil.Process(pid)
-                process_name = process.name()
-
-            except psutil.Error:
-                return True
-
-            open_windows[hwnd] = {
-                "process_name": process_name,
-                "title": title,
-                "pid": pid,
-                "hwnd": hwnd,
-                "is_pwa": is_pwa,
-                "pwa_arg": pwa_arg,
-            }
-
+    
+            open_windows[hwnd] = window_data
             return True
-
+    
         win32gui.EnumWindows(callback, None)
+    
         return open_windows
+        
 
     def get_windows_info(self) -> list[WindowInfo]:
         windows = []
@@ -154,36 +172,6 @@ class WindowScanner:
             return process.name()
         except psutil.NoSuchProcess:
             return ""
-
-    def window_by_hwnd(self, hwnd: int) -> WindowInfo | None:
-        if not self.is_regular_window(hwnd):
-            return None
-
-        title = win32gui.GetWindowText(hwnd).strip()
-
-        _, pid = win32process.GetWindowThreadProcessId(hwnd)
-
-        is_pwa, pwa_arg = self.is_pwa_process(pid)
-
-        try:
-            process = psutil.Process(pid)
-            process_name = process.name()
-
-        except psutil.Error:
-            return None
-
-        win_data = {
-            "process_name": process_name,
-            "title": title,
-            "pid": pid,
-            "hwnd": hwnd,
-            "is_pwa": is_pwa,
-            "pwa_arg": pwa_arg,
-        }
-
-        window: WindowInfo = self.create_window_info(win_data)
-
-        return window
 
     def create_window_info(self, window_data: dict) -> WindowInfo:
         #                "process_name": process_name,
@@ -215,3 +203,11 @@ class WindowScanner:
         )
 
         return window_info
+
+    def get_window_info(self, hwnd: int) -> WindowInfo | None:
+        data = self.get_window_data(hwnd)
+
+        if not data:
+            return None
+            
+        return self.create_window_info(data)
