@@ -19,7 +19,6 @@ def get_hicon_from_hwnd(hwnd: int):
         hicon = win32gui.GetClassLong(hwnd, win32con.GCL_HICONSM)
 
     if not hicon:
-        print("No Icon Found")
         return None
 
     return hicon

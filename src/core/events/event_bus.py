@@ -14,6 +14,14 @@ class EventBus(QObject):
     wspToggleRequested = Signal()
     dataReloadRequested = Signal()
 
+    createNewVDesktop = Signal()
+    deleteCurrentVDesktop = Signal()
+    vDesktopGoLeft = Signal()
+    vDesktopGoRight = Signal()
+
+    windowGoLeft = Signal()
+    windowGoRight = Signal()
+
     reloadWSPThemeRequested = Signal()
 
 

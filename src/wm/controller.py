@@ -28,62 +28,39 @@ class WindowController:
         pass
     
     def window_show(self, hwnd: int):
-        window: WindowInfo | None = self.window_scanner.get_window_info(hwnd)
+
+        create_new: bool = False
+        window: WindowInfo | None = None
+        window = self.registry.get_window(hwnd)
+
+        if not window:
+            create_new = True
+            window = self.window_scanner.get_window_info(hwnd)
 
         if not window:
             return
+
+        if create_new:
+            self.registry.add_window(window)
+        
         # print("window shwn")
         
         self.set_focused_window(window)
         
     def window_deystroyed(self, hwnd: int):
-        """
-        window = self.registry.virtual_desktop.remove_window(hwnd)
-
-        if not window: return
-        if window != self.registry.focused_window: return
-        
-        self.registry.focused_window = None
-        window.set_focused(False)"""
+        self.registry.remove_window(hwnd)
 
     def window_maximized(self, hwnd: int):
-        """
-        window = self.registry.virtual_desktop.get_window(hwnd)
-
-        if not window: return
-        self.set_focused_window(window)"""
+        pass
 
     def window_minimized(self, hwnd: int):
-        """
-        window = self.registry.virtual_desktop.get_window(hwnd)
-        f_window = self.registry.focused_window
-    
-        if not window or not f_window:
-            return
-    
-        if window.hwnd != f_window.hwnd:
-            return
-    
-        self.clear_focused_window()"""
+        pass
 
     def window_fullscreen(self, hwnd: int):
-        """
-        window = self.registry.virtual_desktop.get_window(hwnd)
-    
-        if not window:
-            return
-    
-        self.set_focused_window(window)"""
+        pass
 
     def window_focused(self, hwnd: int):
-        """
-        window = self.registry.virtual_desktop.get_window(hwnd)
-    
-        if not window:
-            return
-    
-        self.set_focused_window(window)
-        """
+        pass
 
     def minimize(self, hwnd: int):
         win32gui.ShowWindow(hwnd, win32con.SW_MINIMIZE)
@@ -129,7 +106,6 @@ class WindowController:
     
         if f_window:
             f_window.set_focused(False)
-            self.minimize(f_window.hwnd)
     
         self.registry.focused_window = window
         window.set_focused(True)

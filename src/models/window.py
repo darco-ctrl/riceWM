@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from win32 import win32gui
+
 
 @dataclass
 class WindowInfo:
@@ -13,3 +15,6 @@ class WindowInfo:
 
     def set_focused(self, focused: bool):
         self.is_focused = focused
+
+    def update(self):
+        self.title = win32gui.GetWindowText(self.hwnd).strip()
