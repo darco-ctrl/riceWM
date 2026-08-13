@@ -47,6 +47,7 @@ class HotKeyManager:
         eventBus.createNewVDesktop.emit()
 
     def on_vdesktop_delete(self):
+        print("emit")
         eventBus.deleteCurrentVDesktop.emit()
 
     def on_vdesktop_left(self):

@@ -22,25 +22,25 @@ class WindowScanner:
             cmdline = proc.cmdline()
 
             for arg in cmdline:
-                if arg.startswith("--app-id=") or arg.startswith("--app="):
+                if arg.startswith(("--app-id=", "--app=")):
                     return True, arg
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
         return False, None
 
-    def is_window_on_current_desktop(self, hwnd: int) -> bool:
+    def is_window_on_desktop(self, hwnd: int, desktop: VirtualDesktop) -> bool:
 
         try:
             app_view = AppView(hwnd)
 
-            current_desktop = VirtualDesktop.current()
-
-            return app_view.desktop.number == current_desktop.number
+            return app_view.desktop.number == desktop.number
 
         except Exception:
             return False
 
-    def is_regular_window(self, hwnd: int) -> bool:
+    def is_regular_window(self,
+        hwnd: int) -> bool:
+            
         if not win32gui.IsWindowVisible(hwnd):
             # print(" returning window is not visible ")
             return False
@@ -101,12 +101,11 @@ class WindowScanner:
         if win32gui.IsIconic(hwnd):  # Minimized windows are fine, they're in taskbar
             pass
 
-        # if not self.is_window_on_current_desktop(hwnd):
-            # return self.is_window_on_current_desktop(hwnd)
-
         return True
 
-    def get_window_data(self, hwnd: int) -> dict | None:
+    def get_window_data(
+        self, 
+        hwnd: int) -> dict | None:
         title = win32gui.GetWindowText(hwnd).strip()
         # print(f" checking if window is regular: {title}")
         if not self.is_regular_window(hwnd):
@@ -132,7 +131,9 @@ class WindowScanner:
             "pwa_arg": pwa_arg,
         }
 
-    def get_open_windows(self) -> dict[int, dict]:
+    def get_open_windows(
+        self) -> dict[int, dict]:
+            
         open_windows: dict[int, dict] = {}
     
         def callback(hwnd: int, _extra) -> bool:
@@ -165,6 +166,26 @@ class WindowScanner:
             windows.append(window_info)
 
         return windows
+
+    def get_desktops_hwnds(self, desktop: VirtualDesktop) -> list[int]:
+        hwnds: list[int] = []
+
+        def callback(hwnd: int, _extra) -> bool:
+
+            if not self.is_regular_window(hwnd):
+                return True
+
+            if not self.is_window_on_desktop(
+                hwnd=hwnd, desktop=desktop
+            ):
+                return True
+
+            hwnds.append(hwnd)
+
+            return True
+    
+        win32gui.EnumWindows(callback, None)
+        return hwnds
 
     def get_app_name(self, pid) -> str:
         try:

@@ -1,4 +1,9 @@
+import win32gui
+import win32api
+import win32con
+
 import pyvda
+from pynput.keyboard import Controller, Key
 from pyvda.pyvda import VirtualDesktop
 
 from src.core.events.event_bus import eventBus
@@ -15,11 +20,27 @@ class WindowRegistry:
         self.desktop_windows: list[WindowInfo]
         self.windows: list[WindowInfo] = self.load_windows()
 
+        self.keyboard = Controller()
+
         self.connect_events()
 
     def load_windows(self) -> list[WindowInfo]:
         windows = self.window_scanner.get_windows_info()
         return windows
+
+    def update_window_list(self):
+        print("updating window list")
+        self.desktop_windows = []
+        
+        desktop = VirtualDesktop.current()
+        hwnds = self.window_scanner.get_desktops_hwnds(desktop)
+
+        for window in self.windows:
+            if not window.hwnd in hwnds:
+                continue
+
+            self.desktop_windows.append(window)
+            print(f" Window name: {window.title}")
 
     def get_window_index(self, hwnd) -> int:
         for i in range(len(self.windows)):
@@ -71,6 +92,8 @@ class WindowRegistry:
         next_number = current.number % desktop_count + 1
     
         VirtualDesktop(next_number).go()
+
+        self.update_window_list()
     
     
     def v_desktop_go_left(self):
@@ -80,12 +103,28 @@ class WindowRegistry:
         previous_number = (current.number - 2) % desktop_count + 1
     
         VirtualDesktop(previous_number).go()
+        self.update_window_list()
 
     def v_desktop_create_new(self):
-        print("v_desktop_create_new")
+        desktop = VirtualDesktop.create()
+        desktop.go()
+        self.update_window_list()
 
     def v_desktop_delete_current(self):
-        print("v_desktop_delete_current")
+        desktops = pyvda.get_virtual_desktops()
+        current = VirtualDesktop.current()
+
+        current_index = current.number
+
+        if len(desktops) > current_index:
+            if current_index > 0:
+                fallback = desktops[current_index - 1]
+            else:
+                fallback = desktops[current_index + 1]
+
+        print(f"fallback: {current_index}")
+        current.remove(fallback)
+        self.update_window_list()
 
     def window_go_left(self):
         print("window_go_left")

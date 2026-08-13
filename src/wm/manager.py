@@ -28,12 +28,11 @@ class WindowManager:
         hwnd = window.hwnd
 
         if not window.is_focused:
-            self.controller.minimize(hwnd)
+            # self.controller.minimize(hwnd)
             return
 
         if self.registry.focused_window:
             self.registry.focused_window.set_focused(False)
-            self.controller.minimize(self.registry.focused_window.hwnd)
 
         self.registry.focused_window = window
         self.controller.maximize(hwnd)

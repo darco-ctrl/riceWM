@@ -63,9 +63,11 @@ class WindowController:
         pass
 
     def minimize(self, hwnd: int):
+        print("minimizing window")
         win32gui.ShowWindow(hwnd, win32con.SW_MINIMIZE)
 
     def maximize(self, hwnd: int):
+        self.set_focus(hwnd)
         win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
 
     def fullscreen(self, hwnd: int):
