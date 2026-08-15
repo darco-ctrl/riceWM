@@ -86,16 +86,13 @@ class WindowScanner:
             def find_content_window(h, _):
                 child_class = win32gui.GetClassName(h)
                 if child_class == "Windows.UI.Core.CoreWindow":
-                    print("child class is CoreWindows tool")
                     return False  # Stop enumeration
 
-                print("returning True valid window")
                 return True
 
             win32gui.EnumChildWindows(hwnd, find_content_window, None)
             # If this is just a frame without content, skip it
             #
-            print(" skip if this is just a frame wihtout a content")
             return False
 
         if win32gui.IsIconic(hwnd):  # Minimized windows are fine, they're in taskbar

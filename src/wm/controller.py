@@ -24,6 +24,17 @@ class WindowController:
         eventBus.windowFocused.connect(self.window_focused)
         eventBus.windowShow.connect(self.window_show)
 
+        eventBus.windowGoLeft.connect(self.window_go_left)
+        eventBus.windowGoRight.connect(self.window_go_right)
+
+    def window_go_left(self):
+        # This is for future
+        pass
+
+    def window_go_right(self):
+        # This is for future
+        pass
+
     def window_created(self, hwnd: int):
         pass
     
@@ -74,11 +85,24 @@ class WindowController:
         win32gui.ShowWindow(hwnd, win32con.SHOW_FULLSCREEN)
 
     def set_focus(self, hwnd: int):
+
+        foreground_hwnd = win32gui.GetForegroundWindow()
+        
         if not win32gui.IsWindow(hwnd):
             return
     
-        if win32gui.GetForegroundWindow() == hwnd:
+        if foreground_hwnd == hwnd:
             return
+
+        prt_text_hwnd = "Current Hwnd: -"
+        prt_text_title = "Current Title: -"
+        if foreground_hwnd != 0:
+            prt_text_hwnd += f"{foreground_hwnd}"
+            prt_text_title += f"{win32gui.GetWindowText(foreground_hwnd)}"
+        # print(prt_text_hwnd)
+        # print(prt_text_title)
+        # print(f"Target hwnd: {hwnd}")
+        # print(f"Target title: {win32gui.GetWindowText(hwnd)}")
     
         try:
             win32gui.SetForegroundWindow(hwnd)
@@ -95,6 +119,7 @@ class WindowController:
         self.registry.focused_window = None
 
     def set_focused_window(self, window: WindowInfo):
+        # print(f"TItle of window: {window.title}")
         f_window = self.registry.focused_window
     
         if f_window and f_window.hwnd == window.hwnd:

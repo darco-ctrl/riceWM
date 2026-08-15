@@ -28,9 +28,7 @@ class HotKeyManager:
                 vdesktop.create_new: self.on_vdesktop_new,
                 vdesktop.delete_current: self.on_vdesktop_delete,
                 vdesktop.go_left: self.on_vdesktop_left,
-                vdesktop.go_right: self.on_vdesktop_right,
-                window_controls.go_left: self.on_window_left,
-                window_controls.go_right: self.on_window_right
+                vdesktop.go_right: self.on_vdesktop_right
             }
         )
 
@@ -47,7 +45,6 @@ class HotKeyManager:
         eventBus.createNewVDesktop.emit()
 
     def on_vdesktop_delete(self):
-        print("emit")
         eventBus.deleteCurrentVDesktop.emit()
 
     def on_vdesktop_left(self):

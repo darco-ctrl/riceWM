@@ -57,7 +57,7 @@ class ItemBuilder:
     def delete_window_items(self, items: list[int], window_items: list[WindowItem]):
 
         for index in sorted(items, reverse=True):
-            print(f"removing index: {index}")
+            # print(f"removing index: {index}")
 
             window_items[index].delete()
             del window_items[index]
@@ -323,12 +323,12 @@ class ItemBuilder:
         font = style.font_style.to_qfont(label.font())
         label.setFont(font)
 
-        print("reapplied theme to window title...")
+        # print("reapplied theme to window title...")
 
     def recolor_keybind_label(self, label: QLabel):
         style = self.theme.window_switch_panel.window_item_container.item_frame.key_bind_lable
 
-        print(f"setting keybind label background color to : {style.background_color}")
+        # print(f"setting keybind label background color to : {style.background_color}")
         label.setFixedSize(QSize(style.width, style.height))
         label.setStyleSheet(f"""
         #keyBindLabel {{

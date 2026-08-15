@@ -17,32 +17,45 @@ class WindowRegistry:
         self.window_scanner = window_scanner
         self.focused_window: WindowInfo | None = None
 
+        self.focus_window_index: int = -1
         self.desktop_windows: list[WindowInfo]
         self.windows: list[WindowInfo] = self.load_windows()
+        self.update_window_list()
 
         self.keyboard = Controller()
 
         self.connect_events()
+
+    def connect_events(self):
+        eventBus.vDesktopGoLeft.connect(self.v_desktop_go_left)
+        eventBus.vDesktopGoRight.connect(self.v_desktop_go_right)
+        eventBus.createNewVDesktop.connect(self.v_desktop_create_new)
+        eventBus.deleteCurrentVDesktop.connect(self.v_desktop_delete_current)
+
 
     def load_windows(self) -> list[WindowInfo]:
         windows = self.window_scanner.get_windows_info()
         return windows
 
     def update_window_list(self):
-        print("updating window list")
+        # print("updating window list")
         self.desktop_windows = []
         
         desktop = VirtualDesktop.current()
         hwnds = self.window_scanner.get_desktops_hwnds(desktop)
 
-        for window in self.windows:
+        for i in range(len(self.windows)):
+            window = self.windows[i]
             if not window.hwnd in hwnds:
                 continue
 
-            self.desktop_windows.append(window)
-            print(f" Window name: {window.title}")
+            focus_hwnd = win32gui.GetForegroundWindow()
+            if focus_hwnd == window.hwnd:
+                self.focus_window_index = i
 
-    def get_window_index(self, hwnd) -> int:
+            self.desktop_windows.append(window)
+
+    def get_window_index(self, hwnd: int) -> int:
         for i in range(len(self.windows)):
             window = self.windows[i]
 
@@ -57,7 +70,7 @@ class WindowRegistry:
         self.windows.append(window)
 
     def get_window(self, hwnd) -> WindowInfo | None:
-        window_index = self.get_window_index(hwnd)
+        window_index: int = self.get_window_index(hwnd)
         if window_index == -1:
             return None
 
@@ -74,16 +87,6 @@ class WindowRegistry:
         window = self.windows.pop(window_index)
 
         return window
-
-
-    def connect_events(self):
-        eventBus.vDesktopGoLeft.connect(self.v_desktop_go_left)
-        eventBus.vDesktopGoRight.connect(self.v_desktop_go_right)
-        eventBus.createNewVDesktop.connect(self.v_desktop_create_new)
-        eventBus.deleteCurrentVDesktop.connect(self.v_desktop_delete_current)
-
-        eventBus.windowGoLeft.connect(self.window_go_left)
-        eventBus.windowGoRight.connect(self.window_go_right)
 
     def v_desktop_go_right(self):
         current = VirtualDesktop.current()
@@ -122,12 +125,20 @@ class WindowRegistry:
             else:
                 fallback = desktops[current_index + 1]
 
-        print(f"fallback: {current_index}")
+        # print(f"fallback: {current_index}")
         current.remove(fallback)
         self.update_window_list()
 
-    def window_go_left(self):
-        print("window_go_left")
+    def get_left_window(self) -> WindowInfo | None:
+        # This is for future
+        pass
+            
+    def get_right_window(self) -> WindowInfo | None:
+        # This is for future
+        pass
 
-    def window_go_right(self):
-        print("window_go_right")
+    def print_all(self):
+        for i in range(len(self.desktop_windows)):
+            win = self.desktop_windows[i]
+            text = f"{i+1}. {win.hwnd}: {win.title}."
+            print(text)

@@ -19,7 +19,7 @@ class Config:
             print(f"Loading config: {self.config_path}.")
 
             data = json.load(file)
-            print(data)
+            # print(data)
             self.create_data_classes(data)
             del data
 

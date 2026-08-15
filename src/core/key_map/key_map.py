@@ -1,6 +1,12 @@
 import json
 
-from src.core.key_map.models import DataManagerKB ,WindowControlsKB, WindowManagerKB, WindowSwitchPanelKB, VirtualDesktopKB
+from src.core.key_map.models import (
+    DataManagerKB,
+    VirtualDesktopKB,
+    WindowControlsKB,
+    WindowManagerKB,
+    WindowSwitchPanelKB,
+)
 
 
 class KeyMap:
@@ -32,7 +38,7 @@ class KeyMap:
         self.data_manager = DataManagerKB(reload_data=dict["reload_data"])
 
     def create_wsp_keybinds(self, data: dict):
-        dict = data["window_switch_panel"]
+        dict = data["window_search"]
 
         self.window_switch_panel = WindowSwitchPanelKB(toggle=dict["toggle"])
 
@@ -44,16 +50,14 @@ class KeyMap:
             create_new=v_desktop_dict["create_new"],
             delete_current=v_desktop_dict["delete_current"],
             go_left=v_desktop_dict["go_left"],
-            go_right=v_desktop_dict["go_right"]
+            go_right=v_desktop_dict["go_right"],
         )
 
         win_controls_dict = dict["window_controls"]
         window_controls = WindowControlsKB(
-            go_left=win_controls_dict["go_left"],
-            go_right=win_controls_dict["go_right"]
+            go_left=win_controls_dict["go_left"], go_right=win_controls_dict["go_right"]
         )
 
         self.window_manager = WindowManagerKB(
-            virtual_desktop=virtual_desktop,
-            window_controls=window_controls
+            virtual_desktop=virtual_desktop, window_controls=window_controls
         )
