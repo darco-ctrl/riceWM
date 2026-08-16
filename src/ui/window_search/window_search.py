@@ -42,8 +42,7 @@ class WindowSearch(QWidget):
         self.scroll_container: QWidget = self.create_list_scroller()
 
         self.window_items: list[WindowItem] = []
-        self.focus_window_item: WindowItem | None = None
-        self.selected_window_item: WindowItem | None = None
+        self.selected_window_index: int = -1
 
         self.title_searcher = TitleSearcher()
 
@@ -60,6 +59,19 @@ class WindowSearch(QWidget):
     def connect_event(self):
         eventBus.wspToggleRequested.connect(self.toggle_window)
         eventBus.reloadWSPThemeRequested.connect(self.reload_theme)
+        eventBus.itemSelectUp.connect(self.on_wsp_select_up)
+        eventBus.itemSelectDown.connect(self.on_wsp_select_down)
+
+    def on_wsp_select_up(self):
+        if not self.isVisible():
+            return
+
+    def on_wsp_select_down(self):
+        if not self.isVisible():
+            return
+
+    def key_input(self):
+        pass
 
     def reload_theme(self):
 

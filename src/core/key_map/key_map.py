@@ -40,7 +40,11 @@ class KeyMap:
     def create_wsp_keybinds(self, data: dict):
         dict = data["window_search"]
 
-        self.window_switch_panel = WindowSwitchPanelKB(toggle=dict["toggle"])
+        self.window_switch_panel = WindowSwitchPanelKB(
+            toggle=dict["toggle"],
+            select_up=dict["select_up"],
+            select_down=dict["select_down"],
+        )
 
     def create_wm_keybind(self, data: dict):
         dict = data["window_manager"]

@@ -9,6 +9,8 @@ class DataManagerKB:
 @dataclass
 class WindowSwitchPanelKB:
     toggle: str
+    select_up: str
+    select_down: str
 
 @dataclass
 class WindowControlsKB:

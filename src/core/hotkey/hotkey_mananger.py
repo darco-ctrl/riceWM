@@ -24,6 +24,8 @@ class HotKeyManager:
         self.listner = keyboard.GlobalHotKeys(
             {
                 wsp_key_map.toggle: self.on_wsp_toggle,
+                wsp_key_map.select_up: self.on_wsp_select_up,
+                wsp_key_map.select_down: self.on_wsp_select_down,
                 data_manager.reload_data: self.on_data_reload,
                 vdesktop.create_new: self.on_vdesktop_new,
                 vdesktop.delete_current: self.on_vdesktop_delete,
@@ -34,6 +36,12 @@ class HotKeyManager:
 
     def start(self):
         self.listner.start()
+
+    def on_wsp_select_up(self):
+        eventBus.itemSelectUp.emit()
+
+    def on_wsp_select_down(self):
+        eventBus.itemSelectDown.emit()
 
     def on_data_reload(self):
         eventBus.dataReloadRequested.emit()

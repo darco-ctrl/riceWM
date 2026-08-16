@@ -165,6 +165,27 @@ class ItemBuilder:
 
         return container, c_layout, icon_label
 
+    def get_next_index(self, c_index: int, window_items: list[WindowItem]) -> int:
+        next_index: int = c_index + 1
+        index = next_index % len(window_items)
+
+        window = window_items[index]
+        self.select_window_item(c_index, window)
+
+        return index
+
+    def get_prev_index(self, c_index: int, window_items: list[WindowItem]) -> int:
+        prev_index: int = c_index
+        index = prev_index % len(window_items) - 1
+
+        window = window_items[index]
+        self.select_window_item(c_index, window)
+
+        return index
+
+    def select_window_item(self, c_index: int, window: WindowItem):
+        pass
+
     def create_window_title_label(self, layout: QHBoxLayout) -> QLabel:
         style = (
             self.theme.window_switch_panel.window_item_container.item_frame.title_label

@@ -13,6 +13,8 @@ class EventBus(QObject):
 
     wspToggleRequested = Signal()
     dataReloadRequested = Signal()
+    itemSelectDown = Signal()
+    itemSelectUp = Signal()
 
     createNewVDesktop = Signal()
     deleteCurrentVDesktop = Signal()
