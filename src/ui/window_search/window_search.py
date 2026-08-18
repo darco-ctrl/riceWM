@@ -42,7 +42,7 @@ class WindowSearch(QWidget):
         self.scroll_container: QWidget = self.create_list_scroller()
 
         self.window_items: list[WindowItem] = []
-        self.selected_window_index: int = -1
+        self.selected_window_index: int = 0
 
         self.title_searcher = TitleSearcher()
 

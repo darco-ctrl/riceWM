@@ -39,15 +39,19 @@ class ItemBuilder:
 
         self.state_reconciler = StateReconciler(self.window_scanner)
 
-    def sync_window_items(self, window_items: list[WindowItem]):
+    def sync_window_items(self, window_items: list[WindowItem], c_index: int):
 
         task_list: TaskList = self.state_reconciler.get_plan(window_items)
 
         self.update_window_items(task_list.update, window_items)
-        self.create_window_items(task_list.new, window_items)
+        _ = self.create_window_items(task_list.new, window_items)
         self.delete_window_items(task_list.delete, window_items)
-
+        
         self.sort(window_items)
+
+        if len(window_items) != 0:   
+            select_window_item = window_items[0]
+            self.set_sel_window(window=select_window_item)
 
     def update_window_items(self, items: list[int], windows: list[WindowItem]):
 
@@ -183,7 +187,13 @@ class ItemBuilder:
 
         return index
 
-    def select_window_item(self, c_index: int, window: WindowItem):
+    def change_sel_window(self, window: WindowItem, c_index: int):
+        pass
+
+    def select_window(self, window: WindowItem):
+        pass
+
+    def deselect_window(self, window: WindowItem):
         pass
 
     def create_window_title_label(self, layout: QHBoxLayout) -> QLabel:
