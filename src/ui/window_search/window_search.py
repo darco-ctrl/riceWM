@@ -52,7 +52,10 @@ class WindowSearch(QWidget):
             scroller_widget=self.scroll_container,
             window_scanner=self.window_scanner,
         )
-        self.item_builder.sync_window_items(window_items=self.window_items)
+        self.item_builder.sync_window_items(
+            window_items=self.window_items,
+            c_index=self.selected_window_index
+        )
 
         self.connect_event()
 
@@ -104,9 +107,13 @@ class WindowSearch(QWidget):
     def hide_window(self):
         self.hide()
         self.search_line_edit.setText("")
+        self.selected_window_index = 0
 
     def show_window(self):
-        self.item_builder.sync_window_items(self.window_items)
+        self.item_builder.sync_window_items(
+            window_items=self.window_items,
+            c_index=self.selected_window_index
+        )
 
         self.show()
         self.raise_()

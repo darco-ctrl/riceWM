@@ -18,6 +18,7 @@ class WindowItem:
         icon_label: QLabel,
         title_label: QLabel,
         key_bind_label: QLabel,
+        indicator_color: str
     ) -> None:
         self.hwnd: int = hwnd
         self.name: str = name
@@ -25,6 +26,7 @@ class WindowItem:
         self.icon_path: str = icon_path
         self.index: int = index
         self.frame: QFrame = frame
+        self.indicator_color: str = indicator_color
         self.selection_indicator: QWidget = selection_indicator
         self.icon_container: QWidget = icon_container
         self.icon_layout: QVBoxLayout = c_layout
@@ -37,6 +39,25 @@ class WindowItem:
 
     def set_selected(self, selected: bool):
         self.is_selected = selected
+
+    def update_indicator(self):
+        if not self.selection_indicator:
+            return
+            
+        if self.is_selected:
+
+            self.selection_indicator.setStyleSheet(f"""
+            #selectionIndicator {{
+                background-color: {self.indicator_color};
+            }}
+            """)
+            
+        else:
+            self.selection_indicator.setStyleSheet("""
+            #selectionIndicator {
+                background-color: transparent;
+            }
+            """)
 
     def set_focused(self, focused: bool):
         self.is_focus_window = focused
@@ -54,6 +75,7 @@ class WindowItem:
         self.title = win32gui.GetWindowText(self.hwnd)
 
         self.update_title_label()
+        self.update_indicator()
 
     def delete(self):
         self.frame.deleteLater()

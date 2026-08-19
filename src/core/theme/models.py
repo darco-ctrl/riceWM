@@ -68,8 +68,10 @@ class BorderStyle:
 class OnSelected:
     def __init__(self, 
                 style: dict):
-        self.background_color: str 
-        self.color: str
+        self.background_color: str = ""
+        self.color: str = ""
+
+        self.load(style)
 
     def load(self, style: dict):
         self.background_color = style.get("background_color", "")
@@ -196,7 +198,7 @@ class IconContainer:
         self.margin = style["margin"]
         self.background_color = style["background_color"]
 
-        self.on_selected = OnSelected(style=style["OnSelected"])
+        self.on_selected = OnSelected(style=style["on_selected"])
 
 
 class SelectionIndicator:

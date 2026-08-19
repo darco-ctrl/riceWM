@@ -51,7 +51,7 @@ class ItemBuilder:
 
         if len(window_items) != 0:   
             select_window_item = window_items[0]
-            self.set_sel_window(window=select_window_item)
+            self.select_window(window=select_window_item)
 
     def update_window_items(self, items: list[int], windows: list[WindowItem]):
 
@@ -93,7 +93,8 @@ class ItemBuilder:
         key_bind_label = self.create_key_bind_label(f_layout)
 
         # self.scroller_layout.addWidget(frame)
-
+        indicator_color = self.theme.window_search.window_item_container.item_frame.selection_indicator.background_color
+        
         window_item: WindowItem = WindowItem(
             hwnd=window_info.hwnd,
             name=window_info.name,
@@ -107,7 +108,10 @@ class ItemBuilder:
             icon_label=icon_label,
             selection_indicator=selection_indicator,
             title_label=title_label,
+            indicator_color=indicator_color
         )
+
+        window_item.update_indicator()
 
         return window_item
 
@@ -168,33 +172,6 @@ class ItemBuilder:
         layout.addWidget(container, alignment=Qt.AlignmentFlag.AlignVCenter)
 
         return container, c_layout, icon_label
-
-    def get_next_index(self, c_index: int, window_items: list[WindowItem]) -> int:
-        next_index: int = c_index + 1
-        index = next_index % len(window_items)
-
-        window = window_items[index]
-        self.select_window_item(c_index, window)
-
-        return index
-
-    def get_prev_index(self, c_index: int, window_items: list[WindowItem]) -> int:
-        prev_index: int = c_index
-        index = prev_index % len(window_items) - 1
-
-        window = window_items[index]
-        self.select_window_item(c_index, window)
-
-        return index
-
-    def change_sel_window(self, window: WindowItem, c_index: int):
-        pass
-
-    def select_window(self, window: WindowItem):
-        pass
-
-    def deselect_window(self, window: WindowItem):
-        pass
 
     def create_window_title_label(self, layout: QHBoxLayout) -> QLabel:
         style = (
@@ -379,3 +356,78 @@ class ItemBuilder:
 
         font = style.font_style.to_qfont(label.font())
         label.setFont(font)
+
+    def get_next_index(self, c_index: int, window_items: list[WindowItem]) -> int:
+        next_index: int = c_index + 1
+        index = next_index % len(window_items)
+
+        window = window_items[index]
+        self.change_sel_window(
+            c_index=c_index, window=window
+        )
+
+        return index
+
+    def get_prev_index(self, c_index: int, window_items: list[WindowItem]) -> int:
+        prev_index: int = c_index
+        index = prev_index % len(window_items) - 1
+
+        window = window_items[index]
+        self.change_sel_window(
+            c_index=c_index, window=window
+        )
+
+        return index
+
+    def change_sel_window(self, window: WindowItem, c_index: int):
+        pass
+
+    def select_window(self, window: WindowItem):
+
+        style = self.theme.window_search.window_item_container.item_frame
+
+        frame_style = style.on_selected
+        label_style = style.title_label.on_selected
+        icon_style = style.icon_container.on_selected
+        keybind_style = style.key_bind_lable.on_selected
+        
+        frame = window.frame
+        title_label = window.title_label
+        icon = window.icon_container
+        keybind = window.key_bind_label
+
+        # SELECTION INDICATOR
+        window.set_selected(True)
+
+        # FRAME
+        frame.setStyleSheet(f"""
+        #itemFrame {{
+            background-color: {frame_style.background_color};
+        }}
+        """)
+
+        # TITLE LABEL
+        title_label.setStyleSheet(f"""
+        #titleLabel {{
+            background-color: {label_style.background_color};
+            color: {label_style.color}
+        }}
+        """)
+
+        # ICON CONTAINER
+        icon.setStyleSheet(f"""
+        #iconContainer {{
+            background-color: {icon_style.background_color}
+        }}
+        """)
+
+        # KEYBIND LABEL
+        keybind.setStyleSheet(f"""
+        #keyBindLabel {{
+            background-color: {keybind_style.background_color};
+            color: {keybind_style.color}
+        }}
+        """)
+
+    def deselect_window(self, window: WindowItem):
+        pass
