@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Any
 
 from PySide6.QtGui import QFont
 
@@ -48,7 +49,6 @@ class FontStyle:
 
         return qfont
 
-
 class BorderStyle:
     def __init__(self, style: dict) -> None:
         self.style: str
@@ -64,6 +64,16 @@ class BorderStyle:
         self.width = style["width"]
         self.color = style["color"]
 
+
+class OnSelected:
+    def __init__(self, 
+                style: dict):
+        self.background_color: str 
+        self.color: str
+
+    def load(self, style: dict):
+        self.background_color = style.get("background_color", "")
+        self.color = style.get("color", "")
 
 class LineEdit:
     def __init__(self, style: dict, font: FontStyle, border: BorderStyle) -> None:
@@ -114,7 +124,10 @@ class SearchBox:
 
 class KeyBindLabel:
     def __init__(
-        self, style: dict, font_style: FontStyle, border_style: BorderStyle
+        self, 
+        style: dict, 
+        font_style: FontStyle, 
+        border_style: BorderStyle
     ) -> None:
         self.width: int
         self.height: int
@@ -123,6 +136,7 @@ class KeyBindLabel:
         self.margin: int
         self.font_style: FontStyle = font_style
         self.border_style: BorderStyle = border_style
+        self.on_selected: OnSelected
 
         self.load(style)
 
@@ -133,10 +147,15 @@ class KeyBindLabel:
         self.color = style["color"]
         self.margin = style["margin"]
 
+        self.on_selected = OnSelected(style=style["on_selected"])
+
 
 class TitleLabel:
     def __init__(
-        self, style: dict, font_style: FontStyle, border_style: BorderStyle
+        self, 
+        style: dict, 
+        font_style: FontStyle, 
+        border_style: BorderStyle
     ) -> None:
         self.preload_text: str
         self.background_color: str
@@ -144,6 +163,7 @@ class TitleLabel:
         self.margin: int
         self.font_style: FontStyle = font_style
         self.border_style: BorderStyle = border_style
+        self.on_selected: OnSelected 
 
         self.load(style)
 
@@ -153,14 +173,20 @@ class TitleLabel:
         self.color = style["color"]
         self.margin = style["margin"]
 
+        self.on_selected = OnSelected(style=style["on_selected"])
+
 
 class IconContainer:
-    def __init__(self, style: dict, border_style: BorderStyle) -> None:
+    def __init__(
+        self, 
+        style: dict, 
+        border_style: BorderStyle) -> None:
         self.width: int
         self.height: int
         self.margin: list
         self.background_color: str
         self.border_style: BorderStyle = border_style
+        self.on_selected: OnSelected 
 
         self.load(style)
 
@@ -169,6 +195,8 @@ class IconContainer:
         self.height = style["height"]
         self.margin = style["margin"]
         self.background_color = style["background_color"]
+
+        self.on_selected = OnSelected(style=style["OnSelected"])
 
 
 class SelectionIndicator:
@@ -193,7 +221,7 @@ class ItemFrame:
         selection_indicator: SelectionIndicator,
         icon_container: IconContainer,
         title_label: TitleLabel,
-        key_bind_label: KeyBindLabel,
+        key_bind_label: KeyBindLabel
     ) -> None:
         self.height: int
         self.contents_margin: list
@@ -203,6 +231,7 @@ class ItemFrame:
         self.icon_container: IconContainer = icon_container
         self.title_label: TitleLabel = title_label
         self.key_bind_lable: KeyBindLabel = key_bind_label
+        self.on_selected: OnSelected 
 
         self.load(style)
 
@@ -210,6 +239,8 @@ class ItemFrame:
         self.height = style["height"]
         self.contents_margin = style["contents_margin"]
         self.background_color = style["background_color"]
+
+        self.on_selected = OnSelected(style=style["on_selected"])
 
 
 class WindowItemsContainer:
