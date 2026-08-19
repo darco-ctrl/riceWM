@@ -80,7 +80,7 @@ class WindowSearch(QWidget):
         self.recolor_container()
 
     def recolor_container(self):
-        container_style = self.theme.window_switch_panel.window_item_container
+        container_style = self.theme.window_search.window_item_container
         self.scroll_container.setStyleSheet(f"""
         #scrollContainer {{
             background-color: {container_style.background_color};
@@ -117,7 +117,7 @@ class WindowSearch(QWidget):
     def create_window(self) -> QWidget:
 
         config = self.config.window_switch_panel
-        theme = self.theme.window_switch_panel
+        theme = self.theme.window_search
 
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setWindowFlags(
@@ -151,7 +151,7 @@ class WindowSearch(QWidget):
         return line_edit
 
     def create_list_scroller(self) -> QWidget:
-        container_style = self.theme.window_switch_panel.window_item_container
+        container_style = self.theme.window_search.window_item_container
 
         panel_layout: QVBoxLayout = cast(QVBoxLayout, self.main_panel.layout())
 

@@ -39,7 +39,7 @@ class PanelBuilder:
         return panel
 
     def color_panel(self):
-        style = self.theme.window_switch_panel
+        style = self.theme.window_search
 
         self.panel.widget.setStyleSheet(f"""
         #Panel {{
@@ -74,7 +74,7 @@ class PanelBuilder:
         return line_edit
 
     def color_search_box(self):
-        style = self.theme.window_switch_panel.search_box
+        style = self.theme.window_search.search_box
 
         self.search_box.container.setFixedHeight(style.height)
 

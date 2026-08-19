@@ -112,7 +112,7 @@ class ItemBuilder:
         return window_item
 
     def create_item_frame(self) -> QFrame:
-        style = self.theme.window_switch_panel.window_item_container.item_frame
+        style = self.theme.window_search.window_item_container.item_frame
 
         frame = QFrame()
         frame.setObjectName("itemFrame")
@@ -124,7 +124,7 @@ class ItemBuilder:
         return frame
 
     def create_selection_indicator(self, layout: QHBoxLayout) -> QWidget:
-        style = self.theme.window_switch_panel.window_item_container.item_frame.selection_indicator
+        style = self.theme.window_search.window_item_container.item_frame.selection_indicator
 
         indicator: QWidget = QWidget()
         indicator.setObjectName("selectionIndicator")
@@ -136,7 +136,7 @@ class ItemBuilder:
     def create_icon_label(
         self, layout: QHBoxLayout
     ) -> tuple[QWidget, QVBoxLayout, QLabel]:
-        style = self.theme.window_switch_panel.window_item_container.item_frame.icon_container
+        style = self.theme.window_search.window_item_container.item_frame.icon_container
 
         container: QWidget = QWidget()
         container.setObjectName("iconContainer")
@@ -198,7 +198,7 @@ class ItemBuilder:
 
     def create_window_title_label(self, layout: QHBoxLayout) -> QLabel:
         style = (
-            self.theme.window_switch_panel.window_item_container.item_frame.title_label
+            self.theme.window_search.window_item_container.item_frame.title_label
         )
 
         title_label: QLabel = QLabel()
@@ -219,7 +219,7 @@ class ItemBuilder:
         return title_label
 
     def create_key_bind_label(self, layout: QHBoxLayout) -> QLabel:
-        style = self.theme.window_switch_panel.window_item_container.item_frame.key_bind_lable
+        style = self.theme.window_search.window_item_container.item_frame.key_bind_lable
 
         key_bind_label: QLabel = QLabel()
         key_bind_label.setObjectName("keyBindLabel")
@@ -264,7 +264,7 @@ class ItemBuilder:
         self.recolor_keybind_label(window_item.key_bind_label)
 
     def recolor_frame(self, frame: QWidget):
-        frame_style = self.theme.window_switch_panel.window_item_container.item_frame
+        frame_style = self.theme.window_search.window_item_container.item_frame
         border_style = frame_style.border_style
 
         frame.setFixedHeight(frame_style.height)
@@ -289,7 +289,7 @@ class ItemBuilder:
         )
 
     def recolor_selection_indicator(self, selection_indicator: QWidget):
-        style = self.theme.window_switch_panel.window_item_container.item_frame.selection_indicator
+        style = self.theme.window_search.window_item_container.item_frame.selection_indicator
 
         selection_indicator.setFixedSize(QSize(style.width, style.height))
         selection_indicator.setStyleSheet(f"""
@@ -302,7 +302,7 @@ class ItemBuilder:
         self, container: QWidget, layout: QVBoxLayout, icon_label: QLabel
     ):
 
-        style = self.theme.window_switch_panel.window_item_container.item_frame.icon_container
+        style = self.theme.window_search.window_item_container.item_frame.icon_container
 
         container.setFixedSize(QSize(style.width, style.height))
         container.setStyleSheet(f"""
@@ -331,7 +331,7 @@ class ItemBuilder:
 
     def recolor_title_label(self, label: QLabel):
         style = (
-            self.theme.window_switch_panel.window_item_container.item_frame.title_label
+            self.theme.window_search.window_item_container.item_frame.title_label
         )
 
         # label.setFixedSize(QSize(style.width, style.height))
@@ -357,7 +357,7 @@ class ItemBuilder:
         # print("reapplied theme to window title...")
 
     def recolor_keybind_label(self, label: QLabel):
-        style = self.theme.window_switch_panel.window_item_container.item_frame.key_bind_lable
+        style = self.theme.window_search.window_item_container.item_frame.key_bind_lable
 
         # print(f"setting keybind label background color to : {style.background_color}")
         label.setFixedSize(QSize(style.width, style.height))
