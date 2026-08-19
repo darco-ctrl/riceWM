@@ -16,16 +16,16 @@ class WindowController:
         self.registry: WindowRegistry = registry
 
     def connect_window_events(self):
-        eventBus.windowCreated.connect(self.window_created)
-        eventBus.windowDeystroyed.connect(self.window_deystroyed)
-        eventBus.windowMaximized.connect(self.window_maximized)
-        eventBus.windowMinimized.connect(self.window_minimized)
-        eventBus.windowFullscreen.connect(self.window_fullscreen)
-        eventBus.windowFocused.connect(self.window_focused)
-        eventBus.windowShow.connect(self.window_show)
+        _ = eventBus.windowCreated.connect(self.window_created)
+        _ = eventBus.windowDeystroyed.connect(self.window_deystroyed)
+        _ = eventBus.windowMaximized.connect(self.window_maximized)
+        _ = eventBus.windowMinimized.connect(self.window_minimized)
+        _ = eventBus.windowFullscreen.connect(self.window_fullscreen)
+        _ = eventBus.windowFocused.connect(self.window_focused)
+        _ = eventBus.windowShow.connect(self.window_show)
 
-        eventBus.windowGoLeft.connect(self.window_go_left)
-        eventBus.windowGoRight.connect(self.window_go_right)
+        _ = eventBus.windowGoLeft.connect(self.window_go_left)
+        _ = eventBus.windowGoRight.connect(self.window_go_right)
 
     def window_go_left(self):
         # This is for future
@@ -39,27 +39,15 @@ class WindowController:
         pass
     
     def window_show(self, hwnd: int):
+        is_valid_window = self.window_scanner.is_regular_window(
+            hwnd=hwnd
+        )
 
-        create_new: bool = False
-        window: WindowInfo | None = None
-        window = self.registry.get_window(hwnd)
-
-        if not window:
-            create_new = True
-            window = self.window_scanner.get_window_info(hwnd)
-
-        if not window:
-            return
-
-        if create_new:
-            self.registry.add_window(window)
-        
-        # print("window shwn")
-        
-        self.set_focused_window(window)
+        if is_valid_window:
+            self.maximize(hwnd)
         
     def window_deystroyed(self, hwnd: int):
-        self.registry.remove_window(hwnd)
+        pass
 
     def window_maximized(self, hwnd: int):
         pass
@@ -108,34 +96,3 @@ class WindowController:
             win32gui.SetForegroundWindow(hwnd)
         except pywintypes.error as error:
             print(f"Could not focus hwnd {hwnd}: {error}")
-
-    def clear_focused_window(self): 
-        f_window: WindowInfo | None = self.registry.focused_window
-        if not f_window:
-            return
-
-        f_window.set_focused(False)
-        self.minimize(f_window.hwnd)
-        self.registry.focused_window = None
-
-    def set_focused_window(self, window: WindowInfo):
-        # print(f"TItle of window: {window.title}")
-        f_window = self.registry.focused_window
-    
-        if f_window and f_window.hwnd == window.hwnd:
-            window.set_focused(True)
-    
-            if win32gui.IsIconic(window.hwnd):
-                self.maximize(window.hwnd)
-    
-            self.set_focus(window.hwnd)
-            return
-    
-        if f_window:
-            f_window.set_focused(False)
-    
-        self.registry.focused_window = window
-        window.set_focused(True)
-    
-        self.maximize(window.hwnd)
-        self.set_focus(window.hwnd)

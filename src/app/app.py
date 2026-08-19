@@ -29,7 +29,6 @@ class App:
 
     def run(self):
         self.hotkey_manager.start()
-        self.window_manager.initalize_wm()
         self.ui_manager.load()
 
         sys.exit(self.application.exec())
