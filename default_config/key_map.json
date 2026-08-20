@@ -1,5 +1,22 @@
 {
-    "window_switch_panel": {
-        "toggle": "<ctrl>+<alt>+<enter>"
+    "data_manager": {
+        "reload_data": "<ctrl>+<alt>+<f12>"
+    },
+    "window_search": {
+        "toggle": "<ctrl>+<shift>+\\",
+        "select_up": "<ctrl>+w",
+        "select_down": "<ctrl>+s"
+    },
+    "window_manager": {
+        "virtual_desktop": {
+            "go_left": "<ctrl>+<shift>+<alt>+a",
+            "go_right": "<ctrl>+<shift>+<alt>+d",
+            "create_new": "<ctrl>+<shift>+<alt>+n",
+            "delete_current": "<ctrl>+<alt>+<shift>+q"
+        },
+        "window_controls": {
+            "go_left": "",
+            "go_right": ""
+        }
     }
 }

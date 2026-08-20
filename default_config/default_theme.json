@@ -1,6 +1,6 @@
 {
     "name": "RiceWM Defualt Theme",
-    "window_switch_panel": {
+    "window_search": {
         "background_color": "#1e1e2e",
         "search_box": {
             "height": 50,
@@ -41,6 +41,10 @@
                     "width": [0, 0, 0, 0],
                     "color": "#45475a"
                 },
+                "on_selected": {
+                    "background_color": "#313244",
+                    "color": "Does not affect"
+                },
                 "selection_indicator": {
                     "width": 5,
                     "height": 30,
@@ -57,12 +61,16 @@
                         "radius": 6,
                         "width": [0, 0, 0, 0],
                         "color": "#45475a"
+                    },
+                    "on_selected": {
+                        "background_color": "#313244",
+                        "color": "Does not affect"
                     }
                 },
                 "title_label": {
                     "preload_text": "Loading...",
                     "background_color": "transparent",
-                    "color": "#cdd6f4",
+                    "color": "#bac2de",
                     "margin": 0,
                     "font": {
                         "family": "JetBrains Mono",
@@ -79,13 +87,17 @@
                         "radius": 6,
                         "width": [0, 0, 0, 0],
                         "color": "#313244"
+                    },
+                    "on_selected": {
+                        "background_color": "transparent",
+                        "color": "#cdd6f4"
                     }
                 },
-                "key_bind_label": {
+                "keybind_label": {
                     "width": 80,
                     "height": 30,
                     "background_color": "#181825",
-                    "color": "white",
+                    "color": "#bac2de",
                     "margin": 0,
                     "font": {
                         "family": "JetBrains Mono",
@@ -102,6 +114,10 @@
                         "radius": 6,
                         "width": [1, 1, 1, 1],
                         "color": "#313244"
+                    },
+                    "on_selected": {
+                        "background_color": "#181825",
+                        "color": "#cdd6f4"
                     }
                 }
             }

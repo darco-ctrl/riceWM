@@ -69,9 +69,21 @@ class WindowSearch(QWidget):
         if not self.isVisible():
             return
 
+        index = self.item_builder.get_prev_index(
+            c_index=self.selected_window_index,
+            window_items=self.window_items
+        )
+        self.selected_window_index = index
+
     def on_wsp_select_down(self):
         if not self.isVisible():
             return
+
+        index = self.item_builder.get_next_index(
+            c_index=self.selected_window_index,
+            window_items=self.window_items
+        )
+        self.selected_window_index = index
 
     def key_input(self):
         pass
@@ -79,7 +91,7 @@ class WindowSearch(QWidget):
     def reload_theme(self):
 
         self.panel_constructor.reapply_theme()
-        self.item_builder.reapply_theme(self.window_items)
+        self.item_builder.reapply_theme(self.window_items, self.selected_window_index)
         self.recolor_container()
 
     def recolor_container(self):

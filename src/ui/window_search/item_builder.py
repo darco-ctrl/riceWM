@@ -222,10 +222,14 @@ class ItemBuilder:
 
             self.scroller_layout.addWidget(window_item.frame)
 
-    def reapply_theme(self, window_items: list[WindowItem]):
-        for window_item in window_items:
-            self.recolor_item(window_item)
-            window_item.reload()
+    def reapply_theme(self, window_items: list[WindowItem], c_index: int):
+        for i in range(len(window_items)):
+            window = window_items[i]
+            self.recolor_item(window)
+            window.reload()
+
+            if i == c_index:
+                self.select_window(window)
 
     def recolor_item(self, window_item: WindowItem):
 
@@ -358,29 +362,49 @@ class ItemBuilder:
         label.setFont(font)
 
     def get_next_index(self, c_index: int, window_items: list[WindowItem]) -> int:
-        next_index: int = c_index + 1
+        prev_index: int = c_index
+        window_count = len(window_items)
+
+        if prev_index < 0:
+            prev_index = 0
+        elif prev_index >= window_count:
+            prev_index = window_count - 1
+
+        next_index: int = prev_index + 1
         index = next_index % len(window_items)
 
+        prev_widnow = window_items[c_index]
         window = window_items[index]
         self.change_sel_window(
-            c_index=c_index, window=window
+            prev_window=prev_widnow, window=window
         )
 
         return index
 
     def get_prev_index(self, c_index: int, window_items: list[WindowItem]) -> int:
         prev_index: int = c_index
-        index = prev_index % len(window_items) - 1
+        window_count: int = len(window_items)
 
+        if prev_index < 0:
+            prev_index = 0
+        elif prev_index >= window_count:
+            prev_index = window_count - 1
+
+        p_index = prev_index - 1
+        index = p_index % window_count
+        
         window = window_items[index]
+        prev_window = window_items[prev_index]
         self.change_sel_window(
-            c_index=c_index, window=window
+            prev_window=prev_window, window=window
         )
 
         return index
 
-    def change_sel_window(self, window: WindowItem, c_index: int):
-        pass
+    def change_sel_window(self, window: WindowItem, prev_window: WindowItem):
+        self.deselect_window(prev_window)
+        self.select_window(window)
+        
 
     def select_window(self, window: WindowItem):
 
@@ -430,4 +454,47 @@ class ItemBuilder:
         """)
 
     def deselect_window(self, window: WindowItem):
-        pass
+        
+        style = self.theme.window_search.window_item_container.item_frame
+        
+        label_style = style.title_label
+        icon_style = style.icon_container
+        keybind_style = style.key_bind_lable
+        
+        frame = window.frame
+        title_label = window.title_label
+        icon = window.icon_container
+        keybind = window.key_bind_label
+
+        # SELECTION INDICATOR
+        window.set_selected(False)
+
+        # FRAME
+        frame.setStyleSheet(f"""
+        #itemFrame {{
+            background-color: {style.background_color};
+        }}
+        """)
+
+        # TITLE LABEL
+        title_label.setStyleSheet(f"""
+        #titleLabel {{
+            background-color: {label_style.background_color};
+            color: {label_style.color}
+        }}
+        """)
+
+        # ICON CONTAINER
+        icon.setStyleSheet(f"""
+        #iconContainer {{
+            background-color: {icon_style.background_color}
+        }}
+        """)
+
+        # KEYBIND LABEL
+        keybind.setStyleSheet(f"""
+        #keyBindLabel {{
+            background-color: {keybind_style.background_color};
+            color: {keybind_style.color}
+        }}
+        """)

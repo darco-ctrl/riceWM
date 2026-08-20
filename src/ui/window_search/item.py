@@ -40,6 +40,8 @@ class WindowItem:
     def set_selected(self, selected: bool):
         self.is_selected = selected
 
+        self.update_indicator()
+
     def update_indicator(self):
         if not self.selection_indicator:
             return

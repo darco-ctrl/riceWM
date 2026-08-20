@@ -3,5 +3,6 @@
 width = 1000
 height = 675
 
-[theme]
-active_theme = "default_theme.toml"
+[data]
+active_theme = "default_theme.json"
+active_config = "default_config.json"
