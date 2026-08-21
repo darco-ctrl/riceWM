@@ -119,6 +119,12 @@ class WindowSearch(QWidget):
     def hide_window(self):
         self.hide()
         self.search_line_edit.setText("")
+
+        window = self.window_items[self.selected_window_index]
+        self.item_builder.deselect_window(
+            window
+        )
+        
         self.selected_window_index = 0
 
     def show_window(self):

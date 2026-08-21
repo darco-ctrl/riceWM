@@ -185,6 +185,7 @@ class IconContainer:
         border_style: BorderStyle) -> None:
         self.width: int
         self.height: int
+        self.container_margin: list
         self.margin: list
         self.background_color: str
         self.border_style: BorderStyle = border_style
@@ -195,6 +196,7 @@ class IconContainer:
     def load(self, style):
         self.width = style["width"]
         self.height = style["height"]
+        self.container_margin = style["container_margin"]
         self.margin = style["margin"]
         self.background_color = style["background_color"]
 

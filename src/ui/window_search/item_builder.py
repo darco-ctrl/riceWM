@@ -1,6 +1,6 @@
 from typing import cast
 
-from PySide6.QtCore import QSize
+from PySide6.QtCore import QSize, QVersionNumber
 from PySide6.QtGui import QPixmap, Qt
 from PySide6.QtWidgets import (
     QFrame,
@@ -88,7 +88,7 @@ class ItemBuilder:
         f_layout: QHBoxLayout = cast(QHBoxLayout, frame.layout())
 
         selection_indicator = self.create_selection_indicator(f_layout)
-        icon_container, c_layout, icon_label = self.create_icon_label(f_layout)
+        outer_layout, icon_container, c_layout, icon_label = self.create_icon_label(f_layout)
         title_label = self.create_window_title_label(f_layout)
         key_bind_label = self.create_key_bind_label(f_layout)
 
@@ -103,6 +103,7 @@ class ItemBuilder:
             index=count,
             frame=frame,
             key_bind_label=key_bind_label,
+            icon_layout=outer_layout,
             icon_container=icon_container,
             c_layout=c_layout,
             icon_label=icon_label,
@@ -139,13 +140,29 @@ class ItemBuilder:
 
     def create_icon_label(
         self, layout: QHBoxLayout
-    ) -> tuple[QWidget, QVBoxLayout, QLabel]:
+    ) -> tuple[QVBoxLayout, QWidget, QVBoxLayout, QLabel]:
         style = self.theme.window_search.window_item_container.item_frame.icon_container
+
+        
 
         container: QWidget = QWidget()
         container.setObjectName("iconContainer")
         container.setFixedSize(QSize(style.width, style.height))
 
+        outer_container: QWidget = QWidget()
+        outer_layout: QVBoxLayout = QVBoxLayout(outer_container)
+        outer_layout.setContentsMargins(
+            style.container_margin[0],
+            style.container_margin[0],
+            style.container_margin[0],
+            style.container_margin[0]
+        )
+
+        outer_layout.addWidget(
+            container,
+            alignment=Qt.AlignmentFlag.AlignVCenter
+        )
+        
         c_layout: QVBoxLayout = QVBoxLayout(container)
 
         icon_width = style.width - style.margin[0] - style.margin[2]
@@ -169,9 +186,9 @@ class ItemBuilder:
 
         icon_label.setPixmap(scaled_pixmap)
 
-        layout.addWidget(container, alignment=Qt.AlignmentFlag.AlignVCenter)
+        layout.addWidget(outer_container)
 
-        return container, c_layout, icon_label
+        return outer_layout, container, c_layout, icon_label
 
     def create_window_title_label(self, layout: QHBoxLayout) -> QLabel:
         style = (
@@ -237,6 +254,7 @@ class ItemBuilder:
         self.recolor_frame(window_item.frame)
         self.recolor_selection_indicator(window_item.selection_indicator)
         self.recolor_icon_label(
+            outer_layout=window_item.icon_layout,
             container=window_item.icon_container,
             layout=window_item.icon_layout,
             icon_label=window_item.icon_label,
@@ -280,11 +298,11 @@ class ItemBuilder:
         """)
 
     def recolor_icon_label(
-        self, container: QWidget, layout: QVBoxLayout, icon_label: QLabel
-    ):
+        self, outer_layout: QVBoxLayout, container: QWidget, layout: QVBoxLayout, icon_label: QLabel
+    ):  
 
         style = self.theme.window_search.window_item_container.item_frame.icon_container
-
+        
         container.setFixedSize(QSize(style.width, style.height))
         container.setStyleSheet(f"""
             #iconContainer {{

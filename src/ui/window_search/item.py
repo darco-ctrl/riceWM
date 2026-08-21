@@ -1,6 +1,6 @@
 import win32gui
 from PySide6.QtGui import QPixmap, Qt
-from PySide6.QtWidgets import QFrame, QLabel, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
 
 class WindowItem:
@@ -13,6 +13,7 @@ class WindowItem:
         index: int,
         frame: QFrame,
         selection_indicator: QWidget,
+        icon_layout: QVBoxLayout,
         icon_container: QWidget,
         c_layout: QVBoxLayout,
         icon_label: QLabel,
@@ -28,6 +29,7 @@ class WindowItem:
         self.frame: QFrame = frame
         self.indicator_color: str = indicator_color
         self.selection_indicator: QWidget = selection_indicator
+        self.icon_layout: QWidget = icon_layout
         self.icon_container: QWidget = icon_container
         self.icon_layout: QVBoxLayout = c_layout
         self.icon_label: QLabel = icon_label
@@ -48,18 +50,21 @@ class WindowItem:
             
         if self.is_selected:
 
-            self.selection_indicator.setStyleSheet(f"""
+            self.selection_indicator.setVisible(True)
+            # self.selection_indicator.setStyleSheet(f"""
             #selectionIndicator {{
-                background-color: {self.indicator_color};
-            }}
-            """)
+                # background-color: {self.indicator_color};
+            # }}
+            # """)
             
         else:
-            self.selection_indicator.setStyleSheet("""
-            #selectionIndicator {
-                background-color: transparent;
-            }
-            """)
+
+            self.selection_indicator.setVisible(False)
+            # self.selection_indicator.setStyleSheet("""
+            # selectionIndicator {
+                # background-color: transparent;
+            # }
+            # """)
 
     def set_focused(self, focused: bool):
         self.is_focus_window = focused
