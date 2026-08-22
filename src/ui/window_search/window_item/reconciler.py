@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from src.models.window import WindowInfo
 from src.services.window.scanner import WindowScanner
-from src.ui.window_search.item import WindowItem
+from src.ui.window_search.window_item.model import WindowItem
 
 
 @dataclass
@@ -14,7 +14,7 @@ class TaskList:
 
 class StateReconciler:
     def __init__(self, window_scanner: WindowScanner):
-        self.window_scanner = window_scanner
+        self.window_scanner: WindowScanner = window_scanner
 
     def get_plan(self, window_item_lists: list[WindowItem]) -> TaskList:
 

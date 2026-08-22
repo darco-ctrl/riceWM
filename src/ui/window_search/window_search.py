@@ -1,27 +1,21 @@
 from typing import cast
 
-from PySide6.QtCore import QEvent, QSize, Qt, QVersionNumber, QWaitCondition
-from PySide6.QtGui import QFont, QGuiApplication, QPixmap
+from PySide6.QtCore import QEvent, Qt
+from PySide6.QtGui import QGuiApplication
 from PySide6.QtWidgets import (
-    QFrame,
-    QHBoxLayout,
-    QLabel,
     QLineEdit,
     QScrollArea,
-    QSizePolicy,
     QVBoxLayout,
     QWidget,
 )
 
-import src.app.paths as rice_paths
 from src.core.config.config import Config
 from src.core.events.event_bus import eventBus
 from src.core.theme.theme import Theme
 from src.services.window.scanner import WindowScanner
-from src.ui.window_search.item import WindowItem
-from src.ui.window_search.item_builder import ItemBuilder
-from src.ui.window_search.panel_builder import PanelBuilder
+from src.ui.window_search.constructor import PanelConstructor
 from src.ui.window_search.search import TitleSearcher
+from src.ui.window_search.window_item.manager import WinItemManager
 
 
 class WindowSearch(QWidget):
@@ -30,32 +24,29 @@ class WindowSearch(QWidget):
         self.config = config
         self.theme = theme
 
-        self.window_scanner = window_scanner
+        self.window_scanner: WindowScanner = window_scanner
 
-        self.root_layout = QVBoxLayout(self)
+        self.root_layout: QVBoxLayout = QVBoxLayout(self)
 
-        self.panel_constructor = PanelBuilder(self.theme, self.root_layout)
+        self.panel_constructor: PanelConstructor = PanelConstructor(
+            self.theme, self.root_layout
+        )
 
         self.main_panel: QWidget = self.create_window()
 
         self.search_line_edit: QLineEdit = self.create_search_box()
         self.scroll_container: QWidget = self.create_list_scroller()
 
-        self.window_items: list[WindowItem] = []
-        self.selected_window_index: int = 0
+        self.title_searcher:TitleSearcher = TitleSearcher()
 
-        self.title_searcher = TitleSearcher()
-
-        self.item_builder = ItemBuilder(
+        scroller_layout: QVBoxLayout = cast(QVBoxLayout, self.scroll_container.layout())
+        self.winitem_manager: WinItemManager = WinItemManager(
             config=self.config,
+            scroller_layout=scroller_layout,
             theme=self.theme,
-            scroller_widget=self.scroll_container,
-            window_scanner=self.window_scanner,
+            window_scanner=self.window_scanner
         )
-        self.item_builder.sync_window_items(
-            window_items=self.window_items,
-            c_index=self.selected_window_index
-        )
+        self.winitem_manager.sync()
 
         self.connect_event()
 
@@ -69,21 +60,13 @@ class WindowSearch(QWidget):
         if not self.isVisible():
             return
 
-        index = self.item_builder.get_prev_index(
-            c_index=self.selected_window_index,
-            window_items=self.window_items
-        )
-        self.selected_window_index = index
+        self.winitem_manager.select_prev()
 
     def on_wsp_select_down(self):
         if not self.isVisible():
             return
 
-        index = self.item_builder.get_next_index(
-            c_index=self.selected_window_index,
-            window_items=self.window_items
-        )
-        self.selected_window_index = index
+        self.winitem_manager.select_next()
 
     def key_input(self):
         pass
@@ -91,7 +74,7 @@ class WindowSearch(QWidget):
     def reload_theme(self):
 
         self.panel_constructor.reapply_theme()
-        self.item_builder.reapply_theme(self.window_items, self.selected_window_index)
+        self.winitem_manager.reapply_theme()
         self.recolor_container()
 
     def recolor_container(self):
@@ -119,19 +102,10 @@ class WindowSearch(QWidget):
     def hide_window(self):
         self.hide()
         self.search_line_edit.setText("")
-
-        window = self.window_items[self.selected_window_index]
-        self.item_builder.deselect_window(
-            window
-        )
-        
-        self.selected_window_index = 0
+        self.winitem_manager.hide()
 
     def show_window(self):
-        self.item_builder.sync_window_items(
-            window_items=self.window_items,
-            c_index=self.selected_window_index
-        )
+        self.winitem_manager.sync()
 
         self.show()
         self.raise_()
