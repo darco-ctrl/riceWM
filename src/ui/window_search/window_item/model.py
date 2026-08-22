@@ -18,8 +18,7 @@ class WindowItem:
         c_layout: QVBoxLayout,
         icon_label: QLabel,
         title_label: QLabel,
-        key_bind_label: QLabel,
-        indicator_color: str
+        key_bind_label: QLabel
     ) -> None:
         self.hwnd: int = hwnd
         self.name: str = name
@@ -27,7 +26,6 @@ class WindowItem:
         self.icon_path: str = icon_path
         self.index: int = index
         self.frame: QFrame = frame
-        self.indicator_color: str = indicator_color
         self.selection_indicator: QWidget = selection_indicator
         self.icon_layout: QWidget = icon_layout
         self.icon_container: QWidget = icon_container

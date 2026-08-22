@@ -5,7 +5,7 @@ from src.core.theme.theme import Theme
 from src.ui.window_search.widgets import Panel, SearchBox
 
 
-class PanelBuilder:
+class PanelConstructor:
     def __init__(self, theme: Theme, root_layout: QVBoxLayout) -> None:
         self.theme = theme
         self.root_layout: QVBoxLayout = root_layout

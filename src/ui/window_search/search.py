@@ -1,4 +1,7 @@
-from src.ui.window_search.item import WindowItem
+
+
+
+from src.ui.window_search.window_item.model import WindowItem
 
 
 class TitleSearcher:
