@@ -1,10 +1,12 @@
+
 from dataclasses import dataclass
 
-from src.core.theme.components.label_style import LabelStyle
+from src.core.theme.components.frame_style import FrameStyle
 from src.core.theme.primitives.color_style import ColorStyle
 
 
 @dataclass
-class SelectableLabelStyle:
-    label_style: LabelStyle
+class ItemFrame(FrameStyle):
+    height: int
+    contents_margin: list
     selection_color: ColorStyle

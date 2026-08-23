@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 
 from src.core.theme.primitives.color_style import ColorStyle
-from src.core.theme.window_search.models.search_box import SearchBoxTheme
-from src.core.theme.window_search.models.window_item import WindowItemTheme
+from src.core.theme.window_search.models.search_box import SearchBoxStyle
+from src.core.theme.window_search.models.window_item import WindowItemStyle
 
 
 @dataclass
-class WindowSearchTheme:
+class WindowSearchStyle:
     color_style: ColorStyle
-    search_box: SearchBoxTheme
-    window_item: WindowItemTheme
+    search_box: SearchBoxStyle
+    window_item: WindowItemStyle
