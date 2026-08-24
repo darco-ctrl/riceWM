@@ -87,7 +87,7 @@ class WinItemConstructor:
         return window_item
 
     def create_item_frame(self) -> QFrame:
-        style = self.theme.window_search.window_item_container.item_frame
+        style = self.theme.window_search.window_item.frame_style
 
         frame = QFrame()
         frame.setObjectName("itemFrame")
@@ -99,7 +99,7 @@ class WinItemConstructor:
         return frame
 
     def create_selection_indicator(self, layout: QHBoxLayout) -> QWidget:
-        style = self.theme.window_search.window_item_container.item_frame.selection_indicator
+        style = self.theme.window_search.window_item.selection_indicator
 
         indicator: QWidget = QWidget()
         indicator.setObjectName("selectionIndicator")
@@ -111,13 +111,15 @@ class WinItemConstructor:
     def create_icon_label(
         self, layout: QHBoxLayout
     ) -> tuple[QVBoxLayout, QWidget, QVBoxLayout, QLabel]:
-        style = self.theme.window_search.window_item_container.item_frame.icon_container
+        style = self.theme.window_search.window_item.icon_container
 
         
 
         container: QWidget = QWidget()
         container.setObjectName("iconContainer")
-        container.setFixedSize(QSize(style.width, style.height))
+        container.setFixedSize(QSize(
+            style.dimension.width, style.dimension.height
+        ))
 
         outer_container: QWidget = QWidget()
         outer_layout: QVBoxLayout = QVBoxLayout(outer_container)
@@ -135,8 +137,12 @@ class WinItemConstructor:
         
         c_layout: QVBoxLayout = QVBoxLayout(container)
 
-        icon_width = style.width - style.margin[0] - style.margin[2]
-        icon_height = style.height - style.margin[1] - style.margin[3]
+        icon_width = (
+            style.dimension.width - style.margin[0] - style.margin[2]
+        )
+        icon_height = (
+            style.dimension.height - style.margin[1] - style.margin[3]
+        )
 
         icon_label: QLabel = QLabel()
         icon_label.setObjectName("iconLabel")
@@ -162,12 +168,12 @@ class WinItemConstructor:
 
     def create_window_title_label(self, layout: QHBoxLayout) -> QLabel:
         style = (
-            self.theme.window_search.window_item_container.item_frame.title_label
+            self.theme.window_search.window_item.title_label
         )
 
         title_label: QLabel = QLabel()
         title_label.setObjectName("titleLabel")
-        title_label.setText(style.preload_text)
+        title_label.setText("Loading . . .")
 
         title_label.setWordWrap(True)
 
@@ -183,7 +189,7 @@ class WinItemConstructor:
         return title_label
 
     def create_key_bind_label(self, layout: QHBoxLayout) -> QLabel:
-        style = self.theme.window_search.window_item_container.item_frame.key_bind_lable
+        style = self.theme.window_search.window_item.keybind_label
 
         key_bind_label: QLabel = QLabel()
         key_bind_label.setObjectName("keyBindLabel")

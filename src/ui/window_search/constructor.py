@@ -1,13 +1,15 @@
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QLineEdit, QSizePolicy, QVBoxLayout, QWidget
 
+from src.core.config.config import Config
 from src.core.theme.theme import Theme
 from src.ui.window_search.widgets import Panel, SearchBox
 
 
 class PanelConstructor:
-    def __init__(self, theme: Theme, root_layout: QVBoxLayout) -> None:
-        self.theme = theme
+    def __init__(self, config: Config, theme: Theme, root_layout: QVBoxLayout) -> None:
+        self.config: Config = config
+        self.theme: Theme = theme
         self.root_layout: QVBoxLayout = root_layout
 
         self.panel: Panel
@@ -39,7 +41,7 @@ class PanelConstructor:
         return panel
 
     def color_panel(self):
-        style = self.theme.window_search
+        style = self.theme.window_search.color_style
 
         self.panel.widget.setStyleSheet(f"""
         #Panel {{
@@ -80,7 +82,7 @@ class PanelConstructor:
 
         self.search_box.container.setStyleSheet(f"""
         #searchBox {{
-            background-color: {style.background_color};
+            background-color: {style.color_style.background_color};
         }}
         """)
 
@@ -91,11 +93,16 @@ class PanelConstructor:
             style.line_edit.margin[3],
         )
 
+        line_edit_style = self.theme.helper.get_line_edit_style(
+            style=style.line_edit
+        )
         self.search_box.line_edit.setStyleSheet(f"""#lineEdit {{
-            {style.line_edit.to_style_sheet()}
+            {line_edit_style}
         }}""")
 
-        self.search_box.line_edit.setPlaceholderText(style.line_edit.place_holder_text)
+        self.search_box.line_edit.setPlaceholderText(
+            self.config.window_search.search_box.placeholder_text
+        )
 
         self.search_box.line_edit.setTextMargins(
             style.line_edit.text_margin[0],
@@ -104,5 +111,8 @@ class PanelConstructor:
             style.line_edit.text_margin[3],
         )
 
-        font = style.line_edit.font_style.to_qfont(self.search_box.line_edit.font())
+        font = self.theme.helper.to_qfont(
+            qfont=self.search_box.line_edit.font(),
+            font_style=style.line_edit.font_style
+        )
         self.search_box.line_edit.setFont(font)

@@ -21,15 +21,17 @@ from src.ui.window_search.window_item.manager import WinItemManager
 class WindowSearch(QWidget):
     def __init__(self, config: Config, theme: Theme, window_scanner: WindowScanner):
         super().__init__()
-        self.config = config
-        self.theme = theme
+        self.config: Config = config
+        self.theme: Theme = theme
 
         self.window_scanner: WindowScanner = window_scanner
 
         self.root_layout: QVBoxLayout = QVBoxLayout(self)
 
         self.panel_constructor: PanelConstructor = PanelConstructor(
-            self.theme, self.root_layout
+            config=self.config,
+            theme=self.theme,
+            root_layout=self.root_layout
         )
 
         self.main_panel: QWidget = self.create_window()
@@ -78,10 +80,10 @@ class WindowSearch(QWidget):
         self.recolor_container()
 
     def recolor_container(self):
-        container_style = self.theme.window_search.window_item_container
+        style = self.theme.window_search.window_item.color_style
         self.scroll_container.setStyleSheet(f"""
         #scrollContainer {{
-            background-color: {container_style.background_color};
+            background-color: {style.background_color};
         }}
         """)
 
@@ -115,7 +117,7 @@ class WindowSearch(QWidget):
 
     def create_window(self) -> QWidget:
 
-        config = self.config.window_switch_panel
+        config = self.config.window_search
         theme = self.theme.window_search
 
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
@@ -128,7 +130,7 @@ class WindowSearch(QWidget):
         window_margin = 12
         screen_width, screen_height = self.get_screen_size()
         window_height = theme.search_box.height + (
-            theme.window_item_container.item_frame.height
+            theme.window_item.frame_style.height
             * config.behavior.max_results_shown
         )
 
@@ -150,7 +152,7 @@ class WindowSearch(QWidget):
         return line_edit
 
     def create_list_scroller(self) -> QWidget:
-        container_style = self.theme.window_search.window_item_container
+        style = self.theme.window_search.window_item.color_style
 
         panel_layout: QVBoxLayout = cast(QVBoxLayout, self.main_panel.layout())
 
@@ -167,7 +169,7 @@ class WindowSearch(QWidget):
 
         container.setStyleSheet(f"""
         #scrollContainer {{
-            background-color: {container_style.background_color};
+            background-color: {style.background_color};
         }}
         """)
 

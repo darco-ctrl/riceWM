@@ -3,6 +3,7 @@ from typing import Any
 
 from src.core.events.event_bus import eventBus
 from src.core.theme.constructor import ThemeConstructor
+from src.core.theme.helper import ThemeHelper
 from src.core.theme.window_search.window_search import WindowSearchStyle
 
 
@@ -10,10 +11,10 @@ class Theme:
     def __init__(self, theme_path: str):
 
         self.constructor: ThemeConstructor = ThemeConstructor() 
-        
+        self.helper: ThemeHelper = ThemeHelper()
         self.theme_file_path = theme_path
         self.name: str = ""
-        self.window_search: WindowSearchStyle
+        self.window_search: WindowSearchStyle 
 
         self.load()
 

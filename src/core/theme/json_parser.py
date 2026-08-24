@@ -26,15 +26,6 @@ class JsonParser:
         )
 
     def get_font_style(self, style: dict) -> FontStyle:
-
-        QWEIGHT = {
-            "Thin": QFont.Weight.Thin,
-            "Light": QFont.Weight.Light,
-            "Normal": QFont.Weight.Normal,
-            "Medium": QFont.Weight.Medium,
-            "Bold": QFont.Weight.Bold,
-            "Black": QFont.Weight.Black,
-        }
         
         return FontStyle(
             family=style["family"],
@@ -44,7 +35,7 @@ class JsonParser:
             is_underline=style["is_underline"],
             letter_spacing=style["letter_spacing"],
             pixel_size=style["pixel_size"],
-            weight=QWEIGHT[style["weight"]]
+            weight=style["weight"]
         )
 
     def get_dimension(self, style) -> Dimension:

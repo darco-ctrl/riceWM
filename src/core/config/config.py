@@ -1,6 +1,6 @@
 import json
 
-from src.core.config.models import Behavior, C_WindowSearch
+from src.core.config.models import Behavior, C_WindowSearch, SearchBoxConfig
 
 
 class Config:
@@ -8,7 +8,7 @@ class Config:
         self.config_path = config_path
 
         self.name: str
-        self.window_switch_panel: C_WindowSearch
+        self.window_search: C_WindowSearch
         self.load()
 
     def reload(self):
@@ -26,7 +26,8 @@ class Config:
     def create_data_classes(self, data: dict):
         self.name = data["name"]
 
-        wsp_dict = data["window_switch_panel"]
+        wsp_dict = data["window_search"]
+        search_box_dict = wsp_dict["search_box"]
         behavior_dict = wsp_dict["behavior"]
         # Behavior
         behavior: Behavior = Behavior(
@@ -34,7 +35,13 @@ class Config:
             max_results_shown=behavior_dict["max_results_shown"],
         )
 
+        search_box: SearchBoxConfig = SearchBoxConfig(
+            placeholder_text=search_box_dict["placeholder_text"]
+        )
+
         # Window Switch Panel
-        self.window_switch_panel = C_WindowSearch(
-            behavior=behavior, window_width=wsp_dict["window_width"]
+        self.window_search = C_WindowSearch(
+            search_box=search_box,
+            behavior=behavior,
+            window_width=wsp_dict["window_width"]
         )

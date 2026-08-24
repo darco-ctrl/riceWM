@@ -194,9 +194,11 @@ class ThemeConstructor:
         selection_color = self.json_parser.get_color_style(
             style=style["selection_color_style"]
         )
+        container_margin: list = style["container_margin"]
 
         return IconContainerStyle(
             border_style=border_style,
+            container_margin=container_margin,
             color_style=color_style,
             dimension=dimension,
             margin=margin,

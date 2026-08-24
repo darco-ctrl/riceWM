@@ -25,7 +25,7 @@ class WinItemThemeApplier:
         self.recolor_keybind_label(window_item.key_bind_label)
 
     def recolor_frame(self, frame: QWidget):
-        frame_style = self.theme.window_search.window_item_container.item_frame
+        frame_style = self.theme.window_search.window_item.frame_style
         border_style = frame_style.border_style
 
         frame.setFixedHeight(frame_style.height)
@@ -38,7 +38,7 @@ class WinItemThemeApplier:
                 border-right-width: {border_style.width[2]}px;
                 border-bottom-width: {border_style.width[3]}px;
                 border-color: {border_style.color};
-                background-color: {frame_style.background_color};
+                background-color: {frame_style.color_style.background_color};
             }}
         """)
         frame_layout: QHBoxLayout = cast(QHBoxLayout, frame.layout())
@@ -50,12 +50,14 @@ class WinItemThemeApplier:
         )
 
     def recolor_selection_indicator(self, selection_indicator: QWidget):
-        style = self.theme.window_search.window_item_container.item_frame.selection_indicator
+        style = self.theme.window_search.window_item.selection_indicator
 
-        selection_indicator.setFixedSize(QSize(style.width, style.height))
+        selection_indicator.setFixedSize(QSize(
+            style.dimension.width, style.dimension.height
+        ))
         selection_indicator.setStyleSheet(f"""
         #selectionIndicator {{
-                background-color: {style.background_color};
+                background-color: {style.color_style.background_color};
             }}
         """)
 
@@ -63,9 +65,11 @@ class WinItemThemeApplier:
         self, outer_layout: QVBoxLayout, container: QWidget, layout: QVBoxLayout, icon_label: QLabel
     ):  
 
-        style = self.theme.window_search.window_item_container.item_frame.icon_container
+        style = self.theme.window_search.window_item.icon_container
         
-        container.setFixedSize(QSize(style.width, style.height))
+        container.setFixedSize(QSize(
+            style.dimension.width, style.dimension.height
+        ))
         container.setStyleSheet(f"""
             #iconContainer {{
                 border-style: {style.border_style.style};
@@ -75,7 +79,7 @@ class WinItemThemeApplier:
                 border-right-width: {style.border_style.width[2]}px;
                 border-bottom-width: {style.border_style.width[3]}px;
                 border-color: {style.border_style.color};
-                background-color: {style.background_color};
+                background-color: {style.color_style.background_color};
             }}
         """)
         layout.setContentsMargins(
@@ -85,14 +89,18 @@ class WinItemThemeApplier:
             style.margin[3],
         )
 
-        icon_width = style.width - style.margin[0] - style.margin[2]
-        icon_height = style.height - style.margin[1] - style.margin[3]
+        icon_width = (
+            style.dimension.width - style.margin[0] - style.margin[2]
+        )
+        icon_height = (
+            style.dimension.height - style.margin[1] - style.margin[3]
+        )
 
         icon_label.setFixedSize(QSize(icon_width, icon_height))
 
     def recolor_title_label(self, label: QLabel):
         style = (
-            self.theme.window_search.window_item_container.item_frame.title_label
+            self.theme.window_search.window_item.title_label
         )
 
         # label.setFixedSize(QSize(style.width, style.height))
@@ -105,23 +113,28 @@ class WinItemThemeApplier:
             border-right-width: {style.border_style.width[2]}px;
             border-bottom-width: {style.border_style.width[3]}px;
             border-color: {style.border_style.color};
-            background-color: {style.background_color};
-            color: {style.color}
+            background-color: {style.color_style.background_color};
+            color: {style.color_style.color}
         }}
         """)
 
         label.setMargin(style.margin)
 
-        font = style.font_style.to_qfont(label.font())
+        font = self.theme.helper.to_qfont(
+            font_style=style.font_style,
+            qfont=label.font()
+        )
         label.setFont(font)
 
         # print("reapplied theme to window title...")
 
     def recolor_keybind_label(self, label: QLabel):
-        style = self.theme.window_search.window_item_container.item_frame.key_bind_lable
+        style = self.theme.window_search.window_item.keybind_label
 
         # print(f"setting keybind label background color to : {style.background_color}")
-        label.setFixedSize(QSize(style.width, style.height))
+        label.setFixedSize(QSize(
+            style.dimension.width, style.dimension.height
+        ))
         label.setStyleSheet(f"""
         #keyBindLabel {{
             border-style: {style.border_style.style};
@@ -131,24 +144,27 @@ class WinItemThemeApplier:
             border-right-width: {style.border_style.width[2]}px;
             border-bottom-width: {style.border_style.width[3]}px;
             border-color: {style.border_style.color};
-            background-color: {style.background_color};
-            color: {style.color}
+            background-color: {style.color_style.background_color};
+            color: {style.color_style.color}
         }}
         """)
 
         label.setMargin(style.margin)
 
-        font = style.font_style.to_qfont(label.font())
+        font = self.theme.helper.to_qfont(
+            font_style=style.font_style,
+            qfont=label.font()
+        )
         label.setFont(font)
 
     def select_window(self, window: WindowItem):
 
-        style = self.theme.window_search.window_item_container.item_frame
+        style = self.theme.window_search.window_item
 
-        frame_style = style.on_selected
-        label_style = style.title_label.on_selected
-        icon_style = style.icon_container.on_selected
-        keybind_style = style.key_bind_lable.on_selected
+        frame_style = style.frame_style.selection_color
+        label_style = style.title_label.selection_color
+        icon_style = style.icon_container.selection_color
+        keybind_style = style.keybind_label.selection_color
         
         frame = window.frame
         title_label = window.title_label
@@ -190,11 +206,11 @@ class WinItemThemeApplier:
 
     def deselect_window(self, window: WindowItem):
         
-        style = self.theme.window_search.window_item_container.item_frame
+        style = self.theme.window_search.window_item
         
-        label_style = style.title_label
-        icon_style = style.icon_container
-        keybind_style = style.key_bind_lable
+        label_style = style.title_label.color_style
+        icon_style = style.icon_container.color_style
+        keybind_style = style.keybind_label.color_style
         
         frame = window.frame
         title_label = window.title_label
@@ -207,7 +223,7 @@ class WinItemThemeApplier:
         # FRAME
         frame.setStyleSheet(f"""
         #itemFrame {{
-            background-color: {style.background_color};
+            background-color: {style.color_style.background_color};
         }}
         """)
 
