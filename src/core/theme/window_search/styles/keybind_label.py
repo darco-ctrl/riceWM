@@ -1,12 +1,14 @@
 
+
 from dataclasses import dataclass
 
 from src.core.theme.components.label_style import LabelStyle
 from src.core.theme.primitives.color_style import ColorStyle
+from src.core.theme.primitives.dimension import Dimension
 
 
 @dataclass
-class TitleLabelStyle(LabelStyle):
-    preload_text: str
+class KeybindLabelStyle(LabelStyle):
+    dimension: Dimension
     margin: int
     selection_color: ColorStyle
