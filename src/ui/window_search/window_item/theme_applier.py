@@ -161,10 +161,10 @@ class WinItemThemeApplier:
 
         style = self.theme.window_search.window_item
 
-        frame_style = style.frame_style.selection_color
-        label_style = style.title_label.selection_color
-        icon_style = style.icon_container.selection_color
-        keybind_style = style.keybind_label.selection_color
+        frame_style = style.frame_style
+        label_style = style.title_label
+        icon_style = style.icon_container
+        keybind_style = style.keybind_label
         
         frame = window.frame
         title_label = window.title_label
@@ -177,40 +177,137 @@ class WinItemThemeApplier:
         # FRAME
         frame.setStyleSheet(f"""
         #itemFrame {{
-            background-color: {frame_style.background_color};
+            border-style: {
+                frame_style.border_style.style
+            };
+            border-radius: {
+                frame_style.border_style.radius
+            }px;
+            border-left-width: {
+                frame_style.border_style.width[0]
+            }px;
+            border-top-width: {
+                frame_style.border_style.width[1]
+            }px;
+            border-right-width: {
+                frame_style.border_style.width[2]
+            }px;
+            border-bottom-width: {
+                frame_style.border_style.width[3]
+            }px;
+            border-color: {
+                frame_style.border_style.color
+            };
+            background-color: {
+                frame_style.selection_color.background_color
+            };
         }}
         """)
 
         # TITLE LABEL
         title_label.setStyleSheet(f"""
         #titleLabel {{
-            background-color: {label_style.background_color};
-            color: {label_style.color}
+            border-style: {
+                label_style.border_style.style
+            };
+            border-radius: {
+                label_style.border_style.radius
+            }px;
+            border-left-width: {
+                label_style.border_style.width[0]
+            }px;
+            border-top-width: {
+                label_style.border_style.width[1]
+            }px;
+            border-right-width: {
+                label_style.border_style.width[2]
+            }px;
+            border-bottom-width: {
+                label_style.border_style.width[3]
+            }px;
+            border-color: {
+                label_style.border_style.color
+            };
+            background-color: {
+                label_style.selection_color.background_color
+            };
+            color: {
+                label_style.selection_color.color
+            }
         }}
         """)
 
         # ICON CONTAINER
         icon.setStyleSheet(f"""
         #iconContainer {{
-            background-color: {icon_style.background_color}
+            border-style: {
+                icon_style.border_style.style
+            };
+            border-radius: {
+                icon_style.border_style.radius
+            }px;
+            border-left-width: {
+                icon_style.border_style.width[0]
+            }px;
+            border-top-width: {
+                icon_style.border_style.width[1]
+            }px;
+            border-right-width: {
+                icon_style.border_style.width[2]
+            }px;
+            border-bottom-width: {
+                icon_style.border_style.width[3]
+            }px;
+            border-color: {
+                icon_style.border_style.color
+            };
+            background-color: {
+                icon_style.selection_color.background_color
+            };
         }}
         """)
 
         # KEYBIND LABEL
         keybind.setStyleSheet(f"""
         #keyBindLabel {{
-            background-color: {keybind_style.background_color};
-            color: {keybind_style.color}
+            border-style: {
+                keybind_style.border_style.style
+            };
+            border-radius: {
+                keybind_style.border_style.radius
+            }px;
+            border-left-width: {
+                keybind_style.border_style.width[0]
+            }px;
+            border-top-width: {
+                keybind_style.border_style.width[1]
+            }px;
+            border-right-width: {
+                keybind_style.border_style.width[2]
+            }px;
+            border-bottom-width: {
+                keybind_style.border_style.width[3]
+            }px;
+            border-color: {
+                keybind_style.border_style.color
+            };
+            background-color: {
+                keybind_style.selection_color.background_color
+            };
+            color: {
+                keybind_style.selection_color.color
+            }
         }}
         """)
 
     def deselect_window(self, window: WindowItem):
         
         style = self.theme.window_search.window_item
-        
-        label_style = style.title_label.color_style
-        icon_style = style.icon_container.color_style
-        keybind_style = style.keybind_label.color_style
+
+        frame_style = style.frame_style
+        label_style = style.title_label
+        icon_style = style.icon_container
+        keybind_style = style.keybind_label
         
         frame = window.frame
         title_label = window.title_label
@@ -223,29 +320,125 @@ class WinItemThemeApplier:
         # FRAME
         frame.setStyleSheet(f"""
         #itemFrame {{
-            background-color: {style.color_style.background_color};
+            border-style: {
+                frame_style.border_style.style
+            };
+            border-radius: {
+                frame_style.border_style.radius
+            }px;
+            border-left-width: {
+                frame_style.border_style.width[0]
+            }px;
+            border-top-width: {
+                frame_style.border_style.width[1]
+            }px;
+            border-right-width: {
+                frame_style.border_style.width[2]
+            }px;
+            border-bottom-width: {
+                frame_style.border_style.width[3]
+            }px;
+            border-color: {
+                frame_style.border_style.color
+            };
+            background-color: {
+                frame_style.color_style.background_color
+            };
         }}
         """)
 
         # TITLE LABEL
         title_label.setStyleSheet(f"""
         #titleLabel {{
-            background-color: {label_style.background_color};
-            color: {label_style.color}
+            border-style: {
+                label_style.border_style.style
+            };
+            border-radius: {
+                label_style.border_style.radius
+            }px;
+            border-left-width: {
+                label_style.border_style.width[0]
+            }px;
+            border-top-width: {
+                label_style.border_style.width[1]
+            }px;
+            border-right-width: {
+                label_style.border_style.width[2]
+            }px;
+            border-bottom-width: {
+                label_style.border_style.width[3]
+            }px;
+            border-color: {
+                label_style.border_style.color
+            };
+            background-color: {
+                label_style.color_style.background_color
+            };
+            color: {
+                label_style.color_style.color
+            }
         }}
         """)
 
         # ICON CONTAINER
         icon.setStyleSheet(f"""
         #iconContainer {{
-            background-color: {icon_style.background_color}
+            border-style: {
+                icon_style.border_style.style
+            };
+            border-radius: {
+                icon_style.border_style.radius
+            }px;
+            border-left-width: {
+                icon_style.border_style.width[0]
+            }px;
+            border-top-width: {
+                icon_style.border_style.width[1]
+            }px;
+            border-right-width: {
+                icon_style.border_style.width[2]
+            }px;
+            border-bottom-width: {
+                icon_style.border_style.width[3]
+            }px;
+            border-color: {
+                icon_style.border_style.color
+            };
+            background-color: {
+                icon_style.color_style.background_color
+            };
         }}
         """)
 
         # KEYBIND LABEL
         keybind.setStyleSheet(f"""
         #keyBindLabel {{
-            background-color: {keybind_style.background_color};
-            color: {keybind_style.color}
+            border-style: {
+                keybind_style.border_style.style
+            };
+            border-radius: {
+                keybind_style.border_style.radius
+            }px;
+            border-left-width: {
+                keybind_style.border_style.width[0]
+            }px;
+            border-top-width: {
+                keybind_style.border_style.width[1]
+            }px;
+            border-right-width: {
+                keybind_style.border_style.width[2]
+            }px;
+            border-bottom-width: {
+                keybind_style.border_style.width[3]
+            }px;
+            border-color: {
+                keybind_style.border_style.color
+            };
+            background-color: {
+                keybind_style.color_style.background_color
+            };
+            color: {
+                keybind_style.color_style.color
+            }
         }}
         """)

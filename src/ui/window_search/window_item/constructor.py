@@ -61,7 +61,7 @@ class WinItemConstructor:
         frame = self.create_item_frame()
         f_layout: QHBoxLayout = cast(QHBoxLayout, frame.layout())
 
-        selection_indicator = self.create_selection_indicator(f_layout)
+        parent, selection_indicator = self.create_selection_indicator(f_layout)
         outer_layout, icon_container, c_layout, icon_label = self.create_icon_label(f_layout)
         title_label = self.create_window_title_label(f_layout)
         key_bind_label = self.create_key_bind_label(f_layout)
@@ -78,6 +78,7 @@ class WinItemConstructor:
             icon_container=icon_container,
             c_layout=c_layout,
             icon_label=icon_label,
+            selection_indicator_parent=parent,
             selection_indicator=selection_indicator,
             title_label=title_label
         )
@@ -98,15 +99,31 @@ class WinItemConstructor:
 
         return frame
 
-    def create_selection_indicator(self, layout: QHBoxLayout) -> QWidget:
+    def create_selection_indicator(
+        self, layout: QHBoxLayout
+    ) -> tuple[QWidget, QFrame]:
         style = self.theme.window_search.window_item.selection_indicator
 
-        indicator: QWidget = QWidget()
+        container: QWidget = QWidget()
+        c_layout: QVBoxLayout = QVBoxLayout(container)
+
+        c_layout.setContentsMargins(
+            style.margin[0],
+            style.margin[1],
+            style.margin[2],
+            style.margin[3],
+        )
+        
+        indicator: QFrame = QFrame()
         indicator.setObjectName("selectionIndicator")
 
-        layout.addWidget(indicator, alignment=Qt.AlignmentFlag.AlignVCenter)
+        c_layout.addWidget(
+            indicator, alignment=Qt.AlignmentFlag.AlignVCenter
+        )
 
-        return indicator
+        layout.addWidget(container)
+
+        return container, indicator
 
     def create_icon_label(
         self, layout: QHBoxLayout

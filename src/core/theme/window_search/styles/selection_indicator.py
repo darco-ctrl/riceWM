@@ -7,3 +7,4 @@ from src.core.theme.primitives.dimension import Dimension
 @dataclass
 class SelectionIndicatorStyle(FrameStyle):
     dimension: Dimension
+    margin: list

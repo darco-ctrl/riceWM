@@ -168,8 +168,11 @@ class ThemeConstructor:
             style=style["dimension"]
         )
 
+        margin = style["margin"]
+
         return SelectionIndicatorStyle(
             border_style=border_style,
+            margin=margin,
             color_style=color_style,
             dimension=dimension
         )

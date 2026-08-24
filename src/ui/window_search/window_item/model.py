@@ -1,3 +1,5 @@
+from typing import cast
+
 import win32gui
 from PySide6.QtGui import QPixmap, Qt
 from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QVBoxLayout, QWidget
@@ -12,7 +14,8 @@ class WindowItem:
         icon_path: str,
         index: int,
         frame: QFrame,
-        selection_indicator: QWidget,
+        selection_indicator_parent: QWidget,
+        selection_indicator: QFrame,
         icon_layout: QVBoxLayout,
         icon_container: QWidget,
         c_layout: QVBoxLayout,
@@ -26,7 +29,8 @@ class WindowItem:
         self.icon_path: str = icon_path
         self.index: int = index
         self.frame: QFrame = frame
-        self.selection_indicator: QWidget = selection_indicator
+        self.selection_indicator_parent: QWidget = selection_indicator_parent
+        self.selection_indicator: QFrame = selection_indicator
         self.icon_layout: QWidget = icon_layout
         self.icon_container: QWidget = icon_container
         self.icon_layout: QVBoxLayout = c_layout
@@ -48,7 +52,7 @@ class WindowItem:
             
         if self.is_selected:
 
-            self.selection_indicator.setVisible(True)
+            self.selection_indicator_parent.setVisible(True)
             # self.selection_indicator.setStyleSheet(f"""
             #selectionIndicator {{
                 # background-color: {self.indicator_color};
@@ -57,7 +61,7 @@ class WindowItem:
             
         else:
 
-            self.selection_indicator.setVisible(False)
+            self.selection_indicator_parent.setVisible(False)
             # self.selection_indicator.setStyleSheet("""
             # selectionIndicator {
                 # background-color: transparent;
