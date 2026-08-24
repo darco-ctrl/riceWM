@@ -1,7 +1,10 @@
 {
     "name": "RiceWM Default Config",
-    "window_switch_panel": {
+    "window_search": {
         "window_width": 600,
+        "search_box": {
+            "placeholder_text": "Search window . . ."
+        },
         "behavior": {
             "max_results_shown": 5,
             "auto_adjust_height": false
