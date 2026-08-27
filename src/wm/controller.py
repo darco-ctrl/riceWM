@@ -1,3 +1,4 @@
+from pyvda.pyvda import AppView, VirtualDesktop
 import pywintypes
 import win32con
 import win32gui
@@ -29,8 +30,15 @@ class WindowController:
         _ = eventBus.focusWindow.connect(self.focus_window)
 
     def focus_window(self, hwnd: int):
-        # self.set_focus(hwnd)
-        print(f"Open window: {hwnd}")
+        try:
+            window_view: AppView = AppView(hwnd=hwnd)
+
+            desktop: VirtualDesktop = window_view.desktop
+            desktop.go()
+
+            self.set_focus(hwnd)
+        except Exception as e:
+            print(f"Failed to retrive Virtual Desktop,\n error: {e}")
 
     def window_go_left(self):
         # This is for future

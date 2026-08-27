@@ -66,6 +66,7 @@ class WindowSearch(QWidget):
 
     def focus_selected_window(self):
         self.winitem_manager.focus_selected_window()
+        self.hide_window()
         
     def on_wsp_select_up(self):
         if not self.isVisible():
