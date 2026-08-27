@@ -53,10 +53,11 @@ class WindowSearch(QWidget):
         self.connect_event()
 
     def connect_event(self):
-        eventBus.wspToggleRequested.connect(self.toggle_window)
-        eventBus.reloadWSPThemeRequested.connect(self.reload_theme)
-        eventBus.itemSelectUp.connect(self.on_wsp_select_up)
-        eventBus.itemSelectDown.connect(self.on_wsp_select_down)
+        _ = eventBus.wspToggleRequested.connect(self.toggle_window)
+        _ = eventBus.reloadWSPThemeRequested.connect(self.reload_theme)
+        _ = eventBus.itemSelectUp.connect(self.on_wsp_select_up)
+        _ = eventBus.itemSelectDown.connect(self.on_wsp_select_down)
+        _ = eventBus.wspCloseRequested.connect(self.hide_window)
 
     def on_wsp_select_up(self):
         if not self.isVisible():
@@ -95,7 +96,6 @@ class WindowSearch(QWidget):
             self.show_window()
 
     def event(self, event):
-
         if event.type() == QEvent.Type.WindowDeactivate:
             self.hide_window()
 
@@ -156,9 +156,15 @@ class WindowSearch(QWidget):
 
         panel_layout: QVBoxLayout = cast(QVBoxLayout, self.main_panel.layout())
 
-        scroll: QScrollArea = QScrollArea()
+        scroll = QScrollArea()
         scroll.setWidgetResizable(True)
-        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        
+        scroll.setHorizontalScrollBarPolicy(
+            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
+        )
+        scroll.setVerticalScrollBarPolicy(
+            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
+        )
 
         container: QWidget = QWidget()
         container.setObjectName("scrollContainer")

@@ -12,6 +12,7 @@ class EventBus(QObject):
     windowFocused = Signal(int)
 
     wspToggleRequested = Signal()
+    wspCloseRequested = Signal()
     dataReloadRequested = Signal()
     itemSelectDown = Signal()
     itemSelectUp = Signal()
