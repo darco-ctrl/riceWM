@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QVBoxLayout
 
 from src.core.config.config import Config
+from src.core.events.event_bus import eventBus
 from src.core.theme.theme import Theme
 from src.services.window.scanner import WindowScanner
 from src.ui.window_search.window_item.constructor import WinItemConstructor
@@ -54,6 +55,11 @@ class WinItemManager:
             self.theme_applier.select_window(
                 window=select_window_item
             )
+
+    def focus_selected_window(self):
+        window = self.window_items[self.current_selection]
+
+        eventBus.focusWindow.emit(window.hwnd)
 
     def change_sel_window(self, window: WindowItem, prev_window: WindowItem):
         self.theme_applier.deselect_window(prev_window)

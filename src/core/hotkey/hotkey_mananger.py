@@ -27,6 +27,7 @@ class HotKeyManager:
                 wsp_key_map.close_window: self.on_wsp_close,
                 wsp_key_map.select_up: self.on_wsp_select_up,
                 wsp_key_map.select_down: self.on_wsp_select_down,
+                wsp_key_map.focus_window: self.on_focus_window,
                 data_manager.reload_data: self.on_data_reload,
                 vdesktop.create_new: self.on_vdesktop_new,
                 vdesktop.delete_current: self.on_vdesktop_delete,
@@ -52,6 +53,9 @@ class HotKeyManager:
 
     def on_wsp_close(self):
         eventBus.wspCloseRequested.emit()
+
+    def on_focus_window(self):
+        eventBus.wspFocusSelectedWindow.emit()
 
     def on_vdesktop_new(self):
         eventBus.createNewVDesktop.emit()

@@ -12,6 +12,7 @@ class WindowSwitchPanelKB:
     close_window: str
     select_up: str
     select_down: str
+    focus_window: str
 
 @dataclass
 class WindowControlsKB:

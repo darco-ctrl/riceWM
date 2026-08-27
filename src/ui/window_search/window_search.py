@@ -54,11 +54,19 @@ class WindowSearch(QWidget):
 
     def connect_event(self):
         _ = eventBus.wspToggleRequested.connect(self.toggle_window)
-        _ = eventBus.reloadWSPThemeRequested.connect(self.reload_theme)
         _ = eventBus.itemSelectUp.connect(self.on_wsp_select_up)
         _ = eventBus.itemSelectDown.connect(self.on_wsp_select_down)
         _ = eventBus.wspCloseRequested.connect(self.hide_window)
+        _ = eventBus.reloadWSPThemeRequested.connect(
+            self.reload_theme
+        )
+        _ = eventBus.wspFocusSelectedWindow.connect(
+            self.focus_selected_window
+        )
 
+    def focus_selected_window(self):
+        self.winitem_manager.focus_selected_window()
+        
     def on_wsp_select_up(self):
         if not self.isVisible():
             return

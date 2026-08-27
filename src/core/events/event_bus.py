@@ -16,16 +16,18 @@ class EventBus(QObject):
     dataReloadRequested = Signal()
     itemSelectDown = Signal()
     itemSelectUp = Signal()
+    wspFocusSelectedWindow = Signal()
 
     createNewVDesktop = Signal()
     deleteCurrentVDesktop = Signal()
     vDesktopGoLeft = Signal()
     vDesktopGoRight = Signal()
+    focusWindow = Signal(int)
 
     windowGoLeft = Signal()
     windowGoRight = Signal()
 
     reloadWSPThemeRequested = Signal()
-
+    
 
 eventBus = EventBus()

@@ -26,6 +26,11 @@ class WindowController:
 
         _ = eventBus.windowGoLeft.connect(self.window_go_left)
         _ = eventBus.windowGoRight.connect(self.window_go_right)
+        _ = eventBus.focusWindow.connect(self.focus_window)
+
+    def focus_window(self, hwnd: int):
+        # self.set_focus(hwnd)
+        print(f"Open window: {hwnd}")
 
     def window_go_left(self):
         # This is for future

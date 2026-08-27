@@ -41,6 +41,7 @@ class KeyMap:
         dict = data["window_search"]
 
         self.window_switch_panel = WindowSwitchPanelKB(
+            focus_window=dict["focus_selected_window"],
             close_window=dict["close_window"],
             toggle=dict["toggle"],
             select_up=dict["select_up"],
