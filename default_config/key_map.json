@@ -3,9 +3,11 @@
         "reload_data": "<ctrl>+<alt>+<f12>"
     },
     "window_search": {
+        "close_window": "<esc>",
         "toggle": "<ctrl>+<shift>+\\",
         "select_up": "<ctrl>+w",
-        "select_down": "<ctrl>+s"
+        "select_down": "<ctrl>+s",
+        "focus_selected_window": "<enter>"
     },
     "window_manager": {
         "virtual_desktop": {
