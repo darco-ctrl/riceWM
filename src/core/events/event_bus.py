@@ -2,32 +2,34 @@ from PySide6.QtCore import QObject, Signal
 
 
 class EventBus(QObject):
-    windowCreated = Signal(int)
-    windowShow = Signal(int)
-    windowDeystroyed = Signal(int)
-    windowMaximized = Signal(int)
-    windowMinimized = Signal(int)
-    windowRestore = Signal(int)
-    windowFullscreen = Signal(int)
-    windowFocused = Signal(int)
+    windowCreated: Signal = Signal(int)
+    windowShow: Signal = Signal(int)
+    windowDeystroyed: Signal = Signal(int)
+    windowMaximized: Signal = Signal(int)
+    windowMinimized: Signal = Signal(int)
+    windowRestore: Signal = Signal(int)
+    windowFullscreen: Signal = Signal(int)
+    windowFocused: Signal = Signal(int)
 
-    wspToggleRequested = Signal()
-    wspCloseRequested = Signal()
-    dataReloadRequested = Signal()
-    itemSelectDown = Signal()
-    itemSelectUp = Signal()
-    wspFocusSelectedWindow = Signal()
+    wspToggleRequested: Signal = Signal()
+    wspCloseRequested: Signal = Signal()
+    dataReloadRequested: Signal = Signal()
+    itemSelectDown: Signal = Signal()
+    itemSelectUp: Signal = Signal()
+    wspFocusSelectedWindow: Signal = Signal()
 
-    createNewVDesktop = Signal()
-    deleteCurrentVDesktop = Signal()
-    vDesktopGoLeft = Signal()
-    vDesktopGoRight = Signal()
-    focusWindow = Signal(int)
+    updateWindowItemList: Signal = Signal()
 
-    windowGoLeft = Signal()
-    windowGoRight = Signal()
+    createNewVDesktop: Signal = Signal()
+    deleteCurrentVDesktop: Signal = Signal()
+    vDesktopGoLeft: Signal = Signal()
+    vDesktopGoRight: Signal = Signal()
+    focusWindow: Signal = Signal(int)
 
-    reloadWSPThemeRequested = Signal()
+    windowGoLeft: Signal = Signal()
+    windowGoRight: Signal = Signal()
+
+    reloadWSPThemeRequested: Signal = Signal()
     
 
 eventBus = EventBus()

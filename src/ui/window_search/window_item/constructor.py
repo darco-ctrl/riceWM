@@ -38,27 +38,54 @@ class WinItemConstructor:
         for item_index in items:
             windows[item_index].update()
 
-    def delete_window_items(
+    def delete_windows_info(
         self, 
         items: list[int],
         windows_item: list[WindowItem], 
         windows_info: list[WindowInfo]
     ):
         for index in sorted(items, reverse=True):
-
-            window_item: WindowItem = windows_item[index]
-            info_index = self.helper.get_info_index(
-                info=window_item.info,
-                list=windows_info
+            self.delete_window_info(
+                index=index,
+                windows_info=windows_info,
+                windows_item=windows_item
             )
-            if info_index != -1:
-                _ = windows_info.pop(info_index)
-                _ = windows_item.pop(index)
-            
-            window_item.delete()
-            del window_item
+
+    def delete_window_info(
+        self, 
+        index: int, 
+        windows_item: list[WindowItem],
+        windows_info: list[WindowInfo]
+    ):
+        window_item: WindowItem = windows_item[index]
+        info_index = self.helper.get_info_index(
+            info=window_item.info,
+            list=windows_info
+        )
+        if info_index != -1:
+            _ = windows_info.pop(info_index)
+            _ = windows_item.pop(index)
+        
+        window_item.delete()
+        del window_item
 
     def create_window_items(
+        self,
+        new_info: list[WindowInfo],
+        window_items: list[WindowItem]
+    ):
+        keybind_count = 0
+        for i in range(len(new_info)-1 , -1, -1):
+            keybind_count += 1
+            
+            window_info: WindowInfo = new_info[i] 
+            _ = self.create_window_item(
+                count=keybind_count,
+                window_info=window_info,
+                window_items=window_items
+            )
+
+    def create_new_window_items(
         self, 
         new_info: list[WindowInfo], 
         window_items: list[WindowItem],
@@ -67,20 +94,23 @@ class WinItemConstructor:
         count = 1
         for window_info in new_info:
             window_item: WindowItem = self.create_window_item(
-                count, window_info
+                count=count,
+                window_info=window_info,
+                window_items=window_items
             )
-            window_item.load()
 
             count += 1
             
-            window_items.append(window_item)
             current_info.append(window_info)
             
             self.theme_applier.recolor_item(window_item=window_item)
 
     
     def create_window_item(
-        self, count: int, window_info: WindowInfo
+        self, 
+        count: int, 
+        window_info: WindowInfo,
+        window_items: list[WindowItem]
     ) -> WindowItem:  # m layout is main scroller layout
         frame = self.create_item_frame()
         f_layout: QHBoxLayout = cast(QHBoxLayout, frame.layout())
@@ -105,6 +135,9 @@ class WinItemConstructor:
         )
 
         window_item.update_indicator()
+        window_item.load()
+
+        window_items.append(window_item)
 
         return window_item
 
@@ -236,3 +269,10 @@ class WinItemConstructor:
         layout.addWidget(key_bind_label, alignment=Qt.AlignmentFlag.AlignVCenter)
 
         return key_bind_label
+
+    def delete_all_winitems(self, window_items: list[WindowItem]):
+        for i in range(len(window_items)):
+            window_item =  window_items[i]
+            window_item.delete()
+
+        window_items.clear()
