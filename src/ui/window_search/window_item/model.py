@@ -4,36 +4,32 @@ import win32gui
 from PySide6.QtGui import QPixmap, Qt
 from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
+from src.models.window import WindowInfo
+
 
 class WindowItem:
     def __init__(
         self,
-        hwnd: int,
-        name: str,
-        title: str,
-        icon_path: str,
-        index: int,
+        window_info: WindowInfo,
         frame: QFrame,
         selection_indicator_parent: QWidget,
         selection_indicator: QFrame,
-        icon_layout: QVBoxLayout,
+        icon_outer_layout: QVBoxLayout,
+        index: int,
         icon_container: QWidget,
-        c_layout: QVBoxLayout,
+        icon_inner_layout: QVBoxLayout,
         icon_label: QLabel,
         title_label: QLabel,
         key_bind_label: QLabel
     ) -> None:
-        self.hwnd: int = hwnd
-        self.name: str = name
-        self.title: str = title
-        self.icon_path: str = icon_path
+        self.info: WindowInfo = window_info
         self.index: int = index
         self.frame: QFrame = frame
         self.selection_indicator_parent: QWidget = selection_indicator_parent
         self.selection_indicator: QFrame = selection_indicator
-        self.icon_layout: QWidget = icon_layout
+        self.icon_background: QVBoxLayout = icon_outer_layout
         self.icon_container: QWidget = icon_container
-        self.icon_layout: QVBoxLayout = c_layout
+        self.icon_layout: QVBoxLayout = icon_inner_layout
         self.icon_label: QLabel = icon_label
         self.title_label: QLabel = title_label
         self.key_bind_label: QLabel = key_bind_label
@@ -81,7 +77,7 @@ class WindowItem:
 
     def update(self):
 
-        self.title = win32gui.GetWindowText(self.hwnd)
+        self.info.title = win32gui.GetWindowText(self.info.hwnd)
 
         self.update_title_label()
         self.update_indicator()
@@ -94,11 +90,11 @@ class WindowItem:
         if not self.title_label:
             print("Title Label of window item is Empty refrence.")
 
-        self.title_label.setText(self.title)
+        self.title_label.setText(self.info.title)
 
     def update_window_icon(self):
 
-        pixmap = QPixmap(self.icon_path)
+        pixmap = QPixmap(self.info.icon_path)
         scaled_pixmap = pixmap.scaled(
             self.icon_label.size(),
             Qt.AspectRatioMode.IgnoreAspectRatio,

@@ -67,16 +67,13 @@ class WinItemConstructor:
         key_bind_label = self.create_key_bind_label(f_layout)
         
         window_item: WindowItem = WindowItem(
-            hwnd=window_info.hwnd,
-            name=window_info.name,
-            title=window_info.title,
-            icon_path=window_info.icon_path,
+            window_info=window_info,
             index=count,
             frame=frame,
             key_bind_label=key_bind_label,
-            icon_layout=outer_layout,
+            icon_outer_layout=outer_layout,
             icon_container=icon_container,
-            c_layout=c_layout,
+            icon_inner_layout=c_layout,
             icon_label=icon_label,
             selection_indicator_parent=parent,
             selection_indicator=selection_indicator,

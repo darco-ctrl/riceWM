@@ -14,7 +14,7 @@ from src.core.events.event_bus import eventBus
 from src.core.theme.theme import Theme
 from src.services.window.scanner import WindowScanner
 from src.ui.window_search.constructor import PanelConstructor
-from src.ui.window_search.search import TitleSearcher
+from src.ui.window_search.search_system.search_manager import SearchManager
 from src.ui.window_search.window_item.manager import WinItemManager
 
 
@@ -39,7 +39,7 @@ class WindowSearch(QWidget):
         self.search_line_edit: QLineEdit = self.create_search_box()
         self.scroll_container: QWidget = self.create_list_scroller()
 
-        self.title_searcher:TitleSearcher = TitleSearcher()
+        self.title_searcher:SearchManager = SearchManager()
 
         scroller_layout: QVBoxLayout = cast(QVBoxLayout, self.scroll_container.layout())
         self.winitem_manager: WinItemManager = WinItemManager(
@@ -195,9 +195,9 @@ class WindowSearch(QWidget):
         return container
 
     def on_search(self):
-
-        query = self.search_line_edit.text()
-        self.title_searcher.search(query)
+        pass
+        #query = self.search_line_edit.text()
+        #self.title_searcher.search(query)
 
     def get_screen_size(self) -> tuple[int, int]:
         screen = QGuiApplication.primaryScreen()

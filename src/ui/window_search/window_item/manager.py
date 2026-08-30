@@ -59,7 +59,7 @@ class WinItemManager:
     def focus_selected_window(self):
         window = self.window_items[self.current_selection]
 
-        eventBus.focusWindow.emit(window.hwnd)
+        eventBus.focusWindow.emit(window.info.hwnd)
 
     def change_sel_window(self, window: WindowItem, prev_window: WindowItem):
         self.theme_applier.deselect_window(prev_window)
@@ -118,7 +118,7 @@ class WinItemManager:
     def sort(self, window_items: list[WindowItem]):
         print(" sorting ")
 
-        window_items.sort(key=lambda item: item.title)
+        window_items.sort(key=lambda item: item.info.title)
 
         for i in range(len(window_items)):
             window_item = window_items[i]

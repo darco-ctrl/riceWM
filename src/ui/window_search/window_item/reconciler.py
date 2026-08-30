@@ -29,7 +29,7 @@ class StateReconciler:
                 (
                     (index, item)
                     for index, item in enumerate(window_item_lists)
-                    if item.hwnd == window.hwnd
+                    if item.info.hwnd == window.hwnd
                 ),
                 None,
             )
