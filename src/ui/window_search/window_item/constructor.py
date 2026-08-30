@@ -15,6 +15,7 @@ import src.app.paths as rice_paths
 from src.core.config.config import Config
 from src.core.theme.theme import Theme
 from src.models.window import WindowInfo
+from src.ui.window_search.window_item.helper import WindowItemHelper
 from src.ui.window_search.window_item.model import WindowItem
 from src.ui.window_search.window_item.theme_applier import WinItemThemeApplier
 
@@ -24,35 +25,58 @@ class WinItemConstructor:
         self, 
         config: Config, 
         theme: Theme,
-        theme_applier: WinItemThemeApplier
+        theme_applier: WinItemThemeApplier,
+        helper: WindowItemHelper
     ):
         self.config: Config = config
         self.theme: Theme = theme
         self.theme_applier: WinItemThemeApplier = theme_applier
+        self.helper: WindowItemHelper = helper
         
     def update_window_items(self, items: list[int], windows: list[WindowItem]):
 
         for item_index in items:
             windows[item_index].update()
 
-    def delete_window_items(self, items: list[int], window_items: list[WindowItem]):
+    def delete_window_items(
+        self, 
+        items: list[int],
+        windows_item: list[WindowItem], 
+        windows_info: list[WindowInfo]
+    ):
         for index in sorted(items, reverse=True):
-            window_items[index].delete()
-            del window_items[index]
+
+            window_item: WindowItem = windows_item[index]
+            info_index = self.helper.get_info_index(
+                info=window_item.info,
+                list=windows_info
+            )
+            if info_index != -1:
+                _ = windows_info.pop(info_index)
+                _ = windows_item.pop(index)
+            
+            window_item.delete()
+            del window_item
 
     def create_window_items(
-        self, windows_info: list[WindowInfo], window_items: list[WindowItem]
+        self, 
+        new_info: list[WindowInfo], 
+        window_items: list[WindowItem],
+        current_info: list[WindowInfo],
     ):
         count = 1
-        for window in windows_info:
-            window_item: WindowItem = self.create_window_item(count, window)
+        for window_info in new_info:
+            window_item: WindowItem = self.create_window_item(
+                count, window_info
+            )
             window_item.load()
 
             count += 1
+            
             window_items.append(window_item)
+            current_info.append(window_info)
+            
             self.theme_applier.recolor_item(window_item=window_item)
-
-        return window_items
 
     
     def create_window_item(

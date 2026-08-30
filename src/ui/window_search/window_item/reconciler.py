@@ -16,7 +16,9 @@ class StateReconciler:
     def __init__(self, window_scanner: WindowScanner):
         self.window_scanner: WindowScanner = window_scanner
 
-    def get_plan(self, window_item_lists: list[WindowItem]) -> TaskList:
+    def get_plan(
+        self, windows_info_list: list[WindowInfo]
+    ) -> TaskList:
 
         open_windows: list[WindowInfo] = self.window_scanner.get_windows_info()
 
@@ -28,8 +30,8 @@ class StateReconciler:
             match = next(
                 (
                     (index, item)
-                    for index, item in enumerate(window_item_lists)
-                    if item.info.hwnd == window.hwnd
+                    for index, item in enumerate(windows_info_list)
+                    if item.hwnd == window.hwnd
                 ),
                 None,
             )
@@ -41,7 +43,7 @@ class StateReconciler:
             else:
                 new_window.append(window)
 
-        for i in range(0, len(window_item_lists)):
+        for i in range(0, len(windows_info_list)):
             if not i in update_window:
                 delete_window.append(i)
 
