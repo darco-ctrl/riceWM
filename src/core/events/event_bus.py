@@ -1,5 +1,7 @@
 from PySide6.QtCore import QObject, Signal
 
+from src.models.window import WindowInfo
+
 
 class EventBus(QObject):
     windowCreated: Signal = Signal(int)
@@ -18,7 +20,7 @@ class EventBus(QObject):
     itemSelectUp: Signal = Signal()
     wspFocusSelectedWindow: Signal = Signal()
 
-    updateWindowItemList: Signal = Signal()
+    updateWindowItemList: Signal = Signal(list)
 
     createNewVDesktop: Signal = Signal()
     deleteCurrentVDesktop: Signal = Signal()

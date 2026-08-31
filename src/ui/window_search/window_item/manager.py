@@ -5,6 +5,7 @@ from src.core.events.event_bus import eventBus
 from src.core.theme.theme import Theme
 from src.models.window import WindowInfo
 from src.services.window.scanner import WindowScanner
+from src.ui.window_search.search_system.search_manager import SearchManager
 from src.ui.window_search.window_item.constructor import WinItemConstructor
 from src.ui.window_search.window_item.helper import WindowItemHelper
 from src.ui.window_search.window_item.model import WindowItem
@@ -18,10 +19,12 @@ class WinItemManager:
         theme: Theme, 
         config: Config,
         scroller_layout: QVBoxLayout,
-        window_scanner: WindowScanner
+        window_scanner: WindowScanner,
+        searcher: SearchManager
     ):
-
+        self.connect_events()
         self.helper: WindowItemHelper = WindowItemHelper()
+        self.searcher: SearchManager = searcher
         
         self.windows_item: list[WindowItem] = []
         self.windows_info: list[WindowInfo] = []
@@ -32,26 +35,51 @@ class WinItemManager:
         self.theme_applier: WinItemThemeApplier = WinItemThemeApplier(
             theme=theme
         )
+
+        self.scroller_layout: QVBoxLayout = scroller_layout
         self.constructor: WinItemConstructor = WinItemConstructor(
             theme_applier=self.theme_applier,
+            scroller=self.scroller_layout,
             config=config,
             theme=theme,
             helper=self.helper
         )
-        self.scroller_layout: QVBoxLayout = scroller_layout
         self.current_selection: int = 0
 
-    def sync_to_search(self, windows_info: list[WindowInfo]):
+    def connect_events(self):
+        _ = eventBus.updateWindowItemList.connect(
+            self.update_to_search
+        )
+
+    def update_to_search(
+        self, 
+        windows_info: list[WindowInfo]
+    ):
+        self.sync_to(
+            windows_info=windows_info
+        )
+
+    def select_first(self):
+        if not self.windows_item:
+            return
+
+        self.theme_applier.select_window(
+            window=self.windows_item[0]
+        )
+
+    def sync_to(self, windows_info: list[WindowInfo]):
         self.constructor.delete_all_winitems(
             window_items=self.windows_item
         )
-
+        
         self.constructor.create_window_items(
             new_info=windows_info,
             window_items=self.windows_item
         )
 
-    def sync(self):
+        self.select_first()
+
+    def sync_to_new(self):
         task_list: TaskList = self.reconciler.get_new_plan(
             windows_info_list=self.windows_info
         )
@@ -71,22 +99,16 @@ class WinItemManager:
             windows_item=self.windows_item
         )
 
-        self.sort(self.windows_item)
-
-        if len(self.windows_item) != 0:
-            select_window_item = self.windows_item[0]
-            self.theme_applier.select_window(
-                window=select_window_item
-            )
+        self.select_first()
 
     def focus_selected_window(self):
         window = self.windows_item[self.current_selection]
 
         eventBus.focusWindow.emit(window.info.hwnd)
 
-    def change_sel_window(self, window: WindowItem, prev_window: WindowItem):
+    def change_sel_window(self, new_window: WindowItem, prev_window: WindowItem):
         self.theme_applier.deselect_window(prev_window)
-        self.theme_applier.select_window(window)
+        self.theme_applier.select_window(new_window)
         
     def select_next(
         self
@@ -105,7 +127,7 @@ class WinItemManager:
         prev_widnow = self.windows_item[self.current_selection]
         window = self.windows_item[index]
         self.change_sel_window(
-            prev_window=prev_widnow, window=window
+            prev_window=prev_widnow, new_window=window
         )
 
         self.current_selection = index
@@ -127,7 +149,7 @@ class WinItemManager:
         window = self.windows_item[index]
         prev_window = self.windows_item[prev_index]
         self.change_sel_window(
-            prev_window=prev_window, window=window
+            prev_window=prev_window, new_window=window
         )
 
         self.current_selection = index
@@ -138,22 +160,11 @@ class WinItemManager:
         self.theme_applier.deselect_window(window)
         self.current_selection = 0
 
-    def sort(self, window_items: list[WindowItem]):
-        print(" sorting ")
-
-        window_items.sort(key=lambda item: item.info.title)
-
-        for i in range(len(window_items)):
-            window_item = window_items[i]
-            window_item.index = i + 1
-            window_item.update_key_bind_label()
-
-            self.scroller_layout.addWidget(window_item.frame)
-
     def reapply_theme(self):
         for i in range(len(self.windows_item)):
             window = self.windows_item[i]
             self.theme_applier.recolor_item(window)
+            
             window.reload()
 
             if i == self.current_selection:

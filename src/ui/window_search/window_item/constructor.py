@@ -23,6 +23,7 @@ from src.ui.window_search.window_item.theme_applier import WinItemThemeApplier
 class WinItemConstructor:
     def __init__(
         self, 
+        scroller: QVBoxLayout,
         config: Config, 
         theme: Theme,
         theme_applier: WinItemThemeApplier,
@@ -30,12 +31,16 @@ class WinItemConstructor:
     ):
         self.config: Config = config
         self.theme: Theme = theme
+
+        self.scroller: QVBoxLayout = scroller
         self.theme_applier: WinItemThemeApplier = theme_applier
         self.helper: WindowItemHelper = helper
         
     def update_window_items(self, items: list[int], windows: list[WindowItem]):
 
         for item_index in items:
+            if item_index >= len(windows):
+                continue
             windows[item_index].update()
 
     def delete_windows_info(
@@ -75,10 +80,11 @@ class WinItemConstructor:
         window_items: list[WindowItem]
     ):
         keybind_count = 0
-        for i in range(len(new_info)-1 , -1, -1):
+        for i in range(len(new_info)):
             keybind_count += 1
             
-            window_info: WindowInfo = new_info[i] 
+            window_info: WindowInfo = new_info[i]
+            # print(f"{i}. window info : {window_info.title}")
             _ = self.create_window_item(
                 count=keybind_count,
                 window_info=window_info,
@@ -92,8 +98,10 @@ class WinItemConstructor:
         current_info: list[WindowInfo],
     ):
         count = 1
+
+        new_info.sort(key=lambda item: item.title)
         for window_info in new_info:
-            window_item: WindowItem = self.create_window_item(
+            _ = self.create_window_item(
                 count=count,
                 window_info=window_info,
                 window_items=window_items
@@ -102,9 +110,6 @@ class WinItemConstructor:
             count += 1
             
             current_info.append(window_info)
-            
-            self.theme_applier.recolor_item(window_item=window_item)
-
     
     def create_window_item(
         self, 
@@ -133,12 +138,16 @@ class WinItemConstructor:
             selection_indicator=selection_indicator,
             title_label=title_label
         )
+        
 
         window_item.update_indicator()
         window_item.load()
 
         window_items.append(window_item)
 
+        self.theme_applier.recolor_item(window_item=window_item)
+        self.scroller.addWidget(window_item.frame)
+        
         return window_item
 
     def create_item_frame(self) -> QFrame:
