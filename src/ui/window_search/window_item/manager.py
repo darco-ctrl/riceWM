@@ -1,4 +1,6 @@
-from PySide6.QtWidgets import QVBoxLayout
+from typing import cast
+
+from PySide6.QtWidgets import QScrollArea, QVBoxLayout
 
 from src.core.config.config import Config
 from src.core.events.event_bus import eventBus
@@ -18,9 +20,10 @@ class WinItemManager:
         self, 
         theme: Theme, 
         config: Config,
-        scroller_layout: QVBoxLayout,
+        scroll_area: QScrollArea,
         window_scanner: WindowScanner,
-        searcher: SearchManager
+        searcher: SearchManager,
+        scroller_layout: QVBoxLayout,
     ):
         self.connect_events()
         self.helper: WindowItemHelper = WindowItemHelper()
@@ -36,10 +39,12 @@ class WinItemManager:
             theme=theme
         )
 
+        self.scroll_area: QScrollArea = scroll_area
         self.scroller_layout: QVBoxLayout = scroller_layout
+        
         self.constructor: WinItemConstructor = WinItemConstructor(
             theme_applier=self.theme_applier,
-            scroller=self.scroller_layout,
+            scroll_layout=self.scroller_layout,
             config=config,
             theme=theme,
             helper=self.helper
@@ -63,7 +68,7 @@ class WinItemManager:
         if not self.windows_item:
             return
 
-        self.theme_applier.select_window(
+        self.select_window(
             window=self.windows_item[0]
         )
 
@@ -107,8 +112,8 @@ class WinItemManager:
         eventBus.focusWindow.emit(window.info.hwnd)
 
     def change_sel_window(self, new_window: WindowItem, prev_window: WindowItem):
-        self.theme_applier.deselect_window(prev_window)
-        self.theme_applier.select_window(new_window)
+        self.deselect_window(prev_window)
+        self.select_window(new_window)
         
     def select_next(
         self
@@ -153,11 +158,23 @@ class WinItemManager:
         )
 
         self.current_selection = index
+
+    def select_window(self, window: WindowItem):
+        self.scroll_area.ensureWidgetVisible(window.frame)
+        self.theme_applier.select_window(
+            win_item=window
+        )
+        
+
+    def deselect_window(self, window: WindowItem):
+        self.theme_applier.deselect_window(
+            win_item=window
+        )
         
     def hide(self):
         window = self.windows_item[self.current_selection]
 
-        self.theme_applier.deselect_window(window)
+        self.deselect_window(window)
         self.current_selection = 0
 
     def reapply_theme(self):
@@ -168,4 +185,4 @@ class WinItemManager:
             window.reload()
 
             if i == self.current_selection:
-                self.theme_applier.select_window(window)
+                self.select_window(window)

@@ -17,18 +17,21 @@ class PanelConstructor:
         self.panel: Panel
         self.search_box: SearchBox
 
-    def create_list_scroller(self, main_panel: QWidget) -> QWidget:
+    def create_list_scroller(
+        self, 
+        main_panel: QWidget,
+        scroll_area: QScrollArea
+    ) -> QWidget:
         style = self.theme.window_search.window_item.color_style
 
         panel_layout: QVBoxLayout = cast(QVBoxLayout, main_panel.layout())
-
-        scroll = QScrollArea()
-        scroll.setWidgetResizable(True)
         
-        scroll.setHorizontalScrollBarPolicy(
+        scroll_area.setWidgetResizable(True)
+        
+        scroll_area.setHorizontalScrollBarPolicy(
             Qt.ScrollBarPolicy.ScrollBarAlwaysOff
         )
-        scroll.setVerticalScrollBarPolicy(
+        scroll_area.setVerticalScrollBarPolicy(
             Qt.ScrollBarPolicy.ScrollBarAlwaysOff
         )
 
@@ -45,9 +48,9 @@ class PanelConstructor:
         }}
         """)
 
-        scroll.setWidget(container)
+        scroll_area.setWidget(container)
 
-        panel_layout.addWidget(scroll)
+        panel_layout.addWidget(scroll_area)
 
         return container
 

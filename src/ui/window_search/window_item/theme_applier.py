@@ -157,7 +157,7 @@ class WinItemThemeApplier:
         )
         label.setFont(font)
 
-    def select_window(self, window: WindowItem):
+    def select_window(self, win_item: WindowItem):
 
         style = self.theme.window_search.window_item
 
@@ -166,13 +166,13 @@ class WinItemThemeApplier:
         icon_style = style.icon_container
         keybind_style = style.keybind_label
         
-        frame = window.frame
-        title_label = window.title_label
-        icon = window.icon_container
-        keybind = window.key_bind_label
+        frame = win_item.frame
+        title_label = win_item.title_label
+        icon = win_item.icon_container
+        keybind = win_item.key_bind_label
 
         # SELECTION INDICATOR
-        window.set_selected(True)
+        win_item.set_selected(True)
 
         # FRAME
         frame.setStyleSheet(f"""
@@ -300,7 +300,7 @@ class WinItemThemeApplier:
         }}
         """)
 
-    def deselect_window(self, window: WindowItem):
+    def deselect_window(self, win_item: WindowItem):
         
         style = self.theme.window_search.window_item
 
@@ -309,13 +309,13 @@ class WinItemThemeApplier:
         icon_style = style.icon_container
         keybind_style = style.keybind_label
         
-        frame = window.frame
-        title_label = window.title_label
-        icon = window.icon_container
-        keybind = window.key_bind_label
+        frame = win_item.frame
+        title_label = win_item.title_label
+        icon = win_item.icon_container
+        keybind = win_item.key_bind_label
 
         # SELECTION INDICATOR
-        window.set_selected(False)
+        win_item.set_selected(False)
 
         # FRAME
         frame.setStyleSheet(f"""

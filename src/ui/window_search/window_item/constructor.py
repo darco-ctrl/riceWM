@@ -23,7 +23,7 @@ from src.ui.window_search.window_item.theme_applier import WinItemThemeApplier
 class WinItemConstructor:
     def __init__(
         self, 
-        scroller: QVBoxLayout,
+        scroll_layout: QVBoxLayout,
         config: Config, 
         theme: Theme,
         theme_applier: WinItemThemeApplier,
@@ -32,7 +32,7 @@ class WinItemConstructor:
         self.config: Config = config
         self.theme: Theme = theme
 
-        self.scroller: QVBoxLayout = scroller
+        self.scroll_layout: QVBoxLayout = scroll_layout
         self.theme_applier: WinItemThemeApplier = theme_applier
         self.helper: WindowItemHelper = helper
         
@@ -146,7 +146,7 @@ class WinItemConstructor:
         window_items.append(window_item)
 
         self.theme_applier.recolor_item(window_item=window_item)
-        self.scroller.addWidget(window_item.frame)
+        self.scroll_layout.addWidget(window_item.frame)
         
         return window_item
 

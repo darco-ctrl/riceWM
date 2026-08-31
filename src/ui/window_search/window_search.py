@@ -42,20 +42,23 @@ class WindowSearch(QWidget):
         _ = self.search_line_edit.textChanged.connect(
             self.on_search_box_changed
         )
-        
+
+        self.scroller: QScrollArea = QScrollArea()
         self.scroll_container: QWidget = self.panel_constructor.create_list_scroller(
-            main_panel=self.main_panel
+            main_panel=self.main_panel,
+            scroll_area=self.scroller
         )
 
-        self.searcher:SearchManager = SearchManager()
+        self.searcher: SearchManager = SearchManager()
 
         scroller_layout: QVBoxLayout = cast(QVBoxLayout, self.scroll_container.layout())
         self.winitem_manager: WinItemManager = WinItemManager(
             config=self.config,
-            scroller_layout=scroller_layout,
             theme=self.theme,
             window_scanner=self.window_scanner,
-            searcher=self.searcher
+            searcher=self.searcher,
+            scroll_area=self.scroller,
+            scroller_layout=scroller_layout,
         )
         self.winitem_manager.sync_to_new()
 
