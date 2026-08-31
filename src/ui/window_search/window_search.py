@@ -43,7 +43,9 @@ class WindowSearch(QWidget):
             self.on_search_box_changed
         )
         
-        self.scroll_container: QWidget = self.create_list_scroller()
+        self.scroll_container: QWidget = self.panel_constructor.create_list_scroller(
+            main_panel=self.main_panel
+        )
 
         self.searcher:SearchManager = SearchManager()
 
@@ -175,40 +177,6 @@ class WindowSearch(QWidget):
         line_edit.returnPressed.connect(self.on_search_box_changed)
 
         return line_edit
-
-    def create_list_scroller(self) -> QWidget:
-        style = self.theme.window_search.window_item.color_style
-
-        panel_layout: QVBoxLayout = cast(QVBoxLayout, self.main_panel.layout())
-
-        scroll = QScrollArea()
-        scroll.setWidgetResizable(True)
-        
-        scroll.setHorizontalScrollBarPolicy(
-            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
-        )
-        scroll.setVerticalScrollBarPolicy(
-            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
-        )
-
-        container: QWidget = QWidget()
-        container.setObjectName("scrollContainer")
-
-        layout: QVBoxLayout = QVBoxLayout(container)
-        layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        layout.setContentsMargins(0, 0, 0, 0)
-
-        container.setStyleSheet(f"""
-        #scrollContainer {{
-            background-color: {style.background_color};
-        }}
-        """)
-
-        scroll.setWidget(container)
-
-        panel_layout.addWidget(scroll)
-
-        return container
 
     def on_search_box_changed(self, text: str):
         if not text.strip():

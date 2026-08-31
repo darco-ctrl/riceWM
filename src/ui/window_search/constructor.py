@@ -1,5 +1,7 @@
+from typing import cast
+
 from PySide6.QtGui import Qt
-from PySide6.QtWidgets import QLineEdit, QSizePolicy, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QLineEdit, QScrollArea, QSizePolicy, QVBoxLayout, QWidget
 
 from src.core.config.config import Config
 from src.core.theme.theme import Theme
@@ -14,6 +16,40 @@ class PanelConstructor:
 
         self.panel: Panel
         self.search_box: SearchBox
+
+    def create_list_scroller(self, main_panel: QWidget) -> QWidget:
+        style = self.theme.window_search.window_item.color_style
+
+        panel_layout: QVBoxLayout = cast(QVBoxLayout, main_panel.layout())
+
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        
+        scroll.setHorizontalScrollBarPolicy(
+            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
+        )
+        scroll.setVerticalScrollBarPolicy(
+            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
+        )
+
+        container: QWidget = QWidget()
+        container.setObjectName("scrollContainer")
+
+        layout: QVBoxLayout = QVBoxLayout(container)
+        layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        layout.setContentsMargins(0, 0, 0, 0)
+
+        container.setStyleSheet(f"""
+        #scrollContainer {{
+            background-color: {style.background_color};
+        }}
+        """)
+
+        scroll.setWidget(container)
+
+        panel_layout.addWidget(scroll)
+
+        return container
 
     def reapply_theme(self):
         self.color_panel()
