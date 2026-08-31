@@ -29,6 +29,9 @@ class Searcher:
                 # print(f"window: - {window_info.title}")
                 
         # print("emit")
+        if self.stop_process:
+            return
+        
         result.sort(key=lambda item: item.title, reverse=True)
         eventBus.updateWindowItemList.emit(result)
 
@@ -40,6 +43,15 @@ class SearchManager:
         self.is_running: bool = False
 
         self.searcher: Searcher = Searcher()
+        self.connect_events()
+
+    def connect_events(self):
+        _ = eventBus.updateWindowItemList.connect(
+            lambda _: self.search_finished()
+        )
+
+    def search_finished(self):
+        self.is_running = False
 
     def search(self, query: str, windows_info: list[WindowInfo]):
 
