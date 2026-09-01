@@ -39,9 +39,6 @@ class WindowSearch(QWidget):
         self.main_panel: QWidget = self.create_window()
 
         self.search_line_edit: QLineEdit = self.create_search_box()
-        _ = self.search_line_edit.textChanged.connect(
-            self.on_search_box_changed
-        )
 
         self.scroller: QScrollArea = QScrollArea()
         self.scroll_container: QWidget = self.panel_constructor.create_list_scroller(
@@ -101,7 +98,6 @@ class WindowSearch(QWidget):
         pass
 
     def reload_theme(self):
-
         self.panel_constructor.reapply_theme()
         self.winitem_manager.reapply_theme()
         self.recolor_container()
@@ -177,7 +173,9 @@ class WindowSearch(QWidget):
 
     def create_search_box(self) -> QLineEdit:
         line_edit = self.panel_constructor.create_searchbox()
-        line_edit.returnPressed.connect(self.on_search_box_changed)
+        _ = line_edit.textChanged.connect(
+            self.on_search_box_changed
+        )
 
         return line_edit
 

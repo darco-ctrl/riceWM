@@ -4,6 +4,7 @@ import psutil
 import win32con
 import win32gui
 import win32process
+import win32api
 from pyvda import AppView, VirtualDesktop
 
 from src.models.window import WindowInfo
@@ -100,6 +101,31 @@ class WindowScanner:
 
         return True
 
+    def get_product_name(self, exe_path: str) -> str | None:
+        try:
+            info = win32api.GetFileVersionInfo(exe_path, "\\")
+            lang, codepage = info["TransTable"][0]
+
+            key = rf"\StringFileInfo\{lang:04x}{codepage:04x}\ProductName"
+            
+            return win32api.GetFileVersionInfo(exe_path, key)
+
+        except (KeyError, IndexError, win32api.error):
+            return None
+
+    def get_app_name(self, pid: int, is_pwa: bool) -> str:
+
+        if is_pwa:
+            return ""
+
+        exe_path = psutil.Process(pid).exe()
+        name: str | None = self.get_product_name(exe_path)
+
+        if not name:
+            return ""
+
+        return name
+
     def get_window_data(
         self, 
         hwnd: int) -> dict | None:
@@ -107,7 +133,9 @@ class WindowScanner:
         # print(f" checking if window is regular: {title}")
         if not self.is_regular_window(hwnd):
             return None
-    
+
+        if title:
+            title.lstrip()
     
         _, pid = win32process.GetWindowThreadProcessId(hwnd)
     
@@ -118,9 +146,11 @@ class WindowScanner:
             process_name = process.name()
         except psutil.Error:
             return None
+
+        name = self.get_app_name(pid=pid)
     
         return {
-            "process_name": process_name,
+            "process_name": name,
             "title": title,
             "pid": pid,
             "hwnd": hwnd,

@@ -71,6 +71,7 @@ class WinItemManager:
         self.select_window(
             window=self.windows_item[0]
         )
+        self.current_selection = 0
 
     def sync_to(self, windows_info: list[WindowInfo]):
         self.constructor.delete_all_winitems(
@@ -111,13 +112,42 @@ class WinItemManager:
 
         eventBus.focusWindow.emit(window.info.hwnd)
 
-    def change_sel_window(self, new_window: WindowItem, prev_window: WindowItem):
-        self.deselect_window(prev_window)
-        self.select_window(new_window)
+    def change_sel_window(self, new_index: int, old_index: int):
+
+        if not self.windows_item:
+            return
+        
+        winitem_len = len(self.windows_item)
+
+        new_window: WindowItem | None = None
+        prev_window: WindowItem | None = None
+        
+        if new_index < winitem_len:
+            new_window = self.windows_item[new_index]
+        else:
+            new_window = self.windows_item[0]
+
+        if old_index < winitem_len:
+            prev_window = self.windows_item[old_index]
+        else:
+            if self.current_selection < winitem_len:
+                prev_window = self.windows_item[
+                    self.current_selection
+                ]
+
+        if prev_window:        
+            self.deselect_window(prev_window)
+
+        if new_window:
+            self.current_selection = new_index
+            self.select_window(new_window)
         
     def select_next(
         self
     ):
+        if not self.windows_item:
+            return
+        
         prev_index: int = self.current_selection
         window_count = len(self.windows_item)
 
@@ -129,17 +159,16 @@ class WinItemManager:
         next_index: int = prev_index + 1
         index = next_index % len(self.windows_item)
 
-        prev_widnow = self.windows_item[self.current_selection]
-        window = self.windows_item[index]
         self.change_sel_window(
-            prev_window=prev_widnow, new_window=window
+            new_index=index, old_index=self.current_selection
         )
-
-        self.current_selection = index
 
     def select_prev(
         self
     ):
+        if not self.windows_item:
+            return
+        
         prev_index: int = self.current_selection
         window_count: int = len(self.windows_item)
 
@@ -151,13 +180,9 @@ class WinItemManager:
         p_index = prev_index - 1
         index = p_index % window_count
         
-        window = self.windows_item[index]
-        prev_window = self.windows_item[prev_index]
         self.change_sel_window(
-            prev_window=prev_window, new_window=window
+            new_index=index, old_index=self.current_selection
         )
-
-        self.current_selection = index
 
     def select_window(self, window: WindowItem):
         self.scroll_area.ensureWidgetVisible(window.frame)
@@ -172,10 +197,10 @@ class WinItemManager:
         )
         
     def hide(self):
-        window = self.windows_item[self.current_selection]
-
-        self.deselect_window(window)
-        self.current_selection = 0
+        self.change_sel_window(
+            new_index=0,
+            old_index=self.current_selection
+        )
 
     def reapply_theme(self):
         for i in range(len(self.windows_item)):
