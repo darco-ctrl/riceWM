@@ -53,7 +53,7 @@ class WinItemThemeApplier:
         style = self.theme.window_search.window_item.selection_indicator
 
         selection_indicator.setFixedSize(QSize(
-            style.dimension.width, style.dimension.height
+            style.dimension.x, style.dimension.y
         ))
         selection_indicator.setStyleSheet(f"""
         #selectionIndicator {{
@@ -68,7 +68,7 @@ class WinItemThemeApplier:
         style = self.theme.window_search.window_item.icon_container
         
         container.setFixedSize(QSize(
-            style.dimension.width, style.dimension.height
+            style.dimension.x, style.dimension.y
         ))
         container.setStyleSheet(f"""
             #iconContainer {{
@@ -90,10 +90,10 @@ class WinItemThemeApplier:
         )
 
         icon_width = (
-            style.dimension.width - style.margin[0] - style.margin[2]
+            style.dimension.x - style.margin[0] - style.margin[2]
         )
         icon_height = (
-            style.dimension.height - style.margin[1] - style.margin[3]
+            style.dimension.y - style.margin[1] - style.margin[3]
         )
 
         icon_label.setFixedSize(QSize(icon_width, icon_height))
@@ -133,7 +133,7 @@ class WinItemThemeApplier:
 
         # print(f"setting keybind label background color to : {style.background_color}")
         label.setFixedSize(QSize(
-            style.dimension.width, style.dimension.height
+            style.dimension.x, style.dimension.y
         ))
         label.setStyleSheet(f"""
         #keyBindLabel {{

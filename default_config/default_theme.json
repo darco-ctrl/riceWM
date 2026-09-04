@@ -159,5 +159,47 @@
                 }
             }
         }
+    },
+    "virtual_desktop_notifier": {
+        "dimension": {
+            "height": 50,
+            "width": 300
+        }, 
+        "frame": {
+            "margin": [0, 0, 0, 0],
+            "color_style": {
+                "background_color": "#1e1e2e",
+                "color": "transparent",
+            },
+            "border_style": {
+                "color": "red",
+                "radius": 6,
+                "style": "solid",
+                "width": [2, 2, 2, 2]
+            }
+        },
+        "label": {
+            "text_margin": [5, 0, 5, 0],
+            "color_style": {
+                "background_color": "transparent",
+                "color": "#cdd6f4"
+            },
+            "border_style": {
+                "style": "solid",
+                "radius": 2,
+                "width": [2, 2, 2, 2],
+                "color": "#cba6f7"
+            },
+            "font_style": {
+                "family": "JetBrains Mono",
+                "pixel_size": 15,
+                "letter_spacing": 1.0,
+                "is_bold": false,
+                "is_italic": false,
+                "is_underline": false,
+                "is_strike_out": false,
+                "weight": "Normal"
+            }
+        }
     }
 }

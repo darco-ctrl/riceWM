@@ -41,6 +41,6 @@ class JsonParser:
     def get_dimension(self, style) -> Dimension:
 
         return Dimension(
-            height=style["height"],
-            width=style["width"]
+            y=style["x"],
+            x=style["y"]
         )

@@ -1,12 +1,20 @@
 
+from turtle import position
+
 from src.core.theme.components.frame_style import FrameStyle
 from src.core.theme.components.label_style import LabelStyle
 from src.core.theme.components.line_edit_style import LineEditStyle
 from src.core.theme.json_parser import JsonParser
+from src.core.theme.primitives import dimension
+from src.core.theme.primitives import border_style
+from src.core.theme.primitives import color_style
 from src.core.theme.primitives.border_style import BorderStyle
 from src.core.theme.primitives.color_style import ColorStyle
 from src.core.theme.primitives.dimension import Dimension
 from src.core.theme.primitives.font_style import FontStyle
+from src.core.theme.virtual_desktop_notifier.styles.frame import VirtualDesktopNotifierFrameStyle
+from src.core.theme.virtual_desktop_notifier.styles.label import VirtualDesktopNotifierLabelStyle
+from src.core.theme.virtual_desktop_notifier.virtual_desktop_notifier import VirtualDesktopNotiferStyle
 from src.core.theme.window_search.styles.icon_container import IconContainerStyle
 from src.core.theme.window_search.styles.item_frame import ItemFrameStyle
 from src.core.theme.window_search.styles.keybind_label import KeybindLabelStyle
@@ -313,4 +321,69 @@ class ThemeConstructor:
             color_style=color_style,
             search_box=search_box,
             window_item=window_item
+        )
+
+    # ------- VIRTUAL DESKTOP NOTIFER ------- #
+
+    def create_vdn_frame_style(self, style: dict):
+
+        border_style: BorderStyle = self.json_parser.get_border_style(
+            style=style["border_style"]
+        )
+
+        color_style: ColorStyle = self.json_parser.get_color_style(
+            style=style["color_style"]
+        )
+
+        return VirtualDesktopNotifierFrameStyle(
+            border_style=border_style,
+            color_style=color_style,
+            margin=style["margin"]
+        )
+
+    def create_vdn_label_style(self, style: dict):
+
+        color_style: ColorStyle = self.json_parser.get_color_style(
+            style=style["color_style"]
+        )
+
+        border_style: BorderStyle = self.json_parser.get_border_style(
+            style=style["border_style"]
+        )
+
+        font_style: FontStyle = self.json_parser.get_font_style(
+            style=style["font_style"]
+        )
+
+        text_margin: list = style["text_margin"]
+
+        return VirtualDesktopNotifierLabelStyle(
+            border_style=border_style,
+            color_style=color_style,
+            font_style=font_style,
+            text_margin=text_margin
+        )
+
+    def create_virtual_desktop_notifer_style(self, style: dict):
+        size: Dimension = self.json_parser.get_dimension(
+            style["size"]
+        )
+
+        position: Dimension = self.json_parser.get_dimension(
+            style["position_in_percentage"]
+        )
+
+        frame: VirtualDesktopNotifierFrameStyle = self.create_vdn_frame_style(
+            style=style["frame"]
+        )
+
+        label: VirtualDesktopNotifierLabelStyle = self.create_vdn_label_style(
+            style=style["label"]
+        )
+
+        return VirtualDesktopNotiferStyle(
+            size=size,
+            position=position,
+            frame=frame,
+            label=label
         )

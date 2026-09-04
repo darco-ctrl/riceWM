@@ -4,6 +4,7 @@ from typing import Any
 from src.core.events.event_bus import eventBus
 from src.core.theme.constructor import ThemeConstructor
 from src.core.theme.helper import ThemeHelper
+from src.core.theme.virtual_desktop_notifier.virtual_desktop_notifier import VirtualDesktopNotiferStyle
 from src.core.theme.window_search.window_search import WindowSearchStyle
 
 
@@ -14,7 +15,9 @@ class Theme:
         self.helper: ThemeHelper = ThemeHelper()
         self.theme_file_path = theme_path
         self.name: str = ""
+        
         self.window_search: WindowSearchStyle 
+        self.virtual_desktop_notifer: VirtualDesktopNotiferStyle
 
         self.load()
 
@@ -39,6 +42,15 @@ class Theme:
     def create_data_classes(self, data: dict):
         self.name = data["name"]
         self.window_search = self.get_window_search(data["window_search"])
+
+        self.virtual_desktop_notifer = self.get_virtual_desktop_notifer(
+            data["virtual_desktop_notifier"]
+        )
+
+    def get_virtual_desktop_notifer(self, style: dict):
+        return self.constructor.create_virtual_desktop_notifer_style(
+            style=style
+        )
 
     def get_window_search(self, style: dict) -> WindowSearchStyle:
 

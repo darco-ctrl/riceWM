@@ -160,6 +160,8 @@ class WindowSearch(QWidget):
             * config.behavior.max_results_shown
         )
 
+        print(f"sw: x={screen_width}, y={screen_height}")
+
         position_x = int((screen_width / 2) - (config.window_width / 2))
         position_y = int((screen_height / 2) - (window_height / 2))
 

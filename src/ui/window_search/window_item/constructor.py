@@ -198,7 +198,7 @@ class WinItemConstructor:
         container: QWidget = QWidget()
         container.setObjectName("iconContainer")
         container.setFixedSize(QSize(
-            style.dimension.width, style.dimension.height
+            style.dimension.x, style.dimension.y
         ))
 
         outer_container: QWidget = QWidget()
@@ -218,10 +218,10 @@ class WinItemConstructor:
         c_layout: QVBoxLayout = QVBoxLayout(container)
 
         icon_width = (
-            style.dimension.width - style.margin[0] - style.margin[2]
+            style.dimension.x - style.margin[0] - style.margin[2]
         )
         icon_height = (
-            style.dimension.height - style.margin[1] - style.margin[3]
+            style.dimension.y - style.margin[1] - style.margin[3]
         )
 
         icon_label: QLabel = QLabel()

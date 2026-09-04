@@ -27,6 +27,7 @@ class App:
         self.ui_manager = self.create_ui_manager()
         self.tray = self.create_tray()
 
+
     def run(self):
         self.hotkey_manager.start()
         self.ui_manager.load()
