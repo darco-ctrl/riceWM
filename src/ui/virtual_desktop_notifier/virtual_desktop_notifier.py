@@ -1,13 +1,11 @@
 from PySide6.QtCore import QSize, Qt
 from PySide6.QtGui import QGuiApplication
-from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QWidget
+from PySide6.QtWidgets import QVBoxLayout, QWidget
 
 from src.core.config.config import Config
-from src.core.theme.primitives.dimension import Dimension
 from src.core.theme.theme import Theme
-from src.core.theme.virtual_desktop_notifier.virtual_desktop_notifier import (
-    VirtualDesktopNotiferStyle,
-)
+from src.core.theme.virtual_desktop_notifier.styles.label import VirtualDesktopNotifierLabelStyle
+from src.core.theme.virtual_desktop_notifier.virtual_desktop_notifier import VirtualDesktopNotiferStyle
 from src.ui.virtual_desktop_notifier.constructor import NotiferConstructor
 from src.ui.virtual_desktop_notifier.model import VirtualDesktopNotiferUI
 
@@ -30,23 +28,25 @@ class VirtualDesktopNotifier(QWidget):
         layout = self.load_window()
 
         self.ui = self.constructor.get_ui()
-        layout.addWidget(self.ui.frame)
-
+        layout.addWidget(self.ui.label)
+        
         self.show()
 
-    def load_window(self) -> QHBoxLayout:
+    def load_window(self) -> QVBoxLayout:
         style = self.theme.virtual_desktop_notifer
 
-        layout: QHBoxLayout = QHBoxLayout(self)
+        layout: QVBoxLayout = QVBoxLayout(self)
+        # layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.setContentsMargins(5, 5, 5, 5)
         
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setWindowFlags(
             Qt.WindowType.WindowStaysOnTopHint
             | Qt.WindowType.FramelessWindowHint
             | Qt.WindowType.Tool
-        )
+        ) 
 
-        self.setFixedSize(
+        self.resize(
             QSize(style.size.x, style.size.y)
         )
 
@@ -78,3 +78,18 @@ class VirtualDesktopNotifier(QWidget):
 
     def reload(self):
         pass
+
+    def start_timer(self):
+        
+
+    def show_notification(self, desktop_name: str):
+        style: VirtualDesktopNotifierLabelStyle = (
+            self.theme.virtual_desktop_notifer.label
+        ) 
+
+        
+        self.ui.label.setText(
+            f"{style.prefix}{desktop_name}{style.suffix}"
+        )
+        self.ui.label.repaint()
+        self.show()
