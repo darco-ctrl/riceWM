@@ -64,8 +64,7 @@ class BootStrap:
             rice_paths.window_cache_icon_dir.mkdir(parents=True, exist_ok=True)
 
     def delete_cache(self):
-        pass
-        # self.del_window_icon_dir()
+        self.del_window_icon_dir()
 
     def del_window_icon_dir(self):
         if rice_paths.window_cache_icon_dir.exists():
