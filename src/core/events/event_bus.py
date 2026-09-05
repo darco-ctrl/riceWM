@@ -1,4 +1,5 @@
 from PySide6.QtCore import QObject, Signal
+from pyvda.pyvda import VirtualDesktop
 
 from src.models.window import WindowInfo
 
@@ -27,6 +28,8 @@ class EventBus(QObject):
     vDesktopGoLeft: Signal = Signal()
     vDesktopGoRight: Signal = Signal()
     focusWindow: Signal = Signal(int)
+
+    vDesktopNotiferShow: Signal = Signal(VirtualDesktop)
 
     windowGoLeft: Signal = Signal()
     windowGoRight: Signal = Signal()

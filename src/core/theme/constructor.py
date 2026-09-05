@@ -336,14 +336,10 @@ class ThemeConstructor:
         font_style: FontStyle = self.json_parser.get_font_style(
             style=style["font_style"]
         )
-
-        prefix: str = style["prefix"]
-        suffix: str = style["suffix"]
+        
         text_margin: list = style["text_margin"]
 
         return VirtualDesktopNotifierLabelStyle(
-            prefix=prefix,
-            suffix=suffix,
             border_style=border_style,
             color_style=color_style,
             font_style=font_style,

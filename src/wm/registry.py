@@ -37,8 +37,8 @@ class WindowRegistry:
     
         next_number = current.number % desktop_count + 1
     
-        VirtualDesktop(next_number).go()
-    
+        self.go_to_desktop(VirtualDesktop(next_number))
+
     
     def v_desktop_go_left(self):
         current = VirtualDesktop.current()
@@ -46,11 +46,12 @@ class WindowRegistry:
     
         previous_number = (current.number - 2) % desktop_count + 1
     
-        VirtualDesktop(previous_number).go()
+        self.go_to_desktop(VirtualDesktop(previous_number))
 
     def v_desktop_create_new(self):
         desktop = VirtualDesktop.create()
-        desktop.go()
+
+        self.go_to_desktop(desktop)
 
     def v_desktop_delete_current(self):
         desktops = pyvda.get_virtual_desktops()
@@ -58,6 +59,7 @@ class WindowRegistry:
 
         current_index = current.number
 
+        fallback: VirtualDesktop
         if len(desktops) > current_index:
             if current_index > 0:
                 fallback = desktops[current_index - 1]
@@ -65,7 +67,12 @@ class WindowRegistry:
                 fallback = desktops[current_index + 1]
 
         # print(f"fallback: {current_index}")
-        current.remove(fallback)
+            current.remove(fallback)
+
+    def go_to_desktop(self, desktop: VirtualDesktop):
+        print("Hello, World!")
+        desktop.go()
+        eventBus.vDesktopNotiferShow.emit(desktop)
 
     def get_left_window(self) -> WindowInfo | None:
         # This is for future
