@@ -46,7 +46,7 @@ class HotKeyManager:
         eventBus.itemSelectDown.emit()
 
     def on_data_reload(self):
-        eventBus.dataReloadRequested.emit()
+        eventBus.requestRestartApplication.emit()
 
     def on_wsp_toggle(self):
         eventBus.wspToggleRequested.emit()

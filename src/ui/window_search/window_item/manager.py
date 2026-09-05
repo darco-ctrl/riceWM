@@ -10,9 +10,9 @@ from src.services.window.scanner import WindowScanner
 from src.ui.window_search.search_system.search_manager import SearchManager
 from src.ui.window_search.window_item.constructor import WinItemConstructor
 from src.ui.window_search.window_item.helper import WindowItemHelper
-from src.ui.window_search.window_item.model import WindowItem
 from src.ui.window_search.window_item.reconciler import StateReconciler, TaskList
 from src.ui.window_search.window_item.theme_applier import WinItemThemeApplier
+from src.ui.window_search.window_item.window_item import WindowItem
 
 
 class WinItemManager:

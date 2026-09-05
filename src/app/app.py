@@ -1,3 +1,4 @@
+import os
 import sys
 
 from PySide6.QtWidgets import QApplication
@@ -6,6 +7,7 @@ import src.app.paths as rice_paths
 from src.app.bootstrap import BootStrap
 from src.config.app_config import AppConfig
 from src.core.data_manager import DataManager
+from src.core.events.event_bus import eventBus
 from src.core.hotkey.hotkey_mananger import HotKeyManager
 from src.services.window.listner import WindowListener
 from src.services.window.scanner import WindowScanner
@@ -27,6 +29,11 @@ class App:
         self.ui_manager = self.create_ui_manager()
         self.tray = self.create_tray()
 
+        self.connect_events()
+
+
+    def connect_events(self):
+        eventBus.requestRestartApplication.connect(self.restart_application)
 
     def run(self):
         self.hotkey_manager.start()
@@ -96,3 +103,7 @@ class App:
     def quit_application(self):
         self.bootstrap.delete_cache()
         self.application.quit()
+
+    def restart_application(self):
+        print("restarting application")
+        os.execv(sys.executable, [sys.executable] + sys.argv)

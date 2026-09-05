@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from src.models.window import WindowInfo
 from src.services.window.scanner import WindowScanner
 from src.ui.window_search.window_item.helper import WindowItemHelper
-from src.ui.window_search.window_item.model import WindowItem
+from src.ui.window_search.window_item.window_item import WindowItem
 
 
 @dataclass

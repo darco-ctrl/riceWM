@@ -70,8 +70,10 @@ class WindowRegistry:
             current.remove(fallback)
 
     def go_to_desktop(self, desktop: VirtualDesktop):
-        print("Hello, World!")
         desktop.go()
+
+        
+        
         eventBus.vDesktopNotiferShow.emit(desktop)
 
     def get_left_window(self) -> WindowInfo | None:

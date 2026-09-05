@@ -6,7 +6,6 @@ from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
 from src.models.window import WindowInfo
 
-
 class WindowItem:
     def __init__(
         self,

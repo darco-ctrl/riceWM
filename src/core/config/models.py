@@ -23,7 +23,7 @@ class Animation:
 class AnimationConfig:
     fade_in: Animation
     fade_out: Animation
-
+    
 @dataclass 
 class DesktopNameConfig:
     max_char_length: int
@@ -36,4 +36,5 @@ class VirtualDesktopNotifierConfig:
     auto_hide_time: int
     hide_on_hover: bool
     desktop_name: DesktopNameConfig
-    animation: AnimationConfig
+    window_animation: AnimationConfig
+    label_animation: AnimationConfig

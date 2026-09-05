@@ -5,6 +5,8 @@ from src.models.window import WindowInfo
 
 
 class EventBus(QObject):
+    requestRestartApplication: Signal = Signal()
+    
     windowCreated: Signal = Signal(int)
     windowShow: Signal = Signal(int)
     windowDeystroyed: Signal = Signal(int)

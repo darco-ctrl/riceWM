@@ -40,12 +40,9 @@ class Config:
             data=data["virtual_desktop_notifier"]
         )
 
-    def create_virtual_desktop_notifier(self, data: dict):
-       
-        dict_desktop_name = data["desktop_name"] 
-        dict_animation = data["animation"]
-        dict_fade_in = dict_animation["fade_in"]
-        dict_fade_out = dict_animation["fade_out"]
+    def get_animation(self, data: dict):
+        dict_fade_in: dict = data["fade_in"]
+        dict_fade_out: dict = data["fade_out"]
 
         fade_in: Animation = Animation(
             duration=dict_fade_in["duration"]
@@ -53,9 +50,23 @@ class Config:
         fade_out: Animation = Animation(
             duration=dict_fade_out["duration"]
         )
-        animation_op: AnimationConfig = AnimationConfig(
+
+        return AnimationConfig(
             fade_in=fade_in,
             fade_out=fade_out
+        )
+
+    def create_virtual_desktop_notifier(self, data: dict):
+       
+        dict_desktop_name = data["desktop_name"] 
+        dict_window_aniamtion = data["window_animation"]
+        dict_label_animation =data["label_animation"]
+
+        window_aniamtion: AnimationConfig = self.get_animation(
+            data=dict_window_aniamtion
+        )
+        label_animation: AnimationConfig = self.get_animation(
+            data=dict_label_animation
         )
     
         desktop_name: DesktopNameConfig = DesktopNameConfig(
@@ -64,15 +75,17 @@ class Config:
             suffix=dict_desktop_name["suffix"]
         )
     
-        auto_hide_time: int = data["auto_hide_time"] - fade_out.duration
-        print(f"auto_hide_time: {auto_hide_time}")
+        auto_hide_time: int = data["auto_hide_time"] - (
+            window_aniamtion.fade_out.duration
+        )
         
         self.virtual_destkop_notifer = VirtualDesktopNotifierConfig(
             enabled=data["enabled"],
             auto_hide_time=auto_hide_time,
             hide_on_hover=data["hide_on_hover"],
             desktop_name=desktop_name,
-            animation=animation_op
+            window_animation=window_aniamtion,
+            label_animation=label_animation
         )
 
     def create_window_search(self, dict: dict):

@@ -2,7 +2,7 @@ import threading
 
 from src.core.events.event_bus import eventBus
 from src.models.window import WindowInfo
-from src.ui.window_search.window_item.model import WindowItem
+from src.ui.window_search.window_item.window_item import WindowItem
 
 class Searcher:
     def __init__(self):

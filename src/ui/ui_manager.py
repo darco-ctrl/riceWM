@@ -1,4 +1,5 @@
 from src.core.config.config import Config
+from src.core.config.models import VirtualDesktopNotifierConfig
 from src.core.theme.theme import Theme
 from src.services.window.scanner import WindowScanner
 from src.ui.virtual_desktop_notifier.virtual_desktop_notifier import VirtualDesktopNotifier
@@ -15,10 +16,15 @@ class UIManager:
         self.virtual_desktop_notifier: VirtualDesktopNotifier
 
     def load(self):
+        config: VirtualDesktopNotifierConfig = self.config.virtual_destkop_notifer
+        
         self.window_search = WindowSearch(
             config=self.config, theme=self.theme, window_scanner=self.window_scanner
         )
 
+        if not config.enabled:
+            return
+        
         self.virtual_desktop_notifier = VirtualDesktopNotifier(
             config=self.config,
             theme=self.theme

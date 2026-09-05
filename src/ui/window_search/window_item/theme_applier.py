@@ -4,7 +4,7 @@ from PySide6.QtCore import QSize
 from PySide6.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
 from src.core.theme.theme import Theme
-from src.ui.window_search.window_item.model import WindowItem
+from src.ui.window_search.window_item.window_item import WindowItem
 
 
 class WinItemThemeApplier:

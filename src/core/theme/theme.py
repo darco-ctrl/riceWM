@@ -4,7 +4,9 @@ from typing import Any
 from src.core.events.event_bus import eventBus
 from src.core.theme.constructor import ThemeConstructor
 from src.core.theme.helper import ThemeHelper
-from src.core.theme.virtual_desktop_notifier.virtual_desktop_notifier import VirtualDesktopNotiferStyle
+from src.core.theme.virtual_desktop_notifier.virtual_desktop_notifier import (
+    VirtualDesktopNotiferStyle,
+)
 from src.core.theme.window_search.window_search import WindowSearchStyle
 
 
@@ -24,7 +26,6 @@ class Theme:
     def reload(self):
         print("reloading themes")
         self.load()
-        eventBus.reloadWSPThemeRequested.emit()
         print(f"applying new theme: {self.name}")
 
     def load(self):
