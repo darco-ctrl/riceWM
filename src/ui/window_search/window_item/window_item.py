@@ -1,10 +1,9 @@
-from typing import cast
-
 import win32gui
 from PySide6.QtGui import QPixmap, Qt
-from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QFrame, QLabel, QVBoxLayout, QWidget
 
 from src.models.window import WindowInfo
+
 
 class WindowItem:
     def __init__(

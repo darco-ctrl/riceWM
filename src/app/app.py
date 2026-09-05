@@ -1,6 +1,7 @@
 import os
 import sys
 
+from pympler import asizeof
 from PySide6.QtWidgets import QApplication
 
 import src.app.paths as rice_paths
@@ -30,7 +31,7 @@ class App:
         self.tray = self.create_tray()
 
         self.connect_events()
-
+        self.print_theme_size()
 
     def connect_events(self):
         eventBus.requestRestartApplication.connect(self.restart_application)
@@ -103,6 +104,11 @@ class App:
     def quit_application(self):
         self.bootstrap.delete_cache()
         self.application.quit()
+
+    def print_theme_size(self):
+        print(f"Theme uses {asizeof.asizeof(
+            self.data_manager.active_theme
+        ) / 1024:.2f} KB")
 
     def restart_application(self):
         print("restarting application")

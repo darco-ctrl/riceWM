@@ -16,8 +16,8 @@ from src.core.config.config import Config
 from src.core.theme.theme import Theme
 from src.models.window import WindowInfo
 from src.ui.window_search.window_item.helper import WindowItemHelper
-from src.ui.window_search.window_item.window_item import WindowItem
 from src.ui.window_search.window_item.theme_applier import WinItemThemeApplier
+from src.ui.window_search.window_item.window_item import WindowItem
 
 
 class WinItemConstructor:
