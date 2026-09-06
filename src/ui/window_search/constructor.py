@@ -41,6 +41,7 @@ class PanelConstructor:
         layout: QVBoxLayout = QVBoxLayout(container)
         layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
 
         container.setStyleSheet(f"""
         #scrollContainer {{

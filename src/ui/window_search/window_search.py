@@ -60,6 +60,8 @@ class WindowSearch(QWidget):
         self.winitem_manager.sync_to_new()
 
         self.connect_event()
+        # self.dumpObjectTree()
+        # self.scroller.hide()
 
     def connect_event(self):
         _ = eventBus.wspToggleRequested.connect(self.toggle_window)
@@ -141,6 +143,23 @@ class WindowSearch(QWidget):
 
         self.is_visible = True
 
+    def get_window_height(self):
+
+        style_search_box = self.theme.window_search.search_box
+        style_window_item =  self.theme.window_search.window_item
+
+        max_result_shown = self.config.window_search.behavior.max_results_shown
+
+        items_height = (
+            style_window_item.frame_style.height
+        ) * max_result_shown
+        
+        height = (
+            style_search_box.height + items_height
+        )
+
+        return height
+
     def create_window(self) -> QWidget:
 
         config = self.config.window_search
@@ -155,10 +174,7 @@ class WindowSearch(QWidget):
 
         window_margin = 12
         screen_width, screen_height = self.get_screen_size()
-        window_height = theme.search_box.height + (
-            theme.window_item.frame_style.height
-            * config.behavior.max_results_shown
-        )
+        window_height = self.get_window_height()
 
         print(f"sw: x={screen_width}, y={screen_height}")
 
