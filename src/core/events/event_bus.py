@@ -1,11 +1,10 @@
 from PySide6.QtCore import QObject, Signal
 from pyvda.pyvda import VirtualDesktop
 
-from src.models.window import WindowInfo
-
 
 class EventBus(QObject):
     requestRestartApplication: Signal = Signal()
+    requestQuitApplication: Signal = Signal()
     
     windowCreated: Signal = Signal(int)
     windowShow: Signal = Signal(int)
@@ -37,6 +36,7 @@ class EventBus(QObject):
     windowGoRight: Signal = Signal()
 
     reloadWSPThemeRequested: Signal = Signal()
+    
     
 
 eventBus = EventBus()

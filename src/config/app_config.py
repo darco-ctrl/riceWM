@@ -11,6 +11,9 @@ class AppConfig:
         self.config_path = config_path
         self.data = self.load()
 
+    def get_app_config_path(self) -> str:
+        return str(self.config_path)
+
     def load(self) -> dict:
         with self.config_path.open("rb") as file:
             return tomllib.load(file)

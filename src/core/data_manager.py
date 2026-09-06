@@ -17,20 +17,38 @@ class DataManager:
         app_config: AppConfig,
         config_dir: Path,
         themes_dir: Path,
-        keybinds_file: Path,
+        keymap_file: Path,
     ) -> None:
         self.app_config = app_config
         self.config_dir = config_dir
         self.themes_dir = themes_dir
-        self.keybinds_file = keybinds_file
+        self.keymap_file: str = str(keymap_file)
 
-        self.active_config: Config = Config(
-            config_path=str(self.get_active_config_Path())
+        self.current_config_path: str = str(
+            self.get_active_config_Path()
         )
-        self.active_theme: Theme = Theme(theme_path=str(self.get_active_theme_path()))
-        self.key_map: KeyMap = KeyMap(json_path=str(keybinds_file))
+        self.current_theme_path: str = str(
+            self.get_active_theme_path()
+        )
+        
+        self.active_config: Config = Config(
+            config_path=self.current_config_path
+        )
+        self.active_theme: Theme = Theme(
+            theme_path=self.current_theme_path
+        )
+        self.key_map: KeyMap = KeyMap(json_path=self.keymap_file)
 
         self.connect_events()
+
+    def get_current_theme_path(self) -> str:
+        return self.current_theme_path
+
+    def get_current_config_path(self) -> str:
+        return self.current_config_path
+
+    def get_keymap_path(self) -> str:
+        return self.keymap_file
 
     def connect_events(self):
         eventBus.dataReloadRequested.connect(self.reload)

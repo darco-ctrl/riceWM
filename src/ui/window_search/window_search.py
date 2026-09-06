@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (
 from src.core.config.config import Config
 from src.core.events.event_bus import eventBus
 from src.core.theme.theme import Theme
+from src.services.commands.command_service import CommandService
 from src.services.window.scanner import WindowScanner
 from src.ui.window_search.constructor import PanelConstructor
 from src.ui.window_search.search_system.search_manager import SearchManager
@@ -19,7 +20,13 @@ from src.ui.window_search.window_item.manager import WinItemManager
 
 
 class WindowSearch(QWidget):
-    def __init__(self, config: Config, theme: Theme, window_scanner: WindowScanner):
+    def __init__(
+        self, 
+        config: Config, 
+        theme: Theme, 
+        window_scanner: WindowScanner,
+        command_service: CommandService
+    ):
         super().__init__()
         self.config: Config = config
         self.theme: Theme = theme
@@ -27,6 +34,7 @@ class WindowSearch(QWidget):
         self.is_visible: bool = False
 
         self.window_scanner: WindowScanner = window_scanner
+        self.command_service: CommandService = command_service
 
         self.root_layout: QVBoxLayout = QVBoxLayout(self)
 
@@ -79,6 +87,13 @@ class WindowSearch(QWidget):
     def focus_selected_window(self):
 
         if not self.is_visible:
+            return
+
+        if not self.winitem_manager.windows_item:
+            return
+
+        text = self.search_line_edit.text()
+        if text[0] == ':':
             return
         
         self.winitem_manager.focus_selected_window()
@@ -194,8 +209,25 @@ class WindowSearch(QWidget):
         _ = line_edit.textChanged.connect(
             self.on_search_box_changed
         )
+        _ = line_edit.returnPressed.connect(
+            self.on_searchbox_enter_pressed
+        )
 
         return line_edit
+
+    def is_command(self, text: str) -> bool:
+        if text[0] != ':':
+            return False
+        
+        return self.command_service.is_command(text)
+
+    def on_searchbox_enter_pressed(self):
+
+        text = self.search_line_edit.text()
+        
+        if self.is_command(text):
+            self.command_service.execute(command=text)
+            self.hide_window()
 
     def on_search_box_changed(self, text: str):
         if not text.strip():
@@ -203,6 +235,9 @@ class WindowSearch(QWidget):
                windows_info=self.winitem_manager.windows_info
            )
            return
+
+        if text[0] == ':':
+            return
         
         self.searcher.search(
             query=text,

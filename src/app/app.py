@@ -10,6 +10,7 @@ from src.config.app_config import AppConfig
 from src.core.data_manager import DataManager
 from src.core.events.event_bus import eventBus
 from src.core.hotkey.hotkey_mananger import HotKeyManager
+from src.services.commands.command_service import CommandService
 from src.services.window.listner import WindowListener
 from src.services.window.scanner import WindowScanner
 from src.ui.tray.tray import Tray
@@ -25,6 +26,7 @@ class App:
         self.window_scanner = self.create_window_scanner()
         self.app_config = self.create_app_config()
         self.data_manager = self.create_data_manager()
+        self.commands_service = self.create_commands_service()
         self.hotkey_manager = self.create_hotkey_manager()
         self.window_manager = self.create_window_manager()
         self.ui_manager = self.create_ui_manager()
@@ -35,6 +37,9 @@ class App:
 
     def connect_events(self):
         eventBus.requestRestartApplication.connect(self.restart_application)
+        eventBus.requestQuitApplication.connect(
+            self.quit_application
+        )
 
     def run(self):
         self.hotkey_manager.start()
@@ -75,10 +80,15 @@ class App:
             app_config=self.app_config,
             config_dir=rice_paths.config_dir,
             themes_dir=rice_paths.themes_dir,
-            keybinds_file=rice_paths.key_map_file,
+            keymap_file=rice_paths.key_map_file,
         )
 
         return data_manager
+
+    def create_commands_service(self) -> CommandService:
+        return CommandService(
+            data_manager=self.data_manager
+        )
 
     def create_hotkey_manager(self) -> HotKeyManager:
         hotkey_manager = HotKeyManager(self.data_manager.key_map)
@@ -89,7 +99,8 @@ class App:
         ui_manager = UIManager(
             config=self.data_manager.active_config,
             theme=self.data_manager.active_theme,
-            window_scanner=self.window_scanner
+            window_scanner=self.window_scanner,
+            command_service=self.commands_service
         )
 
         return ui_manager

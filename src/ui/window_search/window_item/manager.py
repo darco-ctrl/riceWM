@@ -108,6 +108,15 @@ class WinItemManager:
         self.select_first()
 
     def focus_selected_window(self):
+        
+
+        if self.current_selection < 0:
+            return
+
+        count = len(self.windows_item)
+        if self.current_selection >= count:
+           return 
+           
         window = self.windows_item[self.current_selection]
 
         eventBus.focusWindow.emit(window.info.hwnd)
