@@ -79,14 +79,11 @@ class WinItemConstructor:
         new_info: list[WindowInfo],
         window_items: list[WindowItem]
     ):
-        keybind_count = 0
         for i in range(len(new_info)):
-            keybind_count += 1
             
             window_info: WindowInfo = new_info[i]
             # print(f"{i}. window info : {window_info.title}")
             _ = self.create_window_item(
-                count=keybind_count,
                 window_info=window_info,
                 window_items=window_items
             )
@@ -102,7 +99,6 @@ class WinItemConstructor:
         new_info.sort(key=lambda item: item.title)
         for window_info in new_info:
             _ = self.create_window_item(
-                count=count,
                 window_info=window_info,
                 window_items=window_items
             )
@@ -113,7 +109,6 @@ class WinItemConstructor:
     
     def create_window_item(
         self, 
-        count: int, 
         window_info: WindowInfo,
         window_items: list[WindowItem]
     ) -> WindowItem:  # m layout is main scroller layout
@@ -123,13 +118,10 @@ class WinItemConstructor:
         parent, selection_indicator = self.create_selection_indicator(f_layout)
         outer_layout, icon_container, c_layout, icon_label = self.create_icon_label(f_layout)
         title_label = self.create_window_title_label(f_layout)
-        key_bind_label = self.create_key_bind_label(f_layout)
         
         window_item: WindowItem = WindowItem(
             window_info=window_info,
-            index=count,
             frame=frame,
-            key_bind_label=key_bind_label,
             icon_outer_layout=outer_layout,
             icon_container=icon_container,
             icon_inner_layout=c_layout,
@@ -247,9 +239,6 @@ class WinItemConstructor:
         return outer_layout, container, c_layout, icon_label
 
     def create_window_title_label(self, layout: QHBoxLayout) -> QLabel:
-        style = (
-            self.theme.window_search.window_item.title_label
-        )
 
         title_label: QLabel = QLabel()
         title_label.setObjectName("titleLabel")
@@ -267,17 +256,6 @@ class WinItemConstructor:
         )
 
         return title_label
-
-    def create_key_bind_label(self, layout: QHBoxLayout) -> QLabel:
-        style = self.theme.window_search.window_item.keybind_label
-
-        key_bind_label: QLabel = QLabel()
-        key_bind_label.setObjectName("keyBindLabel")
-        key_bind_label.setText(" Alt + T")
-        key_bind_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(key_bind_label, alignment=Qt.AlignmentFlag.AlignVCenter)
-
-        return key_bind_label
 
     def delete_all_winitems(self, window_items: list[WindowItem]):
         for i in range(len(window_items)):

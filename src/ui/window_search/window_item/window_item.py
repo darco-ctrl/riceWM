@@ -13,15 +13,12 @@ class WindowItem:
         selection_indicator_parent: QWidget,
         selection_indicator: QFrame,
         icon_outer_layout: QVBoxLayout,
-        index: int,
         icon_container: QWidget,
         icon_inner_layout: QVBoxLayout,
         icon_label: QLabel,
-        title_label: QLabel,
-        key_bind_label: QLabel
+        title_label: QLabel
     ) -> None:
         self.info: WindowInfo = window_info
-        self.index: int = index
         self.frame: QFrame = frame
         self.selection_indicator_parent: QWidget = selection_indicator_parent
         self.selection_indicator: QFrame = selection_indicator
@@ -30,7 +27,6 @@ class WindowItem:
         self.icon_layout: QVBoxLayout = icon_inner_layout
         self.icon_label: QLabel = icon_label
         self.title_label: QLabel = title_label
-        self.key_bind_label: QLabel = key_bind_label
 
         self.is_selected: bool = False
         self.is_focus_window: bool = False
@@ -68,7 +64,6 @@ class WindowItem:
     def load(self):
         self.update_title_label()
         self.update_window_icon()
-        self.update_key_bind_label()
 
     def reload(self):
         self.load()
@@ -100,12 +95,3 @@ class WindowItem:
         )
 
         self.icon_label.setPixmap(scaled_pixmap)
-
-    def update_key_bind_label(self):
-        index = self.index
-        if self.index == 10:
-            index = 0
-
-        if self.index < 10:
-            text = f"Alt + {index}"
-            self.key_bind_label.setText(text)

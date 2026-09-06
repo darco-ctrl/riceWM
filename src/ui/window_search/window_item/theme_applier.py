@@ -22,7 +22,6 @@ class WinItemThemeApplier:
             icon_label=window_item.icon_label,
         )
         self.recolor_title_label(window_item.title_label)
-        self.recolor_keybind_label(window_item.key_bind_label)
 
     def recolor_frame(self, frame: QWidget):
         frame_style = self.theme.window_search.window_item.frame_style
@@ -169,7 +168,6 @@ class WinItemThemeApplier:
         frame = win_item.frame
         title_label = win_item.title_label
         icon = win_item.icon_container
-        keybind = win_item.key_bind_label
 
         # SELECTION INDICATOR
         win_item.set_selected(True)
@@ -267,39 +265,6 @@ class WinItemThemeApplier:
         }}
         """)
 
-        # KEYBIND LABEL
-        keybind.setStyleSheet(f"""
-        #keyBindLabel {{
-            border-style: {
-                keybind_style.border_style.style
-            };
-            border-radius: {
-                keybind_style.border_style.radius
-            }px;
-            border-left-width: {
-                keybind_style.border_style.width[0]
-            }px;
-            border-top-width: {
-                keybind_style.border_style.width[1]
-            }px;
-            border-right-width: {
-                keybind_style.border_style.width[2]
-            }px;
-            border-bottom-width: {
-                keybind_style.border_style.width[3]
-            }px;
-            border-color: {
-                keybind_style.border_style.color
-            };
-            background-color: {
-                keybind_style.selection_color.background_color
-            };
-            color: {
-                keybind_style.selection_color.color
-            }
-        }}
-        """)
-
     def deselect_window(self, win_item: WindowItem):
         
         style = self.theme.window_search.window_item
@@ -312,7 +277,6 @@ class WinItemThemeApplier:
         frame = win_item.frame
         title_label = win_item.title_label
         icon = win_item.icon_container
-        keybind = win_item.key_bind_label
 
         # SELECTION INDICATOR
         win_item.set_selected(False)
@@ -407,38 +371,5 @@ class WinItemThemeApplier:
             background-color: {
                 icon_style.color_style.background_color
             };
-        }}
-        """)
-
-        # KEYBIND LABEL
-        keybind.setStyleSheet(f"""
-        #keyBindLabel {{
-            border-style: {
-                keybind_style.border_style.style
-            };
-            border-radius: {
-                keybind_style.border_style.radius
-            }px;
-            border-left-width: {
-                keybind_style.border_style.width[0]
-            }px;
-            border-top-width: {
-                keybind_style.border_style.width[1]
-            }px;
-            border-right-width: {
-                keybind_style.border_style.width[2]
-            }px;
-            border-bottom-width: {
-                keybind_style.border_style.width[3]
-            }px;
-            border-color: {
-                keybind_style.border_style.color
-            };
-            background-color: {
-                keybind_style.color_style.background_color
-            };
-            color: {
-                keybind_style.color_style.color
-            }
         }}
         """)
