@@ -61,8 +61,8 @@
                 "components": {
                     "selection_indicator": {
                         "dimension": {
-                            "width": 5,
-                            "height": 30
+                            "x": 5,
+                            "y": 30
                         },
                         "margin": [0, 0, 0, 0],
                         "color_style": {
@@ -80,8 +80,8 @@
                         "container_margin": [5, 0, 0, 0],
                         "margin": [5, 5, 5, 5],
                         "dimension": {
-                            "width": 38,
-                            "height": 38
+                            "x": 38,
+                            "y": 38
                         },
                         "color_style": {
                             "background_color": "#313244",
@@ -128,8 +128,8 @@
                     "keybind_label": {
                         "margin": 0,
                         "dimension": {
-                            "width": 80,
-                            "height": 30
+                            "x": 80,
+                            "y": 30
                         },
                         "color_style": {
                             "background_color": "#181825",
@@ -161,44 +161,38 @@
         }
     },
     "virtual_desktop_notifier": {
-        "dimension": {
-            "height": 50,
-            "width": 300
-        }, 
-        "frame": {
-            "margin": [0, 0, 0, 0],
-            "color_style": {
-                "background_color": "#1e1e2e",
-                "color": "transparent",
-            },
-            "border_style": {
-                "color": "red",
-                "radius": 6,
-                "style": "solid",
-                "width": [2, 2, 2, 2]
-            }
+        "size": {
+            "x": 300,
+            "y": 48
+        },
+        "position_in_percentage": {
+            "x": 50,
+            "y": 90
+        },
+        "animation": {
+            "speed": 1
         },
         "label": {
             "text_margin": [5, 0, 5, 0],
             "color_style": {
-                "background_color": "transparent",
+                "background_color": "#1e1e2e",
                 "color": "#cdd6f4"
             },
             "border_style": {
                 "style": "solid",
-                "radius": 2,
-                "width": [2, 2, 2, 2],
+                "radius": 6,
+                "width": [1, 1, 1, 1],
                 "color": "#cba6f7"
             },
             "font_style": {
                 "family": "JetBrains Mono",
-                "pixel_size": 15,
+                "pixel_size": 16,
                 "letter_spacing": 1.0,
                 "is_bold": false,
                 "is_italic": false,
                 "is_underline": false,
                 "is_strike_out": false,
-                "weight": "Normal"
+                "weight": "Bold"
             }
         }
     }

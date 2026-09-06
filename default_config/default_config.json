@@ -6,8 +6,33 @@
             "placeholder_text": "Search window . . ."
         },
         "behavior": {
-            "max_results_shown": 5,
-            "auto_adjust_height": false
+            "max_results_shown": 3
+        }
+    }, 
+    "virtual_desktop_notifier": {
+        "enabled": true,
+        "auto_hide_time": 3000,
+        "hide_on_hover": true,
+        "desktop_name": {
+            "prefix": "- ",
+            "suffix": " -",
+            "max_char_length": 12
+        },
+        "window_animation": {
+            "fade_in": {
+                "duration": 200
+            },
+            "fade_out": {
+                "duration": 300
+            }
+        },
+        "label_animation": {
+            "fade_in": {
+                "duration": 200
+            },
+            "fade_out": {
+                "duration": 200
+            }
         }
     }
 }
