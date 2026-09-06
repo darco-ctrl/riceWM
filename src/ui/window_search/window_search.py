@@ -93,7 +93,8 @@ class WindowSearch(QWidget):
             return
 
         text = self.search_line_edit.text()
-        if text[0] == ':':
+        
+        if text and text[0] == ':':
             return
         
         self.winitem_manager.focus_selected_window()
@@ -189,8 +190,6 @@ class WindowSearch(QWidget):
         screen_width, screen_height = self.get_screen_size()
         window_height = self.get_window_height()
 
-        print(f"sw: x={screen_width}, y={screen_height}")
-
         position_x = int((screen_width / 2) - (config.window_width / 2))
         position_y = int((screen_height / 2) - (window_height / 2))
 
@@ -214,6 +213,9 @@ class WindowSearch(QWidget):
         return line_edit
 
     def is_command(self, text: str) -> bool:
+        if not text:
+            return False
+        
         if text[0] != ':':
             return False
         
