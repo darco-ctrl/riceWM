@@ -1,12 +1,10 @@
 
-
-import src.app.paths as rice_paths
 from src.core.data_manager import DataManager
 from src.core.events.event_bus import eventBus
 from src.services.commands.helper import CommandHelper
 
 
-class CommandExecuter():
+class CommandExecuter:
     def __init__(self, data_manager: DataManager):
         self.data_manager: DataManager = data_manager
         self.helper: CommandHelper = CommandHelper()

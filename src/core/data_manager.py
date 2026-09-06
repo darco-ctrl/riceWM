@@ -1,9 +1,5 @@
-import json
 from pathlib import Path
 
-import tomllib
-
-import src.app.paths as rice_paths
 from src.config.app_config import AppConfig
 from src.core.config.config import Config
 from src.core.events.event_bus import eventBus

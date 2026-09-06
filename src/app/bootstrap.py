@@ -1,5 +1,4 @@
 import shutil
-from pathlib import Path
 
 import src.app.paths as rice_paths
 

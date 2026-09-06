@@ -163,7 +163,6 @@ class WinItemThemeApplier:
         frame_style = style.frame_style
         label_style = style.title_label
         icon_style = style.icon_container
-        keybind_style = style.keybind_label
         
         frame = win_item.frame
         title_label = win_item.title_label
@@ -272,7 +271,6 @@ class WinItemThemeApplier:
         frame_style = style.frame_style
         label_style = style.title_label
         icon_style = style.icon_container
-        keybind_style = style.keybind_label
         
         frame = win_item.frame
         title_label = win_item.title_label

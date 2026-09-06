@@ -3,7 +3,9 @@ from src.core.config.models import VirtualDesktopNotifierConfig
 from src.core.theme.theme import Theme
 from src.services.commands.command_service import CommandService
 from src.services.window.scanner import WindowScanner
-from src.ui.virtual_desktop_notifier.virtual_desktop_notifier import VirtualDesktopNotifier
+from src.ui.virtual_desktop_notifier.virtual_desktop_notifier import (
+    VirtualDesktopNotifier,
+)
 from src.ui.window_search.window_search import WindowSearch
 
 

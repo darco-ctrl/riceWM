@@ -178,7 +178,6 @@ class WindowSearch(QWidget):
     def create_window(self) -> QWidget:
 
         config = self.config.window_search
-        theme = self.theme.window_search
 
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setWindowFlags(
@@ -186,8 +185,7 @@ class WindowSearch(QWidget):
             | Qt.WindowType.FramelessWindowHint
             | Qt.WindowType.Tool
         )
-
-        window_margin = 12
+        
         screen_width, screen_height = self.get_screen_size()
         window_height = self.get_window_height()
 

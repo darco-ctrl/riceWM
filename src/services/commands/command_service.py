@@ -1,7 +1,6 @@
-from typing import Callable
+from collections.abc import Callable
 
 from src.core.data_manager import DataManager
-from src.core.events.event_bus import eventBus
 from src.services.commands.executer import CommandExecuter
 
 

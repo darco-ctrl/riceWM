@@ -1,9 +1,7 @@
-from math import comb
+
 from pathlib import Path
 
 import tomllib
-
-import src.app.paths as rice_paths
 
 
 class AppConfig:

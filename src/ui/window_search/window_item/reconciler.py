@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from src.models.window import WindowInfo
 from src.services.window.scanner import WindowScanner
 from src.ui.window_search.window_item.helper import WindowItemHelper
-from src.ui.window_search.window_item.window_item import WindowItem
 
 
 @dataclass
@@ -42,13 +41,13 @@ class StateReconciler:
             )
 
             if match:
-                index, item = match
+                index, _ = match
                 update_window.append(index)
 
             else:
                 new_window.append(window)
 
-        for i in range(0, len(windows_info_list)):
+        for i in range(len(windows_info_list)):
             if not i in update_window:
                 delete_window.append(i)
 

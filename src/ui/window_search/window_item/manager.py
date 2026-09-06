@@ -1,4 +1,4 @@
-from typing import cast
+
 
 from PySide6.QtWidgets import QScrollArea, QVBoxLayout
 
