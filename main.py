@@ -3,7 +3,7 @@ from ctypes import windll
 
 from src.app.app import App
 
-MUTEX_NAME = "RiceWM_SingleInstance"
+MUTEX_NAME = "SeedMachine.RiceWM.Application"
 
 def ensure_single_instance() -> bool:
     mutex = windll.kernel32.CreateMutexW(
