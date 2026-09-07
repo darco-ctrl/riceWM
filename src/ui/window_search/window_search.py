@@ -185,6 +185,7 @@ class WindowSearch(QWidget):
             Qt.WindowType.WindowStaysOnTopHint
             | Qt.WindowType.FramelessWindowHint
             | Qt.WindowType.Tool
+            | Qt.WindowType.Popup
         )
         
         screen_width, screen_height = self.get_screen_size()
