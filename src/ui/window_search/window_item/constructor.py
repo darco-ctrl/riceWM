@@ -14,6 +14,7 @@ from PySide6.QtWidgets import (
 import src.app.paths as rice_paths
 from src.core.config.config import Config
 from src.core.theme.theme import Theme
+from src.models.elided_label import ElidedLabel
 from src.models.window import WindowInfo
 from src.ui.window_search.window_item.helper import WindowItemHelper
 from src.ui.window_search.window_item.theme_applier import WinItemThemeApplier
@@ -238,18 +239,12 @@ class WinItemConstructor:
 
         return outer_layout, container, c_layout, icon_label
 
-    def create_window_title_label(self, layout: QHBoxLayout) -> QLabel:
+    def create_window_title_label(self, layout: QHBoxLayout) -> ElidedLabel:
 
-        title_label: QLabel = QLabel()
-        title_label.setObjectName("titleLabel")
-        title_label.setText("Loading . . .")
-
-        title_label.setWordWrap(True)
-
-        title_label.setSizePolicy(
-            QSizePolicy.Policy.Expanding,
-            QSizePolicy.Policy.Fixed,
+        title_label: ElidedLabel = ElidedLabel(
+            text="Loading"
         )
+        title_label.setObjectName("titleLabel")
 
         layout.addWidget(
             title_label, stretch=1, alignment=Qt.AlignmentFlag.AlignVCenter

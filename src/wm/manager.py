@@ -1,4 +1,4 @@
-from src.models.window import WindowInfo
+
 from src.services.window.scanner import WindowScanner
 from src.wm.controller import WindowController
 from src.wm.registry import WindowRegistry
