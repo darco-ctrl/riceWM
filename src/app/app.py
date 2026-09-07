@@ -11,7 +11,6 @@ from src.core.data_manager import DataManager
 from src.core.events.event_bus import eventBus
 from src.core.hotkey.hotkey_mananger import HotKeyManager
 from src.services.commands.command_service import CommandService
-from src.services.window.listner import WindowListener
 from src.services.window.scanner import WindowScanner
 from src.ui.tray.tray import Tray
 from src.ui.ui_manager import UIManager
@@ -22,7 +21,6 @@ class App:
     def __init__(self):
         self.bootstrap = self.create_bootstrap()
         self.application = self.create_application()
-        self.window_listner = self.create_window_listner()
         self.window_scanner = self.create_window_scanner()
         self.app_config = self.create_app_config()
         self.data_manager = self.create_data_manager()
@@ -46,10 +44,6 @@ class App:
         self.ui_manager.load()
 
         sys.exit(self.application.exec())
-
-    def create_window_listner(self) -> WindowListener:
-        listner = WindowListener()
-        return listner
 
     def create_window_scanner(self) -> WindowScanner:
         return WindowScanner()

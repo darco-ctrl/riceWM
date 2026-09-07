@@ -39,7 +39,6 @@ class VirtualDesktopNotifier(QWidget):
             self.config.virtual_destkop_notifer
         )
         window_animation = vdn_style.window_animation
-        label_animation = vdn_style.label_animation
         
         self.fade_out_animation: QPropertyAnimation = (
             self.get_fade_out_animation(config=window_animation.fade_out)

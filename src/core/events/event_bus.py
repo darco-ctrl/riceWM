@@ -5,15 +5,6 @@ from pyvda.pyvda import VirtualDesktop
 class EventBus(QObject):
     requestRestartApplication: Signal = Signal()
     requestQuitApplication: Signal = Signal()
-    
-    windowCreated: Signal = Signal(int)
-    windowShow: Signal = Signal(int)
-    windowDeystroyed: Signal = Signal(int)
-    windowMaximized: Signal = Signal(int)
-    windowMinimized: Signal = Signal(int)
-    windowRestore: Signal = Signal(int)
-    windowFullscreen: Signal = Signal(int)
-    windowFocused: Signal = Signal(int)
 
     wspToggleRequested: Signal = Signal()
     wspCloseRequested: Signal = Signal()

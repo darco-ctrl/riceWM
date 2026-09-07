@@ -1,7 +1,3 @@
-import win32gui
-import win32api
-import win32con
-
 import pyvda
 from pynput.keyboard import Controller, Key
 from pyvda.pyvda import VirtualDesktop
