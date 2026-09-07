@@ -11,8 +11,8 @@ class ElidedLabel(QLabel):
         self.setMinimumWidth(0)
 
         self.setSizePolicy(
-            QSizePolicy.Policy.Ignored
-            QSizePolicy.Policy.Fixed,
+            QSizePolicy.Policy.Ignored,
+            QSizePolicy.Policy.Fixed
         )
 
         self._raw_text: str = text

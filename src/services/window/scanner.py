@@ -36,7 +36,7 @@ class WindowScanner:
 
             return app_view.desktop.number == desktop.number
 
-        except Exception:
+        except Exception :
             return False
 
     def is_regular_window(self,
@@ -86,10 +86,7 @@ class WindowScanner:
             # Find the actual content window
             def find_content_window(h, _):
                 child_class = win32gui.GetClassName(h)
-                if child_class == "Windows.UI.Core.CoreWindow":
-                    return False  # Stop enumeration
-
-                return True
+                return child_class == "Windows.UI.Core.CoreWindow"
 
             win32gui.EnumChildWindows(hwnd, find_content_window, None)
             # If this is just a frame without content, skip it

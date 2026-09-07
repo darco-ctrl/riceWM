@@ -5,7 +5,6 @@ from src.core.key_map.key_map import KeyMap
 from src.core.key_map.models import DataManagerKB, WindowManagerKB, WindowSwitchPanelKB
 
 
-
 class HotKeyManager:
     def __init__(self, key_map: KeyMap) -> None:
         self.key_map = key_map
