@@ -1,3 +1,5 @@
+from poplib import POP3_SSL_PORT
+
 from pynput import keyboard
 
 from src.core.events.event_bus import eventBus
@@ -31,9 +33,25 @@ class HotKeyManager:
                 vdesktop.create_new: self.on_vdesktop_new,
                 vdesktop.delete_current: self.on_vdesktop_delete,
                 vdesktop.go_left: self.on_vdesktop_left,
-                vdesktop.go_right: self.on_vdesktop_right
+                vdesktop.go_right: self.on_vdesktop_right,
+                window_controls.close: self.close_window,
+                window_controls.fullscreen: self.fullscreen,
+                window_controls.maximize: self.maximize_window,
+                window_controls.minimize: self.minimize_window
             }
         )
+
+    def close_window(self):
+        eventBus.closeWindow.emit()
+
+    def minimize_window(self):
+        eventBus.minimizeWindow.emit()
+
+    def maximize_window(self):
+        eventBus.maximizeWindow.emit()
+
+    def fullscreen(self):
+        eventBus.fullscreenWindow.emit()
 
     def start(self):
         self.listner.start()
@@ -67,9 +85,3 @@ class HotKeyManager:
 
     def on_vdesktop_right(self):
         eventBus.vDesktopGoRight.emit()
-
-    def on_window_left(self):
-        eventBus.windowGoLeft.emit()
-
-    def on_window_right(self):
-        eventBus.windowGoRight.emit()

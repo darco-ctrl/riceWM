@@ -41,6 +41,9 @@ class WindowScanner:
 
     def is_regular_window(self,
         hwnd: int) -> bool:
+
+        if not hwnd:
+            return False
             
         if not win32gui.IsWindowVisible(hwnd):
             # print(" returning window is not visible ")

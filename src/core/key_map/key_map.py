@@ -61,7 +61,10 @@ class KeyMap:
 
         win_controls_dict = dict["window_controls"]
         window_controls = WindowControlsKB(
-            go_left=win_controls_dict["go_left"], go_right=win_controls_dict["go_right"]
+            close=win_controls_dict["close"],
+            fullscreen=win_controls_dict["fullscreen"],
+            maximize=win_controls_dict["maximize"],
+            minimize=win_controls_dict["minimize"]
         )
 
         self.window_manager = WindowManagerKB(

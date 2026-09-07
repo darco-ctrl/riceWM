@@ -16,8 +16,10 @@ class WindowSwitchPanelKB:
 
 @dataclass
 class WindowControlsKB:
-    go_left: str
-    go_right: str
+    maximize: str
+    minimize: str
+    close: str
+    fullscreen: str
 
 @dataclass
 class VirtualDesktopKB:
