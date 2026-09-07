@@ -1,4 +1,4 @@
-from src.ui.window_search.item import WindowItem
+from src.ui.window_search.window_item.window_item import WindowItem
 from src.ui.window_search.window_search import WindowSearch
 
 

@@ -1,4 +1,3 @@
-from poplib import POP3_SSL_PORT
 
 from pynput import keyboard
 
@@ -35,7 +34,7 @@ class HotKeyManager:
                 vdesktop.go_left: self.on_vdesktop_left,
                 vdesktop.go_right: self.on_vdesktop_right,
                 window_controls.close: self.close_window,
-                window_controls.fullscreen: self.fullscreen,
+                window_controls.restore: self.restore_window,
                 window_controls.maximize: self.maximize_window,
                 window_controls.minimize: self.minimize_window
             }
@@ -50,8 +49,8 @@ class HotKeyManager:
     def maximize_window(self):
         eventBus.maximizeWindow.emit()
 
-    def fullscreen(self):
-        eventBus.fullscreenWindow.emit()
+    def restore_window(self):
+        eventBus.restoreWindow.emit()
 
     def start(self):
         self.listner.start()

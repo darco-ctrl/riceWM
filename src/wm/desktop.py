@@ -1,6 +1,5 @@
 from uuid import UUID
 
-from src.models.window import WindowInfo
 from src.services.window.scanner import WindowScanner
 
 

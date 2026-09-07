@@ -1,7 +1,7 @@
 import win32con
 import win32gui
 import win32ui
-from PIL import Image, ImageChops, ImageDraw, ImageWin
+from PIL import Image, ImageChops, ImageDraw
 
 import src.app.paths as rice_paths
 

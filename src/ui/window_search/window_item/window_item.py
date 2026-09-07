@@ -1,5 +1,5 @@
 import win32gui
-from PySide6.QtGui import QFontMetrics, QPixmap, Qt
+from PySide6.QtGui import QPixmap, Qt
 from PySide6.QtWidgets import QFrame, QLabel, QVBoxLayout, QWidget
 
 from src.models.elided_label import ElidedLabel

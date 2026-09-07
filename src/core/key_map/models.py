@@ -19,7 +19,7 @@ class WindowControlsKB:
     maximize: str
     minimize: str
     close: str
-    fullscreen: str
+    restore: str
 
 @dataclass
 class VirtualDesktopKB:

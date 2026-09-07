@@ -1,11 +1,10 @@
 import pyvda
-from pynput.keyboard import Controller, Key
+from pynput.keyboard import Controller
 from pyvda.pyvda import VirtualDesktop
 
 from src.core.events.event_bus import eventBus
 from src.models.window import WindowInfo
 from src.services.window.scanner import WindowScanner
-from src.wm.desktop import Desktop
 
 
 class WindowRegistry:

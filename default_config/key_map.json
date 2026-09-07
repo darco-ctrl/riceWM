@@ -17,8 +17,10 @@
             "delete_current": "<ctrl>+<alt>+<shift>+q"
         },
         "window_controls": {
-            "go_left": "",
-            "go_right": ""
+            "maximize": "<ctrl>+<alt>+w",
+            "minimize": "<ctrl>+<alt>+x",
+            "close": "<ctrl>+<alt>+q",
+            "restore": "<ctrl>+<alt>+s"
         }
     }
 }

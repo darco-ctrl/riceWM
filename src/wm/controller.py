@@ -1,10 +1,9 @@
-from pyvda.pyvda import AppView, VirtualDesktop
 import pywintypes
 import win32con
 import win32gui
+from pyvda.pyvda import AppView, VirtualDesktop
 
 from src.core.events.event_bus import eventBus
-from src.models.window import WindowInfo
 from src.services.window.scanner import WindowScanner
 from src.wm.registry import WindowRegistry
 
@@ -19,9 +18,9 @@ class WindowController:
     def connect_window_events(self):
         _ = eventBus.focusWindow.connect(self.focus_window)
         _ = eventBus.closeWindow.connect(self.close_Window)
+        _ = eventBus.restoreWindow.connect(self.restore_window)
         _ = eventBus.maximizeWindow.connect(self.maximize_window)
         _ = eventBus.minimizeWindow.connect(self.minimize_window)
-        _ = eventBus.fullscreenWindow.connect(self.fullscreen_window)
 
     def close_Window(self):
         hwnd = self.get_focused_window()
@@ -47,13 +46,13 @@ class WindowController:
 
         self.maximize(hwnd)
 
-    def fullscreen_window(self):
+    def restore_window(self):
         hwnd = self.get_focused_window()
 
         if not hwnd:
             return
 
-        self.fullscreen(hwnd)
+        self.restore(hwnd)
 
     def get_focused_window(self) -> int:
         hwnd: int = win32gui.GetForegroundWindow()
@@ -81,11 +80,11 @@ class WindowController:
     def minimize(self, hwnd: int):
         win32gui.ShowWindow(hwnd, win32con.SW_MINIMIZE)
 
+    def restore(self, hwnd: int):
+        win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
+
     def maximize(self, hwnd: int):
         win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
-
-    def fullscreen(self, hwnd: int):
-        win32gui.ShowWindow(hwnd, win32con.SHOW_FULLSCREEN)
 
     def set_focus(self, hwnd: int):
 

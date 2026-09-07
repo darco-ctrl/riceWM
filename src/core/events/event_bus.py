@@ -24,9 +24,10 @@ class EventBus(QObject):
     vDesktopNotiferShow: Signal = Signal(VirtualDesktop)
 
     closeWindow: Signal = Signal()
+    restoreWindow: Signal = Signal()
     maximizeWindow: Signal = Signal()
     minimizeWindow: Signal = Signal()
-    fullscreenWindow: Signal = Signal()
+    
 
     reloadWSPThemeRequested: Signal = Signal()
     
