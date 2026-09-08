@@ -1,6 +1,19 @@
-<p align="center">
-  <img src="git-assets/ricewm_b_logo.png" width="150" alt="RiceWM logo">
-</p>
+<div align="center">
+  <img src="git-assets/ricewm_b_logo.png" width="256" alt="RiceWM logo">
+
+  <h1 style="font-size: 3.5em; font-weight: 900; margin-top: 0;">RiceWM</h1>
+  
+  <h3 style="margin-bottom: 2em;">A lightweight, customizable window management utility for Windows — fast keyboard-driven window switching, virtual desktop navigation with animated notifications, and global hotkey controls, all running quietly from the system tray.</h3>
+
+  <h2><p align="center">
+  <a href="#features">Features</a> ♦
+  <a href="#installation">Installation</a> ♦
+  <a href="#default-hotkeys">Default Hotkeys</a> ♦
+  <a href="#configuration">Configuration</a> ♦
+  <a href="#feedback--support">Feedback & Support</a> ♦
+  <a href="#about">About</a>
+</p></h2>
+</div>
 
 A lightweight, customizable window management utility for Windows — fast keyboard-driven window switching, virtual desktop navigation with animated notifications, and global hotkey controls, all running quietly from the system tray.
 
