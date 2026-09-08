@@ -5,12 +5,12 @@
   
   <h3 style="margin-bottom: 2em;">A lightweight, customizable window management utility for Windows — fast keyboard-driven window switching, virtual desktop navigation with animated notifications, and global hotkey controls, all running quietly from the system tray.</h3>
   <h2><p align="center">
-    <a href="#features">Features</a> ♦
-    <a href="#installation">Installation</a> ♦
-    <a href="#default-hotkeys">Default Hotkeys</a> ♦
-    <a href="#configuration">Configuration</a> ♦
-    <a href="#feedback--support">Feedback & Support</a> ♦
-    <a href="#about">About</a>
+    <a href="#-features">Features</a> ♦
+    <a href="#-installation">Installation</a> ♦
+    <a href="#%EF%B8%8F-default-hotkeys">Default Hotkeys</a> ♦
+    <a href="#%EF%B8%8F-configuration">Configuration</a> ♦
+    <a href="#-feedback--support">Feedback & Support</a> ♦
+    <a href="#-about">About</a>
   </p></h2>
 </div>
 
@@ -44,7 +44,7 @@ RiceWM relies on Windows-specific APIs (virtual desktops, low-level keyboard hoo
 
 > **Note:** RiceWM requests administrator privileges on launch. This is required for global hotkey suppression to work reliably across all applications (similar to how AutoHotkey scripts operate).
 
-> **Antivirus note:** Some antivirus software may flag RiceWM on first run due to its use of global keyboard hooks — this pattern is also used by keyloggers, so heuristic scanners sometimes react to it. RiceWM is not currently code-signed (see [Roadmap](#roadmap--future-plans)), so Windows SmartScreen may also show an "unrecognized app" warning. This is expected for an early-stage, unsigned open-source tool — you're welcome to review the source yourself before running it.
+> **Antivirus note:** Some antivirus software may flag RiceWM on first run due to its use of global keyboard hooks — this pattern is also used by keyloggers, so heuristic scanners sometimes react to it. RiceWM is not currently code-signed (see [Roadmap]([#%EF%B8%8F-configuration)), so Windows SmartScreen may also show an "unrecognized app" warning. This is expected for an early-stage, unsigned open-source tool — you're welcome to review the source yourself before running it.
 
 On first launch, RiceWM automatically creates its config directory at `%USERPROFILE%\.config\riceWM` and populates it with default configuration, theme, and keymap files.
 
@@ -66,7 +66,7 @@ On first launch, RiceWM automatically creates its config directory at `%USERPROF
 | Restore focused window          | `Ctrl + Alt + S`         |
 | Restart Application             | `Ctrl + Alt + F12`       |
 
-All hotkeys are fully remappable — see [Configuration](#configuration) below.
+All hotkeys are fully remappable — see [Configuration](#%EF%B8%8F-configuration) below.
 
 ## 🕹️ Commands
 
