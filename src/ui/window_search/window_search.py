@@ -223,16 +223,15 @@ class WindowSearch(QWidget):
         return self.command_service.is_command(text)
 
     def on_searchbox_enter_pressed(self):
-
-        if self.winitem_manager.windows_item:
-            self.focus_selected_window()
-            return
-
         text = self.search_line_edit.text()
         
         if self.is_command(text):
             self.command_service.execute(command=text)
             self.hide_window()
+            return
+            
+        if self.winitem_manager.windows_item:
+            self.focus_selected_window()
 
     def on_search_box_changed(self, text: str):
         if not text.strip():

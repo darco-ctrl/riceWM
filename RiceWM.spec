@@ -3,7 +3,10 @@ a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[
+        ('assets', 'assets'),
+        ('default_config', 'default_config'),
+    ],
     hiddenimports=['keyboard'],
     hookspath=[],
     hooksconfig={},

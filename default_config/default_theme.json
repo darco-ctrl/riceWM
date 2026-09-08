@@ -41,6 +41,28 @@
                 "background_color": "#1e1e2e",
                 "color": "transparent"
             },
+            "empty_label": {
+                "color_style": {
+                    "background_color": "transparent",
+                    "color": "#45475a"
+                },
+                "border_style": {
+                    "style": "solid",
+                    "radius": 2,
+                    "width": [0, 0, 0, 0],
+                    "color": "transparent"
+                },
+                "font_style": {
+                    "family": "JetBrains Mono",
+                    "pixel_size": 24,
+                    "letter_spacing": 1.0,
+                    "is_bold": false,
+                    "is_italic": false,
+                    "is_underline": false,
+                    "is_strike_out": false,
+                    "weight": "Bold"
+                }
+            },
             "frame": {
                 "height": 64,
                 "contents_margin": [0, 0, 10, 0],
