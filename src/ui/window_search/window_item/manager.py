@@ -1,6 +1,6 @@
 
 
-from PySide6.QtWidgets import QScrollArea, QVBoxLayout
+from PySide6.QtWidgets import QLabel, QScrollArea, QVBoxLayout
 
 from src.core.config.config import Config
 from src.core.events.event_bus import eventBus
@@ -51,6 +51,23 @@ class WinItemManager:
         )
         self.current_selection: int = 0
 
+        self.empty_label: QLabel = self.get_emtpy_label()
+
+
+    def get_emtpy_label(self) -> QLabel:
+        empty_label: QLabel = self.constructor.create_empty_label()
+
+        self.scroller_layout.addWidget(empty_label)
+
+        return empty_label
+
+    def check_is_empty(self):
+        if self.windows_item:
+            self.empty_label.hide()
+
+        else:
+            self.empty_label.show()
+
     def connect_events(self):
         _ = eventBus.updateWindowItemList.connect(
             self.update_to_search
@@ -84,6 +101,7 @@ class WinItemManager:
         )
 
         self.select_first()
+        self.check_is_empty()
 
     def sync_to_new(self):
         task_list: TaskList = self.reconciler.get_new_plan(
@@ -106,6 +124,7 @@ class WinItemManager:
         )
 
         self.select_first()
+        self.check_is_empty()
 
     def focus_selected_window(self):
         

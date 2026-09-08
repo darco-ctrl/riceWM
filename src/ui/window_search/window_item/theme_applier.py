@@ -10,6 +10,28 @@ from src.ui.window_search.window_item.window_item import WindowItem
 class WinItemThemeApplier:
     def __init__(self, theme: Theme):
         self.theme: Theme = theme
+
+    def color_empty_label(self, label: QLabel):
+        style = self.theme.window_search.window_item.empty_label
+        
+        label.setStyleSheet(f"""
+        #emptyLabel {{
+            border-style: {style.border_style.style};
+            border-radius: {style.border_style.radius}px;
+            border-left-width: {style.border_style.width[0]}px;
+            border-top-width: {style.border_style.width[1]}px;
+            border-right-width: {style.border_style.width[2]}px;
+            border-bottom-width: {style.border_style.width[3]}px;
+            border-color: {style.border_style.color};
+            background-color: {style.color_style.background_color};
+            color: {style.color_style.color}
+        }}
+        """)
+
+        font = self.theme.helper.to_qfont(
+            label.font(), style.font_style
+        )
+        label.setFont(font)
     
     def recolor_item(self, window_item: WindowItem):
         # print(f"changing: background_color: {style.background_color}")

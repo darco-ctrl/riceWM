@@ -272,6 +272,10 @@ class ThemeConstructor:
         color_style: ColorStyle = self.json_parser.get_color_style(
             style=style["color_style"]
         )
+
+        empty_label: LabelStyle = self.get_label_style(
+            style=style["empty_label"]
+        )
         
         frame_style: ItemFrameStyle = self.get_item_frame_style(
             style=frame
@@ -295,6 +299,7 @@ class ThemeConstructor:
 
         return WindowItemStyle(
             color_style=color_style,
+            empty_label=empty_label,
             frame_style=frame_style,
             icon_container=icon_container,
             keybind_label=keybind_label,

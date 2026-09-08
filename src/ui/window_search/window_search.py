@@ -1,6 +1,7 @@
 from typing import cast
 
-from PySide6.QtCore import QEvent, Qt
+from pynput import mouse
+from PySide6.QtCore import QEvent, QPoint, Qt, Signal
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtWidgets import (
     QLineEdit,
@@ -20,6 +21,7 @@ from src.ui.window_search.window_item.manager import WinItemManager
 
 
 class WindowSearch(QWidget):
+    
     def __init__(
         self, 
         config: Config, 
@@ -30,8 +32,6 @@ class WindowSearch(QWidget):
         super().__init__()
         self.config: Config = config
         self.theme: Theme = theme
-
-        self.is_visible: bool = False
 
         self.window_scanner: WindowScanner = window_scanner
         self.command_service: CommandService = command_service
@@ -66,10 +66,20 @@ class WindowSearch(QWidget):
             scroller_layout=scroller_layout,
         )
         self.winitem_manager.sync_to_new()
-
+        
         self.connect_event()
         # self.dumpObjectTree()
         # self.scroller.hide()
+
+    def changeEvent(self, event: QEvent) -> None:
+        if event.type() == QEvent.Type.ActivationChange:
+            if self.isActiveWindow():
+                print("system-focus gained")
+
+            else:
+                print("system-focus lost")
+        
+        return super().changeEvent(event)
 
     def connect_event(self):
         _ = eventBus.wspToggleRequested.connect(self.toggle_window)
@@ -86,7 +96,7 @@ class WindowSearch(QWidget):
 
     def focus_selected_window(self):
 
-        if not self.is_visible:
+        if not self.isVisible():
             return
 
         if not self.winitem_manager.windows_item:
@@ -142,22 +152,27 @@ class WindowSearch(QWidget):
         return super().event(event)
 
     def hide_window(self):
+
+        if not self.isVisible():
+            return
+        
         self.hide()
         self.search_line_edit.setText("")
         self.winitem_manager.hide()
 
-        self.is_visible = False
 
     def show_window(self):
+        if self.isVisible():
+            return
+        
         self.winitem_manager.sync_to_new()
 
         self.show()
         self.raise_()
         self.activateWindow()
 
+        self.setFocus()
         self.search_line_edit.setFocus()
-
-        self.is_visible = True
 
     def get_window_height(self):
 
@@ -204,7 +219,8 @@ class WindowSearch(QWidget):
 
     def create_search_box(self) -> QLineEdit:
         line_edit = self.panel_constructor.create_searchbox()
-        _ = line_edit.textChanged.connect(
+        _ = line_edit.textChanged.connect
+        (
             self.on_search_box_changed
         )
         _ = line_edit.returnPressed.connect(

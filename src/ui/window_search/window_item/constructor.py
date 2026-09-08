@@ -36,6 +36,20 @@ class WinItemConstructor:
         self.scroll_layout: QVBoxLayout = scroll_layout
         self.theme_applier: WinItemThemeApplier = theme_applier
         self.helper: WindowItemHelper = helper
+
+    def create_empty_label(self) -> QLabel:
+        empty_label: QLabel = QLabel("Nothing to search for :)")
+        empty_label.setObjectName("emptyLabel")
+
+        empty_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        empty_label.setSizePolicy(
+            QSizePolicy.Policy.Expanding,
+            QSizePolicy.Policy.Expanding,
+        )
+        
+        self.theme_applier.color_empty_label(label=empty_label)
+
+        return empty_label
         
     def update_window_items(self, items: list[int], windows: list[WindowItem]):
 

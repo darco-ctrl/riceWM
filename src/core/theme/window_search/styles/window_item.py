@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from src.core.theme.components.label_style import LabelStyle
 from src.core.theme.primitives.color_style import ColorStyle
 from src.core.theme.window_search.styles.icon_container import IconContainerStyle
 from src.core.theme.window_search.styles.item_frame import ItemFrameStyle
@@ -13,6 +14,7 @@ from src.core.theme.window_search.styles.title_label import TitleLabelStyle
 @dataclass
 class WindowItemStyle:
     color_style: ColorStyle
+    empty_label: LabelStyle
     frame_style: ItemFrameStyle 
     selection_indicator: SelectionIndicatorStyle
     icon_container: IconContainerStyle
