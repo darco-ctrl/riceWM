@@ -175,7 +175,7 @@ RiceWM is built on top of these excellent open-source projects:
 - [pynput](https://github.com/moses-palmer/pynput) — scoped, panel-local input handling
 - [pyvda](https://github.com/mrob95/pyvda) — Windows virtual desktop control via COM
 - [PyInstaller](https://pyinstaller.org/) — packaging RiceWM into a standalone executable
-- [Catppuccin](https://github.com/catppuccin/catppuccin) — the soothing pastel palette used for RiceWM's default theme
+- [Catppuccin](https://catppuccin.com/) — the soothing pastel palette used for RiceWM's default theme
 
 
 ## 📄 License
