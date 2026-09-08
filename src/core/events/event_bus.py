@@ -11,7 +11,6 @@ class EventBus(QObject):
     dataReloadRequested: Signal = Signal()
     itemSelectDown: Signal = Signal()
     itemSelectUp: Signal = Signal()
-    wspFocusSelectedWindow: Signal = Signal()
 
     updateWindowItemList: Signal = Signal(list)
 
@@ -30,6 +29,9 @@ class EventBus(QObject):
     
 
     reloadWSPThemeRequested: Signal = Signal()
+
+    enablePanelKeys: Signal = Signal()
+    disablePanelKeys: Signal = Signal()
     
     
 

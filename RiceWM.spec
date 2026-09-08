@@ -1,12 +1,10 @@
 # -*- mode: python ; coding: utf-8 -*-
-
-
 a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
     datas=[],
-    hiddenimports=[],
+    hiddenimports=['keyboard'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -15,7 +13,6 @@ a = Analysis(
     optimize=0,
 )
 pyz = PYZ(a.pure)
-
 exe = EXE(
     pyz,
     a.scripts,
@@ -33,6 +30,7 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
     icon=['ricewm.ico'],
+    uac_admin=True,
 )
 coll = COLLECT(
     exe,

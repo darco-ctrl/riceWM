@@ -2,17 +2,16 @@ from dataclasses import dataclass
 
 
 @dataclass
-class DataManagerKB:
+class DataManagerKM:
     reload_data: str
 
 
 @dataclass
-class WindowSwitchPanelKB:
+class WindowSearchKM:
     toggle: str
     close_window: str
     select_up: str
     select_down: str
-    focus_window: str
 
 @dataclass
 class WindowControlsKB:
@@ -29,6 +28,6 @@ class VirtualDesktopKB:
     delete_current: str
 
 @dataclass
-class WindowManagerKB:
+class WindowManagerKM:
     virtual_desktop: VirtualDesktopKB
     window_controls: WindowControlsKB

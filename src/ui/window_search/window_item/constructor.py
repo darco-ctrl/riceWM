@@ -38,7 +38,7 @@ class WinItemConstructor:
         self.helper: WindowItemHelper = helper
 
     def create_empty_label(self) -> QLabel:
-        empty_label: QLabel = QLabel("Nothing to search for :)")
+        empty_label: QLabel = QLabel("No windows found. :)")
         empty_label.setObjectName("emptyLabel")
 
         empty_label.setAlignment(Qt.AlignmentFlag.AlignCenter)

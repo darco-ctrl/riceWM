@@ -1,7 +1,6 @@
 from typing import cast
 
-from pynput import mouse
-from PySide6.QtCore import QEvent, QPoint, Qt, Signal
+from PySide6.QtCore import QEvent, Qt
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtWidgets import (
     QLineEdit,
@@ -21,7 +20,6 @@ from src.ui.window_search.window_item.manager import WinItemManager
 
 
 class WindowSearch(QWidget):
-    
     def __init__(
         self, 
         config: Config, 
@@ -70,17 +68,7 @@ class WindowSearch(QWidget):
         self.connect_event()
         # self.dumpObjectTree()
         # self.scroller.hide()
-
-    def changeEvent(self, event: QEvent) -> None:
-        if event.type() == QEvent.Type.ActivationChange:
-            if self.isActiveWindow():
-                print("system-focus gained")
-
-            else:
-                print("system-focus lost")
         
-        return super().changeEvent(event)
-
     def connect_event(self):
         _ = eventBus.wspToggleRequested.connect(self.toggle_window)
         _ = eventBus.itemSelectUp.connect(self.on_wsp_select_up)
@@ -88,9 +76,6 @@ class WindowSearch(QWidget):
         _ = eventBus.wspCloseRequested.connect(self.hide_window)
         _ = eventBus.reloadWSPThemeRequested.connect(
             self.reload_theme
-        )
-        _ = eventBus.wspFocusSelectedWindow.connect(
-            self.focus_selected_window
         )
         
 
@@ -152,14 +137,13 @@ class WindowSearch(QWidget):
         return super().event(event)
 
     def hide_window(self):
-
         if not self.isVisible():
             return
-        
+
+        eventBus.disablePanelKeys.emit()
         self.hide()
         self.search_line_edit.setText("")
         self.winitem_manager.hide()
-
 
     def show_window(self):
         if self.isVisible():
@@ -167,6 +151,7 @@ class WindowSearch(QWidget):
         
         self.winitem_manager.sync_to_new()
 
+        eventBus.enablePanelKeys.emit()
         self.show()
         self.raise_()
         self.activateWindow()
@@ -219,8 +204,7 @@ class WindowSearch(QWidget):
 
     def create_search_box(self) -> QLineEdit:
         line_edit = self.panel_constructor.create_searchbox()
-        _ = line_edit.textChanged.connect
-        (
+        _ = line_edit.textChanged.connect(
             self.on_search_box_changed
         )
         _ = line_edit.returnPressed.connect(
@@ -239,6 +223,10 @@ class WindowSearch(QWidget):
         return self.command_service.is_command(text)
 
     def on_searchbox_enter_pressed(self):
+
+        if self.winitem_manager.windows_item:
+            self.focus_selected_window()
+            return
 
         text = self.search_line_edit.text()
         
@@ -264,8 +252,3 @@ class WindowSearch(QWidget):
     def get_screen_size(self) -> tuple[int, int]:
         screen = QGuiApplication.primaryScreen()
         return screen.size().width(), screen.size().height()
-
-    def start(self):
-        print("start")
-        for window_info in self.window_scanner.get_windows_info():
-            print(f"title: {window_info.title}")

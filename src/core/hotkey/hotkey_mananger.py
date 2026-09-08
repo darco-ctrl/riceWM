@@ -1,33 +1,46 @@
-
-from pynput import keyboard
+import keyboard
+import pynput.keyboard as pkbaord
 
 from src.core.events.event_bus import eventBus
 from src.core.key_map.key_map import KeyMap
-from src.core.key_map.models import DataManagerKB, WindowManagerKB, WindowSwitchPanelKB
+from src.core.key_map.models import DataManagerKM, WindowManagerKM, WindowSearchKM
 
 
 class HotKeyManager:
     def __init__(self, key_map: KeyMap) -> None:
         self.key_map = key_map
-        self.listner: keyboard.GlobalHotKeys
+        self._global_handles = []
+        self.panel_listner: pkbaord.GlobalHotKeys
 
-        self.set_listner()
+        self.set_panel_listner()
+        self.set_global_listner()
 
-    def set_listner(self):
-        wsp_key_map: WindowSwitchPanelKB = self.key_map.window_switch_panel
-        data_manager: DataManagerKB = self.key_map.data_manager
+    def connect_events(self):
+        eventBus.enablePanelKeys.connect(self.enable_panelkeys)
+        eventBus.disablePanelKeys.connect(self.disable_panelkeys)
 
-        window_manager: WindowManagerKB = self.key_map.window_manager
-        vdesktop = window_manager.virtual_desktop
-        window_controls = window_manager.window_controls
+    def start(self):
+        self.panel_listner.start()
 
-        self.listner = keyboard.GlobalHotKeys(
+    def set_panel_listner(self):
+        wsp_key_map: WindowSearchKM = self.key_map.window_search
+
+        self.panel_listner = pkbaord.GlobalHotKeys(
             {
                 wsp_key_map.toggle: self.on_wsp_toggle,
                 wsp_key_map.close_window: self.on_wsp_close,
                 wsp_key_map.select_up: self.on_wsp_select_up,
                 wsp_key_map.select_down: self.on_wsp_select_down,
-                wsp_key_map.focus_window: self.on_focus_window,
+            }
+        )
+
+    def set_global_listner(self):
+        data_manager: DataManagerKM = self.key_map.data_manager
+        window_manager: WindowManagerKM = self.key_map.window_manager
+        vdesktop = window_manager.virtual_desktop
+        window_controls = window_manager.window_controls
+
+        mapping = {
                 data_manager.reload_data: self.on_data_reload,
                 vdesktop.create_new: self.on_vdesktop_new,
                 vdesktop.delete_current: self.on_vdesktop_delete,
@@ -37,8 +50,27 @@ class HotKeyManager:
                 window_controls.restore: self.restore_window,
                 window_controls.maximize: self.maximize_window,
                 window_controls.minimize: self.minimize_window
-            }
-        )
+        }
+
+        for combo, handler in mapping.items():
+            hotkey_str = combo.replace("<", "").replace(">", "")
+            handle = keyboard.add_hotkey(
+                hotkey_str,
+                handler, 
+                suppress=True,
+                trigger_on_release=False
+            )
+            self._global_handles.append(handle)
+
+    def stop_globalkeys(self):
+        for handle in self._global_handles:
+            keyboard.remove_hotkey(handle)
+
+    def disable_panelkeys(self):
+        self.panel_listner.stop()
+
+    def enable_panelkeys(self):
+        self.panel_listner.start()
 
     def close_window(self):
         eventBus.closeWindow.emit()
@@ -51,9 +83,6 @@ class HotKeyManager:
 
     def restore_window(self):
         eventBus.restoreWindow.emit()
-
-    def start(self):
-        self.listner.start()
 
     def on_wsp_select_up(self):
         eventBus.itemSelectUp.emit()
@@ -69,9 +98,6 @@ class HotKeyManager:
 
     def on_wsp_close(self):
         eventBus.wspCloseRequested.emit()
-
-    def on_focus_window(self):
-        eventBus.wspFocusSelectedWindow.emit()
 
     def on_vdesktop_new(self):
         eventBus.createNewVDesktop.emit()
