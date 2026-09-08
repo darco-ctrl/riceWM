@@ -14,10 +14,12 @@
   </p></h2>
 </div>
 
+
 ## 🖼 Screenshot
 <p align="center">
   <img src="git-assets/window_search_preview.png" width="600" alt="RiceWM window search panel">
 </p>
+
 
 ## 🎯 Requirements
 
@@ -25,6 +27,7 @@
 - Administrator privileges (required for global hotkey suppression to work reliably)
 
 RiceWM relies on Windows-specific APIs (virtual desktops, low-level keyboard hooks) and is **not compatible with Linux or macOS**.
+
 
 ## ✨ Features
 
@@ -35,6 +38,7 @@ RiceWM relies on Windows-specific APIs (virtual desktops, low-level keyboard hoo
 - **Tray-first design** — runs entirely from the system tray with no persistent main window, so it stays out of your way.
 - **Fully themeable** — customize colors, sizing, and animations via a JSON theme file.
 - **Configurable keymap** — remap every hotkey to your preference via a simple JSON config.
+
 
 ## 📦 Installation
 
@@ -47,6 +51,7 @@ RiceWM relies on Windows-specific APIs (virtual desktops, low-level keyboard hoo
 > **Antivirus note:** Some antivirus software may flag RiceWM on first run due to its use of global keyboard hooks — this pattern is also used by keyloggers, so heuristic scanners sometimes react to it. RiceWM is not currently code-signed (see [roadmap](#%EF%B8%8F-roadmap--future-plans)). so Windows SmartScreen may also show an "unrecognized app" warning. This is expected for an early-stage, unsigned open-source tool — you're welcome to review the source yourself before running it.
 
 On first launch, RiceWM automatically creates its config directory at `%USERPROFILE%\.config\riceWM` and populates it with default configuration, theme, and keymap files.
+
 
 ## ⌨️ Default Hotkeys
 
@@ -68,6 +73,7 @@ On first launch, RiceWM automatically creates its config directory at `%USERPROF
 
 All hotkeys are fully remappable — see [Configuration](#%EF%B8%8F-configuration) below.
 
+
 ## 🕹️ Commands
 
 Typed into the window search panel, prefixed with '`:`':
@@ -80,6 +86,7 @@ Typed into the window search panel, prefixed with '`:`':
 | `:open-config`     | Opens active `config.json`         |
 | `:open-keymap`     | Opens the keymap file              |
 | `:restart`         | Restarts the application           |
+
 
 ## ⚙️ Configuration
 
@@ -96,6 +103,7 @@ RiceWM stores its config at `%USERPROFILE%\.config\riceWM\`:
 ```
 
 Edit these files directly, then restart the application with `Ctrl + Alt + F12` (or the key-bind given in your keymap) to apply changes.
+
 
 ## 🔨 Building from Source
 
@@ -121,6 +129,7 @@ pyinstaller --clean main.spec
 
 The built application will be output to `dist/RiceWM/`.
 
+
 ## 🗑️ Uninstalling
 
 RiceWM doesn't currently ship with an installer/uninstaller, so removal is manual. Two locations to clean up:
@@ -128,6 +137,7 @@ RiceWM doesn't currently ship with an installer/uninstaller, so removal is manua
 1. **Quit the app first** — right-click the tray icon and choose Quit, type `:quit` in the search panel, or end `RiceWM.exe` via Task Manager if it's unresponsive.
 2. **Delete the application folder** — the entire folder you extracted/built RiceWM into, e.g. `dist\RiceWM\`. This includes `RiceWM.exe` and the `_internal\` folder PyInstaller generates alongside it (bundled dependencies, `assets/`, `default_config/`) — deleting the parent folder removes both in one go.
 3. **Delete the config folder** — `%USERPROFILE%\.config\riceWM\`, which holds your keymap, themes, and app config. Skip this step if you plan to reinstall later and want to keep your settings.
+
 
 ## 🧰 Tech Stack
 
@@ -137,10 +147,12 @@ RiceWM doesn't currently ship with an installer/uninstaller, so removal is manua
 - **pynput** — scoped, panel-local hotkey handling
 - **pyvda** — Windows virtual desktop control
 
+
 ## 🖥️ Tested On
 
 - Windows 11
 - Windows 10
+
 
 ## 🗺️ Roadmap / Future Plans
 
@@ -148,9 +160,11 @@ RiceWM doesn't currently ship with an installer/uninstaller, so removal is manua
 - Proper `.msi` installer (and matching uninstaller) instead of a manual extract-and-run folder
 - General stability and polish as the project moves toward a trusted, production-ready release
 
+
 ## 🤝 Contributing
 
 Issues and pull requests are welcome. This is an early-stage project (v1) under active development — expect breaking changes between versions.
+
 
 ## 🙏 Acknowledgments
 
@@ -162,9 +176,11 @@ RiceWM is built on top of these excellent open-source projects:
 - [pyvda](https://github.com/mrob95/pyvda) — Windows virtual desktop control via COM
 - [PyInstaller](https://pyinstaller.org/) — packaging RiceWM into a standalone executable
 
+
 ## 📄 License
 
 RiceWM is licensed under the [MIT License](LICENSE).
+
 
 ## 💬 Feedback & Support
 
