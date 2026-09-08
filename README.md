@@ -170,8 +170,8 @@ RiceWM is licensed under the [MIT License](LICENSE).
 
 Found a bug, have a feature idea, or just want to chat about the project? Reach out to me through either :D :
 
-- **Discord:** [discord.gg/PLACEHOLDER]()
-- **Email:** [ricewm]
+- **Issues:** [GitHub Issues](https://github.com/darco-ctrl/riceWM/issues)
+- **Email:** [ricewmsupport@gmail.com](mailto:ricewmsupport@gmail.com)
 
 You can also open an issue directly on GitHub for bugs or feature requests.
 
