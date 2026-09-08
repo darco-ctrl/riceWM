@@ -15,9 +15,10 @@
 </p></h2>
 </div>
 
-A lightweight, customizable window management utility for Windows — fast keyboard-driven window switching, virtual desktop navigation with animated notifications, and global hotkey controls, all running quietly from the system tray.
-
--- screenshot
+## screenshot
+<p align="center">
+  <img src="git-assets/window_search_preview.png" width="600" alt="RiceWM window search panel">
+</p>
 
 ## Requirements
 
