@@ -4,30 +4,29 @@
   <h1 style="font-size: 3.5em; font-weight: 900; margin-top: 0;">RiceWM</h1>
   
   <h3 style="margin-bottom: 2em;">A lightweight, customizable window management utility for Windows — fast keyboard-driven window switching, virtual desktop navigation with animated notifications, and global hotkey controls, all running quietly from the system tray.</h3>
-
   <h2><p align="center">
-  <a href="#features">Features</a> ♦
-  <a href="#installation">Installation</a> ♦
-  <a href="#default-hotkeys">Default Hotkeys</a> ♦
-  <a href="#configuration">Configuration</a> ♦
-  <a href="#feedback--support">Feedback & Support</a> ♦
-  <a href="#about">About</a>
-</p></h2>
+    <a href="#features">Features</a> ♦
+    <a href="#installation">Installation</a> ♦
+    <a href="#default-hotkeys">Default Hotkeys</a> ♦
+    <a href="#configuration">Configuration</a> ♦
+    <a href="#feedback--support">Feedback & Support</a> ♦
+    <a href="#about">About</a>
+  </p></h2>
 </div>
 
-## screenshot
+## 🖼 Screenshot
 <p align="center">
   <img src="git-assets/window_search_preview.png" width="600" alt="RiceWM window search panel">
 </p>
 
-## Requirements
+## 🎯 Requirements
 
 - **Windows 10 or Windows 11** (64-bit)
 - Administrator privileges (required for global hotkey suppression to work reliably)
 
 RiceWM relies on Windows-specific APIs (virtual desktops, low-level keyboard hooks) and is **not compatible with Linux or macOS**.
 
-## Features
+## ✨ Features
 
 - **Global hotkeys** — control windows, virtual desktops, and app behavior from anywhere.
 - **Window search & switch panel** — a fast, keyboard-navigable popup to find and jump to any open window.
@@ -37,7 +36,7 @@ RiceWM relies on Windows-specific APIs (virtual desktops, low-level keyboard hoo
 - **Fully themeable** — customize colors, sizing, and animations via a JSON theme file.
 - **Configurable keymap** — remap every hotkey to your preference via a simple JSON config.
 
-## Installation
+## 📦 Installation
 
 1. Download the latest release from the [Release](https://github.com/darco-ctrl/riceWM/releases/latest) page.
 2. Extract the `RiceWM` folder anywhere you like.
@@ -49,7 +48,7 @@ RiceWM relies on Windows-specific APIs (virtual desktops, low-level keyboard hoo
 
 On first launch, RiceWM automatically creates its config directory at `%USERPROFILE%\.config\riceWM` and populates it with default configuration, theme, and keymap files.
 
-## Default Hotkeys
+## ⌨️ Default Hotkeys
 
 | Action                          | Hotkey                   |
 | ------------------------------- | ------------------------ |
@@ -69,7 +68,7 @@ On first launch, RiceWM automatically creates its config directory at `%USERPROF
 
 All hotkeys are fully remappable — see [Configuration](#configuration) below.
 
-## Commands
+## 🕹️ Commands
 
 Typed into the window search panel, prefixed with '`:`':
 
@@ -81,7 +80,8 @@ Typed into the window search panel, prefixed with '`:`':
 | `:open-config`     | Opens active `config.json`         |
 | `:open-keymap`     | Opens the keymap file              |
 | `:restart`         | Restarts the application           |
-## Configuration
+
+## ⚙️ Configuration
 
 RiceWM stores its config at `%USERPROFILE%\.config\riceWM\`:
 
@@ -97,7 +97,7 @@ RiceWM stores its config at `%USERPROFILE%\.config\riceWM\`:
 
 Edit these files directly, then restart the application with `Ctrl + Alt + F12` (or the key-bind given in your keymap) to apply changes.
 
-## Building from Source
+## 🔨 Building from Source
 
 **Requirements:**
 
@@ -121,7 +121,7 @@ pyinstaller --clean main.spec
 
 The built application will be output to `dist/RiceWM/`.
 
-## Uninstalling
+## 🗑️ Uninstalling
 
 RiceWM doesn't currently ship with an installer/uninstaller, so removal is manual. Two locations to clean up:
 
@@ -129,7 +129,7 @@ RiceWM doesn't currently ship with an installer/uninstaller, so removal is manua
 2. **Delete the application folder** — the entire folder you extracted/built RiceWM into, e.g. `dist\RiceWM\`. This includes `RiceWM.exe` and the `_internal\` folder PyInstaller generates alongside it (bundled dependencies, `assets/`, `default_config/`) — deleting the parent folder removes both in one go.
 3. **Delete the config folder** — `%USERPROFILE%\.config\riceWM\`, which holds your keymap, themes, and app config. Skip this step if you plan to reinstall later and want to keep your settings.
 
-## Tech Stack
+## 🧰 Tech Stack
 
 - **Python 3.13**
 - **PySide6** — UI, tray icon, and animations
@@ -137,22 +137,22 @@ RiceWM doesn't currently ship with an installer/uninstaller, so removal is manua
 - **pynput** — scoped, panel-local hotkey handling
 - **pyvda** — Windows virtual desktop control
 
-## Tested On
+## 🖥️ Tested On
 
 - Windows 11
 - Windows 10
 
-## Roadmap / Future Plans
+## 🗺️ Roadmap / Future Plans
 
 - Code-signing the executable to reduce antivirus/SmartScreen false positives and improve trust
 - Proper `.msi` installer (and matching uninstaller) instead of a manual extract-and-run folder
 - General stability and polish as the project moves toward a trusted, production-ready release
 
-## Contributing
+## 🤝 Contributing
 
 Issues and pull requests are welcome. This is an early-stage project (v1) under active development — expect breaking changes between versions.
 
-## Acknowledgments
+## 🙏 Acknowledgments
 
 RiceWM is built on top of these excellent open-source projects:
 
@@ -162,20 +162,19 @@ RiceWM is built on top of these excellent open-source projects:
 - [pyvda](https://github.com/mrob95/pyvda) — Windows virtual desktop control via COM
 - [PyInstaller](https://pyinstaller.org/) — packaging RiceWM into a standalone executable
 
-## License
+## 📄 License
 
 RiceWM is licensed under the [MIT License](LICENSE).
 
-## Feedback & Support
+## 💬 Feedback & Support
 
 Found a bug, have a feature idea, or just want to chat about the project? Reach out to me through either :D :
 
 - **Issues:** [GitHub Issues](https://github.com/darco-ctrl/riceWM/issues)
 - **Email:** [ricewmsupport@gmail.com](mailto:ricewmsupport@gmail.com)
 
-You can also open an issue directly on GitHub for bugs or feature requests.
 
-## About
+## 📖 About
 
 This project was made because I hated `alt+tab` and used `.ahk` to customize hotkey to switch between virtual desktop and stuff and I had 5 virtual desktpp opened and wouldn't know where a window is that's how I got idea of making window search,
 
