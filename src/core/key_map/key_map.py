@@ -1,7 +1,7 @@
 import json
 
 from src.core.key_map.models import (
-    DataManagerKM,
+    ApplicationKM,
     VirtualDesktopKB,
     WindowControlsKB,
     WindowManagerKM,
@@ -13,7 +13,7 @@ class KeyMap:
     def __init__(self, json_path: str) -> None:
         self.path = json_path
 
-        self.data_manager: DataManagerKM
+        self.application: ApplicationKM
         self.window_search: WindowSearchKM
         self.window_manager: WindowManagerKM
         self.load()
@@ -33,9 +33,9 @@ class KeyMap:
         self.create_wm_keybind(data)
 
     def create_data_manager_keybinds(self, data: dict):
-        dict = data["data_manager"]
+        dict = data["application"]
 
-        self.data_manager = DataManagerKM(reload_data=dict["reload_data"])
+        self.application = ApplicationKM(restart_application=dict["restart_application"])
 
     def create_wsp_keybinds(self, data: dict):
         dict = data["window_search"]

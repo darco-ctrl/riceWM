@@ -3,7 +3,7 @@ import pynput.keyboard as pkbaord
 
 from src.core.events.event_bus import eventBus
 from src.core.key_map.key_map import KeyMap
-from src.core.key_map.models import DataManagerKM, WindowManagerKM, WindowSearchKM
+from src.core.key_map.models import ApplicationKM, WindowManagerKM, WindowSearchKM
 
 
 class HotKeyManager:
@@ -35,13 +35,13 @@ class HotKeyManager:
         )
 
     def set_global_listner(self):
-        data_manager: DataManagerKM = self.key_map.data_manager
+        data_manager: ApplicationKM = self.key_map.application
         window_manager: WindowManagerKM = self.key_map.window_manager
         vdesktop = window_manager.virtual_desktop
         window_controls = window_manager.window_controls
 
         mapping = {
-                data_manager.reload_data: self.on_data_reload,
+                data_manager.restart_application: self.on_data_reload,
                 vdesktop.create_new: self.on_vdesktop_new,
                 vdesktop.delete_current: self.on_vdesktop_delete,
                 vdesktop.go_left: self.on_vdesktop_left,

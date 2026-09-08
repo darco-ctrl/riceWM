@@ -2,8 +2,8 @@ from dataclasses import dataclass
 
 
 @dataclass
-class DataManagerKM:
-    reload_data: str
+class ApplicationKM:
+    restart_application: str
 
 
 @dataclass
