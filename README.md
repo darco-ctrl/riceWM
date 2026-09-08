@@ -39,7 +39,7 @@ RiceWM relies on Windows-specific APIs (virtual desktops, low-level keyboard hoo
 
 ## Installation
 
-1. Download the latest release from the [Releases] page.
+1. Download the latest release from the [Release](https://github.com/darco-ctrl/riceWM/releases/latest) page.
 2. Extract the `RiceWM` folder anywhere you like.
 3. Run `RiceWM.exe`.
 
@@ -67,7 +67,7 @@ On first launch, RiceWM automatically creates its config directory at `%USERPROF
 | Restore focused window          | `Ctrl + Alt + S`         |
 | Restart Application             | `Ctrl + Alt + F12`       |
 
-All hotkeys are fully remappable — see [Configuration]() below.
+All hotkeys are fully remappable — see [Configuration](#configuration) below.
 
 ## Commands
 
@@ -164,7 +164,7 @@ RiceWM is built on top of these excellent open-source projects:
 
 ## License
 
-RiceWM is licensed under the [MIT License]().
+RiceWM is licensed under the [MIT License](LICENSE).
 
 ## Feedback & Support
 
