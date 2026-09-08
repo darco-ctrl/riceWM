@@ -4,7 +4,6 @@ from src.core.theme.components.label_style import LabelStyle
 from src.core.theme.primitives.color_style import ColorStyle
 from src.core.theme.window_search.styles.icon_container import IconContainerStyle
 from src.core.theme.window_search.styles.item_frame import ItemFrameStyle
-from src.core.theme.window_search.styles.keybind_label import KeybindLabelStyle
 from src.core.theme.window_search.styles.selection_indicator import (
     SelectionIndicatorStyle,
 )
@@ -19,4 +18,3 @@ class WindowItemStyle:
     selection_indicator: SelectionIndicatorStyle
     icon_container: IconContainerStyle
     title_label: TitleLabelStyle
-    keybind_label: KeybindLabelStyle

@@ -15,7 +15,6 @@ from src.core.theme.virtual_desktop_notifier.virtual_desktop_notifier import (
 )
 from src.core.theme.window_search.styles.icon_container import IconContainerStyle
 from src.core.theme.window_search.styles.item_frame import ItemFrameStyle
-from src.core.theme.window_search.styles.keybind_label import KeybindLabelStyle
 from src.core.theme.window_search.styles.search_box import SearchBoxStyle
 from src.core.theme.window_search.styles.search_box_line_edit import (
     SearchBoxLineEditStyle,
@@ -237,33 +236,7 @@ class ThemeConstructor:
             margin=margin,
             selection_color=selection_color
         )
-        
-    def get_keybind_label_style(self, style) -> KeybindLabelStyle:
-        color_style: ColorStyle = self.json_parser.get_color_style(
-            style=style["color_style"]
-        )
-        border_style: BorderStyle = self.json_parser.get_border_style(
-            style=style["border_style"]
-        )
-        font_style: FontStyle = self.json_parser.get_font_style(
-            style=style["font_style"]
-        )
-        margin: int = style["margin"]
-        selection_color: ColorStyle = self.json_parser.get_color_style(
-            style=style["selection_color_style"]
-        )
-        dimension: Dimension = self.json_parser.get_dimension(
-            style=style["dimension"]   
-        )
 
-        return KeybindLabelStyle(
-            border_style=border_style,
-            color_style=color_style,
-            dimension=dimension,
-            font_style=font_style,
-            margin=margin,
-            selection_color=selection_color
-        )
     
     def create_window_item(self, style) -> WindowItemStyle:
         frame: dict = style["frame"]
@@ -292,17 +265,12 @@ class ThemeConstructor:
         title_label: TitleLabelStyle = self.get_title_label_style(
             style=components["title_label"]
         )
-        
-        keybind_label: KeybindLabelStyle = self.get_keybind_label_style(
-            style=components["keybind_label"]
-        )
 
         return WindowItemStyle(
             color_style=color_style,
             empty_label=empty_label,
             frame_style=frame_style,
             icon_container=icon_container,
-            keybind_label=keybind_label,
             selection_indicator=selection_indicator,
             title_label=title_label
         )
@@ -311,6 +279,10 @@ class ThemeConstructor:
         dict_color_style: dict = style["color_style"]
         color_style: ColorStyle = self.json_parser.get_color_style(
             style=dict_color_style
+        )
+
+        border_style: BorderStyle = self.json_parser.get_border_style(
+            style=style["border_style"]
         )
         
         search_box: SearchBoxStyle = self.get_search_box_style(
@@ -322,6 +294,7 @@ class ThemeConstructor:
 
         return WindowSearchStyle(
             color_style=color_style,
+            border_style=border_style,
             search_box=search_box,
             window_item=window_item
         )

@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 
-from PySide6.QtWidgets import QLineEdit, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QFrame, QLineEdit, QVBoxLayout, QWidget
 
 
 @dataclass
 class Panel:
-    widget: QWidget
+    frame: QFrame
     layout: QVBoxLayout
 
 

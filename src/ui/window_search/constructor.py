@@ -1,7 +1,14 @@
 from typing import cast
 
 from PySide6.QtGui import Qt
-from PySide6.QtWidgets import QLineEdit, QScrollArea, QSizePolicy, QVBoxLayout, QWidget
+from PySide6.QtWidgets import (
+    QFrame,
+    QLineEdit,
+    QScrollArea,
+    QSizePolicy,
+    QVBoxLayout,
+    QWidget,
+)
 
 from src.core.config.config import Config
 from src.core.theme.theme import Theme
@@ -22,11 +29,16 @@ class PanelConstructor:
         main_panel: QWidget,
         scroll_area: QScrollArea
     ) -> QWidget:
-        style = self.theme.window_search.window_item.color_style
+        style = self.theme.window_search.window_item
 
         panel_layout: QVBoxLayout = cast(QVBoxLayout, main_panel.layout())
         
         scroll_area.setWidgetResizable(True)
+        scroll_area.setStyleSheet("""
+            QScrollArea {
+                border: none;
+            }
+        """)
         
         scroll_area.setHorizontalScrollBarPolicy(
             Qt.ScrollBarPolicy.ScrollBarAlwaysOff
@@ -45,7 +57,7 @@ class PanelConstructor:
 
         container.setStyleSheet(f"""
         #scrollContainer {{
-            background-color: {style.background_color};
+            background-color: {style.color_style.background_color};
         }}
         """)
 
@@ -59,10 +71,12 @@ class PanelConstructor:
         self.color_panel()
         self.color_search_box()
 
-    def create_panel(self) -> QWidget:
+    def create_panel(self) -> QFrame:
 
-        panel = QWidget()
+        panel = QFrame()
         panel.setObjectName("Panel")
+
+        
 
         # main_panel.setFixedHeight(100)
 
@@ -75,17 +89,25 @@ class PanelConstructor:
         self.root_layout.setSpacing(0)
         self.root_layout.addWidget(panel)
 
-        self.panel = Panel(widget=panel, layout=layout)
+        self.panel = Panel(frame=panel, layout=layout)
 
         self.color_panel()
         return panel
 
     def color_panel(self):
-        style = self.theme.window_search.color_style
+        style = self.theme.window_search
 
-        self.panel.widget.setStyleSheet(f"""
+        self.panel.frame.setStyleSheet(f"""
         #Panel {{
-            background-color: {style.background_color};
+            border-style: {style.border_style.style};
+            border-radius: {style.border_style.radius}px;
+            border-left-width: {style.border_style.width[0]}px;
+            border-top-width: {style.border_style.width[1]}px;
+            border-right-width: {style.border_style.width[2]}px;
+            border-bottom-width: {style.border_style.width[3]}px;
+            border-color: {style.border_style.color};
+            background-color: {style.color_style.background_color};
+            color: {style.color_style.color}
         }}
         """)
 

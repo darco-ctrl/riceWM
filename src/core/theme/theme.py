@@ -1,7 +1,5 @@
 import json
-from typing import Any
 
-from src.core.events.event_bus import eventBus
 from src.core.theme.constructor import ThemeConstructor
 from src.core.theme.helper import ThemeHelper
 from src.core.theme.virtual_desktop_notifier.virtual_desktop_notifier import (
