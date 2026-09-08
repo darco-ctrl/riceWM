@@ -1,4 +1,6 @@
-# RiceWM
+<p align="center">
+  <img src="git-assets/ricewm_b_logo.png" width="150" alt="RiceWM logo">
+</p>
 
 A lightweight, customizable window management utility for Windows — fast keyboard-driven window switching, virtual desktop navigation with animated notifications, and global hotkey controls, all running quietly from the system tray.
 
