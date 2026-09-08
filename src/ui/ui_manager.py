@@ -26,7 +26,7 @@ class UIManager:
         self.virtual_desktop_notifier: VirtualDesktopNotifier
 
     def load(self):
-        config: VirtualDesktopNotifierConfig = self.config.virtual_destkop_notifer
+        config: VirtualDesktopNotifierConfig = self.config.virtual_desktop.notifier
         
         self.window_search = WindowSearch(
             config=self.config, theme=self.theme, window_scanner=self.window_scanner,

@@ -71,6 +71,7 @@ class WindowController:
             desktop.go()
 
             self.set_focus(hwnd)
+            self.maximize(hwnd)
         except Exception as e:
             print(f"Failed to retrive Virtual Desktop,\n error: {e}")
 

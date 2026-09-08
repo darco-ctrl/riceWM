@@ -38,3 +38,8 @@ class VirtualDesktopNotifierConfig:
     desktop_name: DesktopNameConfig
     window_animation: AnimationConfig
     label_animation: AnimationConfig
+
+@dataclass
+class VirtualDesktopConfig:
+    loop: bool
+    notifier: VirtualDesktopNotifierConfig

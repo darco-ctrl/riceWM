@@ -1,5 +1,5 @@
-from PySide6.QtCore import QEasingCurve, QPropertyAnimation, QSize, Qt, QTimer
-from PySide6.QtGui import QGuiApplication
+from PySide6.QtCore import QEasingCurve, QEvent, QPropertyAnimation, QSize, Qt, QTimer
+from PySide6.QtGui import QEnterEvent, QGuiApplication
 from PySide6.QtWidgets import QVBoxLayout, QWidget
 from pyvda.pyvda import VirtualDesktop
 
@@ -36,7 +36,7 @@ class VirtualDesktopNotifier(QWidget):
 
     def set_animations(self):
         vdn_style: VirtualDesktopNotifierConfig = (
-            self.config.virtual_destkop_notifer
+            self.config.virtual_desktop.notifier
         )
         window_animation = vdn_style.window_animation
         
@@ -126,6 +126,7 @@ class VirtualDesktopNotifier(QWidget):
             pos_x,
             pos_y
         )
+        self.setMouseTracking(True)
 
         return layout
 
@@ -138,7 +139,7 @@ class VirtualDesktopNotifier(QWidget):
         pass
 
     def start_timer(self):
-        style: VirtualDesktopNotifierConfig = self.config.virtual_destkop_notifer
+        style: VirtualDesktopNotifierConfig = self.config.virtual_desktop.notifier
 
         self.timer.start(style.auto_hide_time)
 
@@ -154,15 +155,18 @@ class VirtualDesktopNotifier(QWidget):
         self.fade_out_animation.start()
 
     def show_window(self):
-        if self.isVisible():
+        if self.fade_out_animation.state() == QPropertyAnimation.State.Running:
+            self.fade_out_animation.stop()
+    
+        if self.isVisible() and self.windowOpacity() >= 1.0:
             return
-        
+            
         self.show()
         self.fade_in_animation.start()
 
     def update_label(self):
         style: VirtualDesktopNotifierConfig = (
-            self.config.virtual_destkop_notifer
+            self.config.virtual_desktop.notifier
         )
         
         self.ui.label.setText(
@@ -188,3 +192,12 @@ class VirtualDesktopNotifier(QWidget):
         self.update_label()
         self.start_timer()
         self.show_window()
+
+    def enterEvent(self, event: QEnterEvent) -> None:
+        if self.config.virtual_desktop.notifier.hide_on_hover:
+            self.hide_window()
+            
+        super().enterEvent(event)
+
+    def leaveEvent(self, event: QEvent) -> None:
+        super().leaveEvent(event)

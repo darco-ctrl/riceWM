@@ -49,7 +49,10 @@ class App:
         return WindowScanner()
 
     def create_window_manager(self) -> WindowManager:
-        window_manager = WindowManager(self.window_scanner)
+        window_manager = WindowManager(
+            window_scanner=self.window_scanner,
+            config=self.data_manager.active_config
+        )
 
         return window_manager
 

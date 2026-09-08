@@ -6,12 +6,15 @@ rice_config_path = Path.home() / ".config" / "riceWM"
 
 if getattr(sys, 'frozen', False):
     # Running as compiled exe — anchor to the exe's own folder
-    PROJECT_ROOT = Path(sys.executable).resolve().parent
+    PROJECT_ROOT = Path(getattr(sys, '_MEIPASS'))
 else:
     # Running as python main.py — anchor to your source tree
     PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
     
 assets_dir = PROJECT_ROOT / "assets"
+
+rice_icon = assets_dir / "ricewm.ico"
+
 default_app_config_path = PROJECT_ROOT / "default_config" / "app.toml"
 default_theme_path = PROJECT_ROOT / "default_config" / "default_theme.json"
 default_config_path = PROJECT_ROOT / "default_config" / "default_config.json"

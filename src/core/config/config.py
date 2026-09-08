@@ -7,6 +7,7 @@ from src.core.config.models import (
     C_WindowSearch,
     DesktopNameConfig,
     SearchBoxConfig,
+    VirtualDesktopConfig,
     VirtualDesktopNotifierConfig,
 )
 
@@ -17,7 +18,7 @@ class Config:
 
         self.name: str
         self.window_search: C_WindowSearch
-        self.virtual_destkop_notifer: VirtualDesktopNotifierConfig
+        self.virtual_desktop: VirtualDesktopConfig
         self.load()
 
     def reload(self):
@@ -37,7 +38,7 @@ class Config:
 
         self.create_window_search(dict=data["window_search"])
         self.create_virtual_desktop_notifier(
-            data=data["virtual_desktop_notifier"]
+            data=data["virtual_desktop"]
         )
 
     def get_animation(self, data: dict):
@@ -57,10 +58,11 @@ class Config:
         )
 
     def create_virtual_desktop_notifier(self, data: dict):
-       
-        dict_desktop_name = data["desktop_name"] 
-        dict_window_aniamtion = data["window_animation"]
-        dict_label_animation =data["label_animation"]
+
+        dict_notifier = data["notifier"]
+        dict_desktop_name = dict_notifier["desktop_name"] 
+        dict_window_aniamtion = dict_notifier["window_animation"]
+        dict_label_animation =dict_notifier["label_animation"]
 
         window_aniamtion: AnimationConfig = self.get_animation(
             data=dict_window_aniamtion
@@ -75,17 +77,22 @@ class Config:
             suffix=dict_desktop_name["suffix"]
         )
     
-        auto_hide_time: int = data["auto_hide_time"] - (
+        auto_hide_time: int = dict_notifier["auto_hide_time"] - (
             window_aniamtion.fade_out.duration
         )
         
-        self.virtual_destkop_notifer = VirtualDesktopNotifierConfig(
-            enabled=data["enabled"],
+        virtual_destkop_notifer = VirtualDesktopNotifierConfig(
+            enabled=dict_notifier["enabled"],
             auto_hide_time=auto_hide_time,
-            hide_on_hover=data["hide_on_hover"],
+            hide_on_hover=dict_notifier["hide_on_hover"],
             desktop_name=desktop_name,
             window_animation=window_aniamtion,
             label_animation=label_animation
+        )
+
+        self.virtual_desktop = VirtualDesktopConfig(
+            loop=data["loop"],
+            notifier=virtual_destkop_notifer
         )
 
     def create_window_search(self, dict: dict):

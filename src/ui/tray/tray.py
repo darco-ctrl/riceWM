@@ -3,6 +3,8 @@ import sys
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import QMenu, QSystemTrayIcon
 
+import src.app.paths as rice_paths
+
 
 class Tray:
     def __init__(self) -> None:
@@ -15,7 +17,9 @@ class Tray:
         if not QSystemTrayIcon.isSystemTrayAvailable():
             sys.exit(1)
 
-        self.tray_icon = QSystemTrayIcon(QIcon("assets/rice.png"))
+        self.tray_icon = QSystemTrayIcon(
+            QIcon(str(rice_paths.rice_icon))
+        )
         self.tray_icon.setToolTip("Rice")
 
         self.menu = QMenu()

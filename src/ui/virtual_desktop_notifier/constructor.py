@@ -31,7 +31,9 @@ class NotiferConstructor:
         
         label: QLabel = QLabel()
         label.setObjectName("VDesktopNotifierLabel")
-
+        label.setAttribute(
+            Qt.WidgetAttribute.WA_TransparentForMouseEvents, True
+        )
         label.setContentsMargins(
             style.text_margin[0],
             style.text_margin[1],
