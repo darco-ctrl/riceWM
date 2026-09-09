@@ -21,6 +21,12 @@
 </p>
 
 
+## 🎥 Video
+<a href="https://youtu.be/4T6kRqzbd_s" target="_blank">
+  <img src="https://img.youtube.com/vi/4T6kRqzbd_s/maxresdefault.jpg" alt="Watch the video" width="100%" />
+</a>
+
+
 ## 🎯 Requirements
 
 - **Windows 10 or Windows 11** (64-bit)
