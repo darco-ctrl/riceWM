@@ -3,7 +3,7 @@
 
   <h1 style="font-size: 3.5em; font-weight: 900; margin-top: 0;">RiceWM</h1>
   
-  <h3 style="margin-bottom: 2em;">A lightweight, customizable window management utility for Windows — fast keyboard-driven window switching, virtual desktop navigation with animated notifications, and global hotkey controls, all running quietly from the system tray.</h3>
+  <h3 style="margin-bottom: 2em;">RiceWM is a lightweight, keyboard-first window management utility for Windows. Instead of hunting through Alt-Tab or clicking around the taskbar, search for any open window by window-title and jump to it instantly. Navigate virtual desktops with smooth animated notifications, and customize every hotkey to fit your workflow. Built for people who want their hands on the keyboard, not the mouse.</h3>
   <h2><p align="center">
     <a href="#-features">Features</a> ♦
     <a href="#-installation">Installation</a> ♦
