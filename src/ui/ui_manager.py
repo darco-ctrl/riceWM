@@ -11,11 +11,11 @@ from src.ui.window_search.window_search import WindowSearch
 
 class UIManager:
     def __init__(
-        self, 
-        config: Config, 
-        theme: Theme, 
+        self,
+        config: Config,
+        theme: Theme,
         window_scanner: WindowScanner,
-        command_service: CommandService
+        command_service: CommandService,
     ):
         self.config = config
         self.theme = theme
@@ -27,16 +27,17 @@ class UIManager:
 
     def load(self):
         config: VirtualDesktopNotifierConfig = self.config.virtual_desktop.notifier
-        
+
         self.window_search = WindowSearch(
-            config=self.config, theme=self.theme, window_scanner=self.window_scanner,
-            command_service=self.command_service
+            config=self.config,
+            theme=self.theme,
+            window_scanner=self.window_scanner,
+            command_service=self.command_service,
         )
 
         if not config.enabled:
             return
-        
+
         self.virtual_desktop_notifier = VirtualDesktopNotifier(
-            config=self.config,
-            theme=self.theme
+            config=self.config, theme=self.theme
         )

@@ -1,7 +1,5 @@
-import pywintypes
-import win32con
-import win32gui
-from pyvda.pyvda import AppView, VirtualDesktop
+import pygetwindow as gw
+from pygetwindow import Win32Window
 
 from src.core.events.event_bus import eventBus
 from src.services.window.scanner import WindowScanner
@@ -52,57 +50,37 @@ class WindowController:
         if not hwnd:
             return
 
-        self.restore(hwnd)
+        window: Win32Window = Win32Window(hwnd)
+        window.restore()
 
     def get_focused_window(self) -> int:
-        hwnd: int = win32gui.GetForegroundWindow()
-        
-        if self.window_scanner.is_regular_window(hwnd):
-            return hwnd
+        window: Win32Window | None = gw.getActiveWindow()
+        if not window:
+            return
+
+        if self.window_scanner.is_regular_window(window._hWnd):
+            return window._hWnd
 
         print("returning becuase not regular window")
         return 0
 
     def focus_window(self, hwnd: int):
-        try:
-            window_view: AppView = AppView(hwnd=hwnd)
-
-            desktop: VirtualDesktop = window_view.desktop
-            desktop.go()
-
-            self.set_focus(hwnd)
-            self.maximize(hwnd)
-        except Exception as e:
-            print(f"Failed to retrive Virtual Desktop,\n error: {e}")
+        window: Win32Window = Win32Window(hwnd)
+        window.activate()
+        window.maximize()
 
     def close(self, hwnd: int):
-        win32gui.PostMessage(hwnd, win32con.WM_CLOSE, 0, 0)
+        window: Win32Window = Win32Window(hwnd)
+        window.close()
 
     def minimize(self, hwnd: int):
-        win32gui.ShowWindow(hwnd, win32con.SW_MINIMIZE)
+        window: Win32Window = Win32Window(hwnd)
+        window.minimize()
 
     def restore(self, hwnd: int):
-        win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
+        window: Win32Window = Win32Window(hwnd)
+        window.restore()
 
     def maximize(self, hwnd: int):
-        win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
-
-    def set_focus(self, hwnd: int):
-
-        foreground_hwnd = win32gui.GetForegroundWindow()
-        
-        if not win32gui.IsWindow(hwnd):
-            return
-    
-        if foreground_hwnd == hwnd:
-            return
-
-        # print(prt_text_hwnd)
-        # print(prt_text_title)
-        # print(f"Target hwnd: {hwnd}")
-        # print(f"Target title: {win32gui.GetWindowText(hwnd)}")
-    
-        try:
-            win32gui.SetForegroundWindow(hwnd)
-        except pywintypes.error as error:
-            print(f"Could not focus hwnd {hwnd}: {error}")
+        window = Win32Window(hwnd)
+        window.maximize()

@@ -26,30 +26,26 @@ class VirtualDesktopNotifier(QWidget):
 
         self.timer: QTimer = self.get_timer()
         self.set_animations()
-        
-        self.constructor: NotiferConstructor = NotiferConstructor(
-            theme=self.theme
-        )
+
+        self.constructor: NotiferConstructor = NotiferConstructor(theme=self.theme)
 
         self.connect_events()
         self.load()
 
     def set_animations(self):
-        vdn_style: VirtualDesktopNotifierConfig = (
-            self.config.virtual_desktop.notifier
-        )
+        vdn_style: VirtualDesktopNotifierConfig = self.config.virtual_desktop.notifier
         window_animation = vdn_style.window_animation
-        
-        self.fade_out_animation: QPropertyAnimation = (
-            self.get_fade_out_animation(config=window_animation.fade_out)
+
+        self.fade_out_animation: QPropertyAnimation = self.get_fade_out_animation(
+            config=window_animation.fade_out
         )
         self.fade_out_animation.finished.connect(self.on_window_fade_out)
-        
-        self.fade_in_animation: QPropertyAnimation = (
-            self.get_fade_in_animation(config=window_animation.fade_in)
+
+        self.fade_in_animation: QPropertyAnimation = self.get_fade_in_animation(
+            config=window_animation.fade_in
         )
         self.fade_in_animation.finished.connect(self.on_window_fade_in)
-        
+
     def connect_events(self):
         eventBus.vDesktopNotiferShow.connect(self.show_notifier)
 
@@ -58,7 +54,7 @@ class VirtualDesktopNotifier(QWidget):
 
         self.ui = self.constructor.get_ui()
         layout.addWidget(self.ui.label)
-        
+
         # self.show()
 
     def get_timer(self) -> QTimer:
@@ -69,10 +65,8 @@ class VirtualDesktopNotifier(QWidget):
         return timer
 
     def get_fade_out_animation(self, config: Animation) -> QPropertyAnimation:
-        
-        animation: QPropertyAnimation = QPropertyAnimation(
-            self, b"windowOpacity"
-        )
+
+        animation: QPropertyAnimation = QPropertyAnimation(self, b"windowOpacity")
         animation.setDuration(config.duration)
         animation.setLoopCount(1)
         animation.setStartValue(1.0)
@@ -81,16 +75,14 @@ class VirtualDesktopNotifier(QWidget):
         return animation
 
     def get_fade_in_animation(self, config: Animation) -> QPropertyAnimation:
-        
-        animation: QPropertyAnimation = QPropertyAnimation(
-            self, b"windowOpacity"
-        )
+
+        animation: QPropertyAnimation = QPropertyAnimation(self, b"windowOpacity")
         animation.setDuration(config.duration)
         animation.setLoopCount(1)
         animation.setStartValue(0.0)
         animation.setEndValue(1.0)
         animation.setEasingCurve(QEasingCurve.Type.InOutCubic)
-        
+
         return animation
 
     def load_window(self) -> QVBoxLayout:
@@ -99,33 +91,26 @@ class VirtualDesktopNotifier(QWidget):
         layout: QVBoxLayout = QVBoxLayout(self)
         # layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.setContentsMargins(5, 5, 5, 5)
-        
+
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setWindowFlags(
             Qt.WindowType.WindowStaysOnTopHint
             | Qt.WindowType.FramelessWindowHint
             | Qt.WindowType.Tool
-        ) 
-
-        self.resize(
-            QSize(style.size.x, style.size.y)
         )
+
+        self.resize(QSize(style.size.x, style.size.y))
 
         screen_size: tuple[int, int] = self.get_screen_size()
 
         pos_x: int = int(
-            ((style.position.x / 100) * screen_size[0]) -
-            (style.size.x / 2)
+            ((style.position.x / 100) * screen_size[0]) - (style.size.x / 2)
         )
         pos_y: int = int(
-            ((style.position.y / 100) * screen_size[1]) -
-            (style.size.y / 2)
+            ((style.position.y / 100) * screen_size[1]) - (style.size.y / 2)
         )
 
-        self.move(
-            pos_x,
-            pos_y
-        )
+        self.move(pos_x, pos_y)
         self.setMouseTracking(True)
 
         return layout
@@ -157,24 +142,18 @@ class VirtualDesktopNotifier(QWidget):
     def show_window(self):
         if self.fade_out_animation.state() == QPropertyAnimation.State.Running:
             self.fade_out_animation.stop()
-    
+
         if self.isVisible() and self.windowOpacity() >= 1.0:
             return
-            
+
         self.show()
         self.fade_in_animation.start()
 
     def update_label(self):
-        style: VirtualDesktopNotifierConfig = (
-            self.config.virtual_desktop.notifier
-        )
-        
+        style: VirtualDesktopNotifierConfig = self.config.virtual_desktop.notifier
+
         self.ui.label.setText(
-            f"{
-                style.desktop_name.prefix
-            }{self.label_text}{
-                style.desktop_name.suffix
-            }"
+            f"{style.desktop_name.prefix}{self.label_text}{style.desktop_name.suffix}"
         )
         self.ui.label.repaint()
 
@@ -196,7 +175,7 @@ class VirtualDesktopNotifier(QWidget):
     def enterEvent(self, event: QEnterEvent) -> None:
         if self.config.virtual_desktop.notifier.hide_on_hover:
             self.hide_window()
-            
+
         super().enterEvent(event)
 
     def leaveEvent(self, event: QEvent) -> None:

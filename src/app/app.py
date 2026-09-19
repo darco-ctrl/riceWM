@@ -19,6 +19,8 @@ from src.wm.manager import WindowManager
 
 class App:
     def __init__(self):
+        print("Release: v1.0.1")
+
         self.bootstrap = self.create_bootstrap()
         self.application = self.create_application()
         self.window_scanner = self.create_window_scanner()
@@ -35,9 +37,7 @@ class App:
 
     def connect_events(self):
         eventBus.requestRestartApplication.connect(self.restart_application)
-        eventBus.requestQuitApplication.connect(
-            self.quit_application
-        )
+        eventBus.requestQuitApplication.connect(self.quit_application)
 
     def run(self):
         self.hotkey_manager.start()
@@ -50,8 +50,7 @@ class App:
 
     def create_window_manager(self) -> WindowManager:
         window_manager = WindowManager(
-            window_scanner=self.window_scanner,
-            config=self.data_manager.active_config
+            window_scanner=self.window_scanner, config=self.data_manager.active_config
         )
 
         return window_manager
@@ -83,9 +82,7 @@ class App:
         return data_manager
 
     def create_commands_service(self) -> CommandService:
-        return CommandService(
-            data_manager=self.data_manager
-        )
+        return CommandService(data_manager=self.data_manager)
 
     def create_hotkey_manager(self) -> HotKeyManager:
         hotkey_manager = HotKeyManager(self.data_manager.key_map)
@@ -97,7 +94,7 @@ class App:
             config=self.data_manager.active_config,
             theme=self.data_manager.active_theme,
             window_scanner=self.window_scanner,
-            command_service=self.commands_service
+            command_service=self.commands_service,
         )
 
         return ui_manager
@@ -114,9 +111,10 @@ class App:
         self.application.quit()
 
     def print_theme_size(self):
-        print(f"Theme uses {asizeof.asizeof(
-            self.data_manager.active_theme
-        ) / 1024:.2f} KB")
+        print(
+            f"Theme uses {
+                asizeof.asizeof(self.data_manager.active_theme) / 1024:.2f} KB"
+        )
 
     def restart_application(self):
         print("restarting application")
