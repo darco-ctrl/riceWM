@@ -56,7 +56,7 @@ class WindowController:
 
     def get_focused_window(self) -> int:
         hwnd: int = win32gui.GetForegroundWindow()
-        
+
         if self.window_scanner.is_regular_window(hwnd):
             return hwnd
 
@@ -64,16 +64,13 @@ class WindowController:
         return 0
 
     def focus_window(self, hwnd: int):
-        try:
-            window_view: AppView = AppView(hwnd=hwnd)
+        window_view: AppView = AppView(hwnd=hwnd)
 
-            desktop: VirtualDesktop = window_view.desktop
-            desktop.go()
+        desktop: VirtualDesktop = window_view.desktop
+        desktop.go()
 
-            self.set_focus(hwnd)
-            self.maximize(hwnd)
-        except Exception as e:
-            print(f"Failed to retrive Virtual Desktop,\n error: {e}")
+        self.set_focus(hwnd)
+        self.maximize(hwnd)
 
     def close(self, hwnd: int):
         win32gui.PostMessage(hwnd, win32con.WM_CLOSE, 0, 0)
@@ -90,10 +87,10 @@ class WindowController:
     def set_focus(self, hwnd: int):
 
         foreground_hwnd = win32gui.GetForegroundWindow()
-        
+
         if not win32gui.IsWindow(hwnd):
             return
-    
+
         if foreground_hwnd == hwnd:
             return
 
@@ -101,7 +98,7 @@ class WindowController:
         # print(prt_text_title)
         # print(f"Target hwnd: {hwnd}")
         # print(f"Target title: {win32gui.GetWindowText(hwnd)}")
-    
+
         try:
             win32gui.SetForegroundWindow(hwnd)
         except pywintypes.error as error:
