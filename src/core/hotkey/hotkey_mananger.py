@@ -41,24 +41,21 @@ class HotKeyManager:
         window_controls = window_manager.window_controls
 
         mapping = {
-                data_manager.restart_application: self.on_data_reload,
-                vdesktop.create_new: self.on_vdesktop_new,
-                vdesktop.delete_current: self.on_vdesktop_delete,
-                vdesktop.go_left: self.on_vdesktop_left,
-                vdesktop.go_right: self.on_vdesktop_right,
-                window_controls.close: self.close_window,
-                window_controls.restore: self.restore_window,
-                window_controls.maximize: self.maximize_window,
-                window_controls.minimize: self.minimize_window
+            data_manager.restart_application: self.on_data_reload,
+            vdesktop.create_new: self.on_vdesktop_new,
+            vdesktop.delete_current: self.on_vdesktop_delete,
+            vdesktop.go_left: self.on_vdesktop_left,
+            vdesktop.go_right: self.on_vdesktop_right,
+            window_controls.close: self.close_window,
+            window_controls.restore: self.restore_window,
+            window_controls.maximize: self.maximize_window,
+            window_controls.minimize: self.minimize_window,
         }
 
         for combo, handler in mapping.items():
             hotkey_str = combo.replace("<", "").replace(">", "")
             handle = keyboard.add_hotkey(
-                hotkey_str,
-                handler, 
-                suppress=True,
-                trigger_on_release=False
+                hotkey_str, handler, suppress=True, trigger_on_release=False
             )
             self._global_handles.append(handle)
 

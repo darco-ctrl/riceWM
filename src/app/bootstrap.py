@@ -6,6 +6,7 @@ import src.app.paths as rice_paths
 class BootStrap:
     def ensure_config(self):
         self.check_config()
+        self.check_log_folder()
         self.check_app_config()
         self.check_theme_dir()
         self.check_config_dir()
@@ -63,6 +64,10 @@ class BootStrap:
     def check_window_icon_dir(self):
         if not rice_paths.window_cache_icon_dir.exists():
             rice_paths.window_cache_icon_dir.mkdir(parents=True, exist_ok=True)
+
+    def check_log_folder(self):
+        if not rice_paths.log_folder.exists():
+            rice_paths.log_folder.mkdir(parents=True, exist_ok=True)
 
     def delete_cache(self):
         self.del_window_icon_dir()
