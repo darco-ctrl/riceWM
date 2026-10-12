@@ -1,53 +1,46 @@
-from pathlib import Path
+import logging
+from logging.handlers import RotatingFileHandler
 
 import app.paths as rice_paths
 
-class LogFiles:
-    LATEST = "rice_wm.log"
-    PREVIOUS = "rice_wm.log.1"
-    ARCHIVED = "rice_wm.log.2"
+class LogType:
+    KEY_PRESS = "KEY_PRESS"
+
+class RiceWMFormatter(logging.Formatter):
+    def format(self, record: logging.LogRecord) -> str:
+        timestamp = self.formatTime(record, "%Y-%m-%d %H:%M:%S")
+        log = f"{timestamp}: {record.getMessage()}."
+        
+        return log
+
 
 class EventLogger:
     def __init__(self):
+        self.handler = self._get_handler()
+        self.logger = self._get_logger()
 
-        self._check_log_file()
+        self.log(log_type=LogType.KEY_PRESS, message="hello world")
 
-        self.log_file: Path = Path()
-
-    # checks file size and creates a new file if file is over 5 mb
-    # deletes oldest log file when creating new one
-    # only 3 file exists at a time log.txt, log_1, log_2
-    # log.txt: latest, log_1: previous log, log_2: archived log
-    def _check_log_file(self):
-        log_file = rice_paths.log_folder / LogFiles.LATEST
-
-        if not log_file.exists():
-            log_file.touch()
-
-        file_size = self._get_file_size(log_file)
-        if file_size > 5:
-            pass
-
-    def _create_new_file(self):
-        latest_log = rice_paths.log_folder / LogFiles.LATEST
-        previous_log = rice_paths.log_folder / LogFiles.PREVIOUS
-        archived_log = rice_paths.log_folder / LogFiles.ARCHIVED
-
-        if archived_log.exists():
-            archived_log.unlink()
-
-        if previous_log.exists():
-            archived_log = previous_log.with_name(LogFiles.ARCHIVED)
-            previous_log.rename(archived_log)
-
-        if latest_log.exists():
-            previous_log = latest_log.with_name(LogFiles.PREVIOUS)
-            latest_log.rename(previous_log)
-
-            latest_log = rice_paths.log_folder / LogFiles.LATEST
-            latest_log.touch()
+    def _get_handler(self) -> RotatingFileHandler:
+        path = rice_paths.log_folder / "rice_wm.log"
         
-        
+        handler = RotatingFileHandler(
+            path,
+            maxBytes=5 * 1024 * 1024,
+            backupCount=3,
+            encoding="utf-8",
+        )
+        handler.setFormatter(RiceWMFormatter())
+        return handler
 
-    def _get_file_size(self, path: Path) -> float:
-        return path.stat().st_size / 1024**2
+    def _get_logger(self) -> logging.Logger: 
+        logger = logging.getLogger("rice_wm")
+        logger.setLevel(logging.DEBUG)
+        logger.addHandler(self.handler)
+
+        return logger
+
+    def log(self, log_type: str, message: str):
+        log = f"[TYPE: {log_type}]: {message}"
+
+        self.logger.info(log)
