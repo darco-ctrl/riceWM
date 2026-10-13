@@ -113,9 +113,8 @@ class App:
 
 
     def _create_tray(self) -> Tray:
-        tray = Tray()
+        tray = Tray(command_service=self._commands_service)
         tray.load()
-        tray.quit_action.triggered.connect(self.quit_application)
 
         return tray
 

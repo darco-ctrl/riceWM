@@ -26,6 +26,7 @@ class CommandService:
     def _create_commands_dictionary(self):
         commands: dict[str, Callable] = {
             ":restart": self._executer.restart_application,
+            ":open-config-folder": self._executer.open_config_folder,
             ":open-theme": self._executer.open_theme,
             ":open-config": self._executer.open_config,
             ":open-app-config": self._executer.open_app_config,

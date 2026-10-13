@@ -1,4 +1,6 @@
+import os
 
+import app.paths as rice_paths
 from src.core.data_manager import DataManager
 from src.core.events.event_bus import eventBus
 from src.services.commands.helper import CommandHelper
@@ -8,9 +10,15 @@ class CommandExecuter:
     def __init__(self, data_manager: DataManager):
         self.data_manager: DataManager = data_manager
         self.helper: CommandHelper = CommandHelper()
+
     
     def restart_application(self):
         eventBus.requestRestartApplication.emit()
+        
+    def open_config_folder(self):
+        config_folder = rice_paths.rice_config_path
+
+        os.startfile(str(config_folder))
 
     def open_theme(self):
         path = self.data_manager.get_current_theme_path()
