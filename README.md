@@ -48,7 +48,9 @@ RiceWM relies on Windows-specific APIs (virtual desktops, low-level keyboard hoo
 
 ## 📦 Installation
 
-1. Download the latest release from the [Release](https://github.com/darco-ctrl/riceWM/releases/latest) page.
+1. Download the latest release from the [Release](https://github.com/darco-
+
+/riceWM/releases/latest) page.
 2. Extract the `RiceWM` folder anywhere you like.
 3. Run `RiceWM.exe`.
 
