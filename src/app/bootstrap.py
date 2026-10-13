@@ -4,6 +4,8 @@ import src.app.paths as rice_paths
 
 
 class BootStrap:
+    """Initializes required application directories and default configuration files."""
+    
     @staticmethod
     def _ensure_dir(path):
         path.mkdir(parents=True, exist_ok=True)

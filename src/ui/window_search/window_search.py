@@ -21,65 +21,81 @@ from src.ui.window_search.window_item.manager import WinItemManager
 
 class WindowSearch(QWidget):
     def __init__(
-        self, 
-        config: Config, 
-        theme: Theme, 
+        self,
+        config: Config,
+        theme: Theme,
         window_scanner: WindowScanner,
-        command_service: CommandService
+        command_service: CommandService,
     ):
         super().__init__()
-        self.config: Config = config
-        self.theme: Theme = theme
-
-        self.window_scanner: WindowScanner = window_scanner
-        self.command_service: CommandService = command_service
-
-        self.root_layout: QVBoxLayout = QVBoxLayout(self)
-
-        self.panel_constructor: PanelConstructor = PanelConstructor(
-            config=self.config,
-            theme=self.theme,
-            root_layout=self.root_layout
+    
+        self._initialize_dependencies(config, theme, window_scanner, command_service)
+        self._initialize_layout()
+        self._initialize_window_items()
+    
+        self._connect_event()
+        self.winitem_manager.sync_to_new()
+    
+    
+    def _initialize_dependencies(
+        self,
+        config: Config,
+        theme: Theme,
+        window_scanner: WindowScanner,
+        command_service: CommandService,
+    ) -> None:
+        self._config = config
+        self._theme = theme
+        self._window_scanner = window_scanner
+        self._command_service = command_service
+        self._searcher = SearchManager()
+    
+    
+    def _initialize_layout(self) -> None:
+        self._root_layout = QVBoxLayout(self)
+        self._panel_constructor = PanelConstructor(
+            config=self._config,
+            theme=self._theme,
+            root_layout=self._root_layout,
         )
-
-        self.main_panel: QWidget = self.create_window()
-
-        self.search_line_edit: QLineEdit = self.create_search_box()
-
-        self.scroller: QScrollArea = QScrollArea()
-        self.scroll_container: QWidget = self.panel_constructor.create_list_scroller(
-            main_panel=self.main_panel,
-            scroll_area=self.scroller
+    
+        self._main_panel = self._create_window()
+        self._search_line_edit = self._create_search_box()
+        self._scroller = QScrollArea()
+    
+        self._scroll_container = self._panel_constructor.create_list_scroller(
+            main_panel=self._main_panel,
+            scroll_area=self._scroller,
         )
-
-        self.searcher: SearchManager = SearchManager()
-
-        scroller_layout: QVBoxLayout = cast(QVBoxLayout, self.scroll_container.layout())
-        self.winitem_manager: WinItemManager = WinItemManager(
-            config=self.config,
-            theme=self.theme,
-            window_scanner=self.window_scanner,
-            searcher=self.searcher,
-            scroll_area=self.scroller,
+    
+    
+    def _initialize_window_items(self) -> None:
+        scroller_layout = cast(
+            QVBoxLayout,
+            self._scroll_container.layout(),
+        )
+    
+        self.winitem_manager = WinItemManager(
+            config=self._config,
+            theme=self._theme,
+            window_scanner=self._window_scanner,
+            searcher=self._searcher,
+            scroll_area=self._scroller,
             scroller_layout=scroller_layout,
         )
-        self.winitem_manager.sync_to_new()
+
         
-        self.connect_event()
-        # self.dumpObjectTree()
-        # self.scroller.hide()
-        
-    def connect_event(self):
-        _ = eventBus.wspToggleRequested.connect(self.toggle_window)
-        _ = eventBus.itemSelectUp.connect(self.on_wsp_select_up)
-        _ = eventBus.itemSelectDown.connect(self.on_wsp_select_down)
-        _ = eventBus.wspCloseRequested.connect(self.hide_window)
+    def _connect_event(self):
+        _ = eventBus.wspToggleRequested.connect(self._toggle_window)
+        _ = eventBus.itemSelectUp.connect(self._on_wsp_select_up)
+        _ = eventBus.itemSelectDown.connect(self._on_wsp_select_down)
+        _ = eventBus.wspCloseRequested.connect(self._hide_window)
         _ = eventBus.reloadWSPThemeRequested.connect(
-            self.reload_theme
+            self._reload_theme
         )
         
 
-    def focus_selected_window(self):
+    def _focus_selected_window(self):
 
         if not self.isVisible():
             return
@@ -87,65 +103,68 @@ class WindowSearch(QWidget):
         if not self.winitem_manager.windows_item:
             return
 
-        text = self.search_line_edit.text()
+        text = self._search_line_edit.text()
         
         if text and text[0] == ':':
             return
         
         self.winitem_manager.focus_selected_window()
-        self.hide_window()
+        self._hide_window()
         
-    def on_wsp_select_up(self):
+    def _on_wsp_select_up(self):
         if not self.isVisible():
             return
 
         self.winitem_manager.select_prev()
 
-    def on_wsp_select_down(self):
+    def _on_wsp_select_down(self):
         if not self.isVisible():
             return
 
         self.winitem_manager.select_next()
 
-    def key_input(self):
-        pass
 
-    def reload_theme(self):
-        self.panel_constructor.reapply_theme()
+    def _reload_theme(self):
+        self._panel_constructor.reapply_theme()
         self.winitem_manager.reapply_theme()
-        self.recolor_container()
+        self._recolor_container()
 
-    def recolor_container(self):
-        style = self.theme.window_search.window_item.color_style
-        self.scroll_container.setStyleSheet(f"""
+
+    def _recolor_container(self):
+        style = self._theme.window_search.window_item.color_style
+        self._scroll_container.setStyleSheet(f"""
         #scrollContainer {{
             background-color: {style.background_color};
         }}
         """)
 
-    def toggle_window(self):
+
+    def _toggle_window(self):
         if self.isVisible():
-            self.hide_window()
+            self._hide_window()
 
         else:
-            self.show_window()
+            self._show_window()
 
-    def event(self, event):
+
+    def _event(self, event):
         if event.type() == QEvent.Type.WindowDeactivate:
-            self.hide_window()
+            self._hide_window()
 
         return super().event(event)
 
-    def hide_window(self):
+
+    def _hide_window(self):
         if not self.isVisible():
             return
 
         eventBus.disablePanelKeys.emit()
         self.hide()
-        self.search_line_edit.setText("")
+        self._search_line_edit.setText("")
         self.winitem_manager.hide()
 
-    def show_window(self):
+
+    def _show_window(self):
         if self.isVisible():
             return
         
@@ -157,14 +176,14 @@ class WindowSearch(QWidget):
         self.activateWindow()
 
         self.setFocus()
-        self.search_line_edit.setFocus()
+        self._search_line_edit.setFocus()
 
-    def get_window_height(self):
 
-        style_search_box = self.theme.window_search.search_box
-        style_window_item =  self.theme.window_search.window_item
+    def _get_window_height(self):
+        style_search_box = self._theme.window_search.search_box
+        style_window_item =  self._theme.window_search.window_item
 
-        max_result_shown = self.config.window_search.behavior.max_results_shown
+        max_result_shown = self._config.window_search.behavior.max_results_shown
 
         items_height = (
             style_window_item.frame_style.height
@@ -176,9 +195,9 @@ class WindowSearch(QWidget):
 
         return height
 
-    def create_window(self) -> QWidget:
 
-        config = self.config.window_search
+    def _create_window(self) -> QWidget:
+        config = self._config.window_search
 
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setWindowFlags(
@@ -188,8 +207,8 @@ class WindowSearch(QWidget):
             | Qt.WindowType.Popup
         )
         
-        screen_width, screen_height = self.get_screen_size()
-        window_height = self.get_window_height()
+        screen_width, screen_height = self._get_screen_size()
+        window_height = self._get_window_height()
 
         position_x = int((screen_width / 2) - (config.window_width / 2))
         position_y = int((screen_height / 2) - (window_height / 2))
@@ -199,41 +218,45 @@ class WindowSearch(QWidget):
         self.move(position_x, position_y)
 
         # Main panel
-        main_panel = self.panel_constructor.create_panel()
+        main_panel = self._panel_constructor.create_panel()
         return main_panel
 
-    def create_search_box(self) -> QLineEdit:
-        line_edit = self.panel_constructor.create_searchbox()
+
+    def _create_search_box(self) -> QLineEdit:
+        line_edit = self._panel_constructor.create_searchbox()
         _ = line_edit.textChanged.connect(
-            self.on_search_box_changed
+            self._on_search_box_changed
         )
         _ = line_edit.returnPressed.connect(
-            self.on_searchbox_enter_pressed
+            self._on_searchbox_enter_pressed
         )
 
         return line_edit
 
-    def is_command(self, text: str) -> bool:
+
+    def _is_command(self, text: str) -> bool:
         if not text:
             return False
         
         if text[0] != ':':
             return False
         
-        return self.command_service.is_command(text)
+        return self._command_service.is_command(text)
 
-    def on_searchbox_enter_pressed(self):
-        text = self.search_line_edit.text()
+
+    def _on_searchbox_enter_pressed(self):
+        text = self._search_line_edit.text()
         
-        if self.is_command(text):
-            self.command_service.execute(command=text)
-            self.hide_window()
+        if self._is_command(text):
+            self._command_service.execute(command=text)
+            self._hide_window()
             return
             
         if self.winitem_manager.windows_item:
-            self.focus_selected_window()
+            self._focus_selected_window()
 
-    def on_search_box_changed(self, text: str):
+
+    def _on_search_box_changed(self, text: str):
         if not text.strip():
            self.winitem_manager.sync_to(
                windows_info=self.winitem_manager.windows_info
@@ -243,11 +266,12 @@ class WindowSearch(QWidget):
         if text[0] == ':':
             return
         
-        self.searcher.search(
+        self._searcher.search(
             query=text,
             windows_info=self.winitem_manager.windows_info
         )
 
-    def get_screen_size(self) -> tuple[int, int]:
+
+    def _get_screen_size(self) -> tuple[int, int]:
         screen = QGuiApplication.primaryScreen()
         return screen.size().width(), screen.size().height()

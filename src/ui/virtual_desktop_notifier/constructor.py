@@ -43,5 +43,5 @@ class NotiferConstructor:
 
         self.theme_applier.set_label_style(label=label)
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        label.setText("hello world")
+        label.setText("Loading")
         return label

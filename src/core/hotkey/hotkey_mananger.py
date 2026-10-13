@@ -8,56 +8,65 @@ from src.core.key_map.models import ApplicationKM, WindowManagerKM, WindowSearch
 
 
 class HotKeyManager:
+    """Manages hotkeys, keymaps, and key press events."""
+    
     def __init__(self, logger: EventLogger, key_map: KeyMap) -> None:
-        self.logger = logger
+        self._logger = logger
 
-        self.key_map = key_map
+        self._key_map = key_map
         self._global_handles = []
-        self.panel_listner: pkbaord.GlobalHotKeys
+        self._panel_listener: pkbaord.GlobalHotKeys
 
-        self.set_panel_listner()
-        self.set_global_listner()
+        self._set_panel_listener()
+        self._set_global_listener()
+        self._connect_events()
 
-    def connect_events(self):
-        eventBus.enablePanelKeys.connect(self.enable_panelkeys)
-        eventBus.disablePanelKeys.connect(self.disable_panelkeys)
+    def _connect_events(self):
+        eventBus.enablePanelKeys.connect(self._enable_panel_keys)
+        eventBus.disablePanelKeys.connect(self._disable_panel_keys)
 
-    def start(self):
         
-        self.panel_listner.start()
-        self.logger.log(
-            log_type=LogEventType.INFO,
-            message="Hotkey Manager has started"
-        )
-
-    def set_panel_listner(self):
-        wsp_key_map: WindowSearchKM = self.key_map.window_search
-
-        self.panel_listner = pkbaord.GlobalHotKeys(
+    def _set_panel_listener(self) -> None:
+        wsp_key_map: WindowSearchKM = self._key_map.window_search
+    
+        self._panel_listener = pkbaord.GlobalHotKeys(
             {
-                wsp_key_map.toggle: self.on_wsp_toggle,
-                wsp_key_map.close_window: self.on_wsp_close,
-                wsp_key_map.select_up: self.on_wsp_select_up,
-                wsp_key_map.select_down: self.on_wsp_select_down,
+                wsp_key_map.close_window: self._on_wsp_close,
+                wsp_key_map.select_up: self._on_wsp_select_up,
+                wsp_key_map.select_down: self._on_wsp_select_down,
             }
         )
+    
+    
+    def _disable_panel_keys(self) -> None:
+        if self._panel_listener.is_alive():
+            self._panel_listener.stop()
+    
+    
+    def _enable_panel_keys(self) -> None:
+        if not self._panel_listener.is_alive():
+            self._set_panel_listener()
+            self._panel_listener.start()
 
-    def set_global_listner(self):
-        data_manager: ApplicationKM = self.key_map.application
-        window_manager: WindowManagerKM = self.key_map.window_manager
+
+    def _set_global_listener(self):
+        wsp_key_map: WindowSearchKM = self._key_map.window_search
+        data_manager: ApplicationKM = self._key_map.application
+        window_manager: WindowManagerKM = self._key_map.window_manager
         vdesktop = window_manager.virtual_desktop
         window_controls = window_manager.window_controls
 
         mapping = {
-            data_manager.restart_application: self.on_data_reload,
-            vdesktop.create_new: self.on_vdesktop_new,
-            vdesktop.delete_current: self.on_vdesktop_delete,
-            vdesktop.go_left: self.on_vdesktop_left,
-            vdesktop.go_right: self.on_vdesktop_right,
-            window_controls.close: self.close_window,
-            window_controls.restore: self.restore_window,
-            window_controls.maximize: self.maximize_window,
-            window_controls.minimize: self.minimize_window,
+            wsp_key_map.toggle: self._on_wsp_toggle,
+            data_manager.restart_application: self._on_data_reload,
+            vdesktop.create_new: self._on_vdesktop_new,
+            vdesktop.delete_current: self._on_vdesktop_delete,
+            vdesktop.go_left: self._on_vdesktop_left,
+            vdesktop.go_right: self._on_vdesktop_right,
+            window_controls.close: self._close_window,
+            window_controls.restore: self._restore_window,
+            window_controls.maximize: self._maximize_window,
+            window_controls.minimize: self._minimize_window,
         }
 
         for combo, handler in mapping.items():
@@ -67,79 +76,96 @@ class HotKeyManager:
             )
             self._global_handles.append(handle)
 
-    def stop_globalkeys(self):
+
+    def _stop_globalkeys(self):
         for handle in self._global_handles:
             keyboard.remove_hotkey(handle)
 
-    def disable_panelkeys(self):
-        self.panel_listner.stop()
 
-    def enable_panelkeys(self):
-        self.panel_listner.start()
-
-    def close_window(self):
+    def _close_window(self):
         self._log("CLOSE_WINDOW")
         
         eventBus.closeWindow.emit()
 
-    def minimize_window(self):
+
+    def _minimize_window(self):
         self._log("MINIMIZE_WINDOW")
         
         eventBus.minimizeWindow.emit()
 
-    def maximize_window(self):
+
+    def _maximize_window(self):
         self._log("MAXIMIZE_WINDOW")
         
         eventBus.maximizeWindow.emit()
 
-    def restore_window(self):
+
+    def _restore_window(self):
         self._log("RESTORE_WINDOW")
         
         eventBus.restoreWindow.emit()
 
-    def on_wsp_select_up(self):
+
+    def _on_wsp_select_up(self):
         eventBus.itemSelectUp.emit()
 
-    def on_wsp_select_down(self):
+
+    def _on_wsp_select_down(self):
         eventBus.itemSelectDown.emit()
 
-    def on_data_reload(self):
+
+    def _on_data_reload(self):
         self._log("RESTART_APPLICATION")
         
         eventBus.requestRestartApplication.emit()
 
-    def on_wsp_toggle(self):
+
+    def _on_wsp_toggle(self):
         self._log("WINDOW_SEARCH_PANEL_TOGGLE")
         
         eventBus.wspToggleRequested.emit()
 
-    def on_wsp_close(self):
+
+    def _on_wsp_close(self):
         self._log("WINDOW_SEARCH_PANEL_CLOSE")
         
         eventBus.wspCloseRequested.emit()
 
-    def on_vdesktop_new(self):
+
+    def _on_vdesktop_new(self):
         self._log("VIRTUAL_DESKTOP_NEW")
         
         eventBus.createNewVDesktop.emit()
 
-    def on_vdesktop_delete(self):
+
+    def _on_vdesktop_delete(self):
         self._log("VIRTUAL_DESKTOP_DELETE")
         
         eventBus.deleteCurrentVDesktop.emit()
 
-    def on_vdesktop_left(self):
+
+    def _on_vdesktop_left(self):
         self._log("VIRTUAL_DESKTOP_GO_LEFT")
         
         eventBus.vDesktopGoLeft.emit()
 
-    def on_vdesktop_right(self):
+
+    def _on_vdesktop_right(self):
         self._log("VIRTUAL_DESKTOP_GO_RIGHT")
         
         eventBus.vDesktopGoRight.emit()
 
+
     def _log(self, message: str):
-        self.logger.log(
+        self._logger.log(
             log_type=LogEventType.KEY_PRESSED,
             message=message
+        )
+
+
+    def start(self):
+        self._panel_listener.start()
+        self._logger.log(
+            log_type=LogEventType.INFO,
+            message="Hotkey Manager has started"
         )

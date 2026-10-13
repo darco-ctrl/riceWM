@@ -37,6 +37,7 @@ class WinItemConstructor:
         self.theme_applier: WinItemThemeApplier = theme_applier
         self.helper: WindowItemHelper = helper
 
+    
     def create_empty_label(self) -> QLabel:
         empty_label: QLabel = QLabel("No windows found. :)")
         empty_label.setObjectName("emptyLabel")

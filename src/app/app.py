@@ -121,6 +121,11 @@ class App:
 
     
     def run(self):
+        self._logger.log(
+            log_type=LogEventType.APPLICATION_START,
+            message="Started RiceWM"
+        )
+        
         self._hotkey_manager.start()
         self._ui_manager.load()
 

@@ -14,39 +14,42 @@ from src.core.config.models import (
 
 
 class Config:
+    """Manages application configuration and settings."""
+    
     def __init__(self, logger: EventLogger, config_path: str):
-        self.logger = logger
-        self.config_path = config_path
+        self._logger = logger
+        self._config_path = config_path
 
         self.name: str
         self.window_search: C_WindowSearch
         self.virtual_desktop: VirtualDesktopConfig
+        
         self.load()
 
     def reload(self):
         self.load()
 
     def load(self):
-        with open(self.config_path, "r") as file:
-            self.logger.log(
+        with open(self._config_path, "r") as file:
+            self._logger.log(
                 log_type=LogEventType.LOAD_DATA,
-                message=f"Loading config: {self.config_path}"
+                message=f"Loading config: {self._config_path}"
             )
 
             data = json.load(file)
             # print(data)
-            self.create_data_classes(data)
+            self._create_data_classes(data)
             del data
 
-    def create_data_classes(self, data: dict):
+    def _create_data_classes(self, data: dict):
         self.name = data["name"]
 
-        self.create_window_search(dict=data["window_search"])
-        self.create_virtual_desktop_notifier(
+        self._create_window_search(dict=data["window_search"])
+        self._create_virtual_desktop_notifier(
             data=data["virtual_desktop"]
         )
 
-    def get_animation(self, data: dict):
+    def _get_animation(self, data: dict):
         dict_fade_in: dict = data["fade_in"]
         dict_fade_out: dict = data["fade_out"]
 
@@ -62,17 +65,17 @@ class Config:
             fade_out=fade_out
         )
 
-    def create_virtual_desktop_notifier(self, data: dict):
+    def _create_virtual_desktop_notifier(self, data: dict):
 
         dict_notifier = data["notifier"]
         dict_desktop_name = dict_notifier["desktop_name"] 
         dict_window_aniamtion = dict_notifier["window_animation"]
         dict_label_animation =dict_notifier["label_animation"]
 
-        window_aniamtion: AnimationConfig = self.get_animation(
+        window_aniamtion: AnimationConfig = self._get_animation(
             data=dict_window_aniamtion
         )
-        label_animation: AnimationConfig = self.get_animation(
+        label_animation: AnimationConfig = self._get_animation(
             data=dict_label_animation
         )
     
@@ -100,7 +103,7 @@ class Config:
             notifier=virtual_destkop_notifer
         )
 
-    def create_window_search(self, dict: dict):
+    def _create_window_search(self, dict: dict):
         search_box_dict = dict["search_box"]
         behavior_dict = dict["behavior"]
         # Behavior

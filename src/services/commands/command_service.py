@@ -5,45 +5,51 @@ from src.core.data_manager import DataManager
 from src.services.commands.executer import CommandExecuter
 
 
-class CommandService: 
+class CommandService:
+    """Manages application commands and their execution."""
+    
     def __init__(
         self, 
         logger: EventLogger, 
         data_manager: DataManager
     ):
-        self.logger = logger
-        self.executer: CommandExecuter = CommandExecuter(
+        self._logger = logger
+        self._executer: CommandExecuter = CommandExecuter(
             data_manager=data_manager
         )
 
-        self.commands: dict[str, Callable] = (
-            self.create_commands_dictionary()
+        self._commands: dict[str, Callable] = (
+            self._create_commands_dictionary()
         )
+        
 
-    def execute(self, command: str):
-        if not command in self.commands:
-            return
-
-        self._log(command)
-        self.commands[command]()
-
-    def is_command(self, command: str) -> bool:
-        return command in self.commands
-
-    def create_commands_dictionary(self):
+    def _create_commands_dictionary(self):
         commands: dict[str, Callable] = {
-            ":restart": self.executer.restart_application,
-            ":open-theme": self.executer.open_theme,
-            ":open-config": self.executer.open_config,
-            ":open-app-config": self.executer.open_app_config,
-            ":open-keymap": self.executer.open_keymap,
-            ":quit": self.executer.quit_app
+            ":restart": self._executer.restart_application,
+            ":open-theme": self._executer.open_theme,
+            ":open-config": self._executer.open_config,
+            ":open-app-config": self._executer.open_app_config,
+            ":open-keymap": self._executer.open_keymap,
+            ":quit": self._executer.quit_app
         }
 
         return commands
 
+
     def _log(self, message: str):
-        self.logger.log(
+        self._logger.log(
             log_type=LogEventType.EXECUTE_COMMAND,
             message=message
         )
+
+
+    def execute(self, command: str):
+        if not command in self._commands:
+            return
+
+        self._log(command)
+        self._commands[command]()
+
+
+    def is_command(self, command: str) -> bool:
+        return command in self._commands

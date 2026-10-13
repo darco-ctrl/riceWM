@@ -10,6 +10,8 @@ from src.core.theme.window_search.window_search import WindowSearchStyle
 
 
 class Theme:
+    """Manages application theme loading and styling."""
+    
     def __init__(self, logger: EventLogger, theme_path: str):
         self.logger = logger
         self.constructor: ThemeConstructor = ThemeConstructor() 
@@ -39,24 +41,24 @@ class Theme:
 
             file.seek(0)
             data = json.load(file)
-            self.create_data_classes(data)
+            self._create_data_classes(data)
 
             del data
 
-    def create_data_classes(self, data: dict):
+    def _create_data_classes(self, data: dict):
         self.name = data["name"]
-        self.window_search = self.get_window_search(data["window_search"])
+        self.window_search = self._get_window_search(data["window_search"])
 
-        self.virtual_desktop_notifer = self.get_virtual_desktop_notifer(
+        self.virtual_desktop_notifer = self._get_virtual_desktop_notifer(
             data["virtual_desktop_notifier"]
         )
 
-    def get_virtual_desktop_notifer(self, style: dict):
+    def _get_virtual_desktop_notifer(self, style: dict):
         return self.constructor.create_virtual_desktop_notifer_style(
             style=style
         )
 
-    def get_window_search(self, style: dict) -> WindowSearchStyle:
+    def _get_window_search(self, style: dict) -> WindowSearchStyle:
 
         return self.constructor.create_window_search(
             style=style

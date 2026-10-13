@@ -10,86 +10,88 @@ from src.wm.registry import WindowRegistry
 
 
 class WindowController:
+    """Controls window states and operations such as minimizing, maximizing, restoring, and closing."""
+    
     def __init__(self, logger: EventLogger, registry, window_scanner):
-        self.connect_window_events()
+        self._logger = logger
+        self._window_scanner: WindowScanner = window_scanner
+        self._registry: WindowRegistry = registry
+        
+        self._connect_window_events()
 
-        self.logger = logger
-        self.window_scanner: WindowScanner = window_scanner
-        self.registry: WindowRegistry = registry
+    def _connect_window_events(self):
+        _ = eventBus.focusWindow.connect(self._focus_window)
+        _ = eventBus.closeWindow.connect(self._close_Window)
+        _ = eventBus.restoreWindow.connect(self._restore_window)
+        _ = eventBus.maximizeWindow.connect(self._maximize_window)
+        _ = eventBus.minimizeWindow.connect(self._minimize_window)
 
-    def connect_window_events(self):
-        _ = eventBus.focusWindow.connect(self.focus_window)
-        _ = eventBus.closeWindow.connect(self.close_Window)
-        _ = eventBus.restoreWindow.connect(self.restore_window)
-        _ = eventBus.maximizeWindow.connect(self.maximize_window)
-        _ = eventBus.minimizeWindow.connect(self.minimize_window)
-
-    def close_Window(self):
-        hwnd = self.get_focused_window()
-
-        if not hwnd:
-            return
-
-        self.close(hwnd)
-
-    def minimize_window(self):
-        hwnd = self.get_focused_window()
+    def _close_Window(self):
+        hwnd = self._get_focused_window()
 
         if not hwnd:
             return
 
-        self.minimize(hwnd)
+        self._close(hwnd)
 
-    def maximize_window(self):
-        hwnd = self.get_focused_window()
-
-        if not hwnd:
-            return
-
-        self.maximize(hwnd)
-
-    def restore_window(self):
-        hwnd = self.get_focused_window()
+    def _minimize_window(self):
+        hwnd = self._get_focused_window()
 
         if not hwnd:
             return
 
-        self.restore(hwnd)
+        self._minimize(hwnd)
 
-    def get_focused_window(self) -> int:
+    def _maximize_window(self):
+        hwnd = self._get_focused_window()
+
+        if not hwnd:
+            return
+
+        self._maximize(hwnd)
+
+    def _restore_window(self):
+        hwnd = self._get_focused_window()
+
+        if not hwnd:
+            return
+
+        self._restore(hwnd)
+
+    def _get_focused_window(self) -> int:
         hwnd: int = win32gui.GetForegroundWindow()
 
-        if self.window_scanner.is_regular_window(hwnd):
+        if self._window_scanner.is_regular_window(hwnd):
             return hwnd
             
-        self.logger.log(
+        self._logger.log(
             log_type=LogEventType.INFO,
             message="The window tried to focus is not regular window"
         )
         return 0
 
-    def focus_window(self, hwnd: int):
+    def _focus_window(self, hwnd: int):
         window_view: AppView = AppView(hwnd=hwnd)
 
         desktop: VirtualDesktop = window_view.desktop
         desktop.go()
 
-        self.set_focus(hwnd)
-        self.maximize(hwnd)
+        self._set_focus(hwnd)
+        self._maximize(hwnd)
 
-    def close(self, hwnd: int):
+    def _close(self, hwnd: int):
         win32gui.PostMessage(hwnd, win32con.WM_CLOSE, 0, 0)
 
-    def minimize(self, hwnd: int):
+    def _minimize(self, hwnd: int):
         win32gui.ShowWindow(hwnd, win32con.SW_MINIMIZE)
 
-    def restore(self, hwnd: int):
+    def _restore(self, hwnd: int):
         win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
 
-    def maximize(self, hwnd: int):
+    def _maximize(self, hwnd: int):
         win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
 
-    def set_focus(self, hwnd: int):
+    def _set_focus(self, hwnd: int):
 
         foreground_hwnd = win32gui.GetForegroundWindow()
 
@@ -107,7 +109,7 @@ class WindowController:
         try:
             win32gui.SetForegroundWindow(hwnd)
         except pywintypes.error as error:
-            self.logger.log(
+            self._logger.log(
                 log_type=LogEventType.ERROR,
                 message=f"Could not focus HWND: {hwnd}, error: {error}"
             )

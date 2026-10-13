@@ -17,7 +17,8 @@ class DataManager:
         themes_dir: Path,
         keymap_file: Path,
     ) -> None:
-        self.logger = logger
+        self._logger = logger
+        
         self.app_config = app_config
         self.config_dir = config_dir
         self.themes_dir = themes_dir
@@ -31,19 +32,19 @@ class DataManager:
         )
         
         self.active_config: Config = Config(
-            logger=self.logger,
+            logger=self._logger,
             config_path=self.current_config_path
         )
         self.active_theme: Theme = Theme(
-            logger=self.logger,
+            logger=self._logger,
             theme_path=self.current_theme_path
         )
         self.key_map: KeyMap = KeyMap(
-            logger=self.logger,
+            logger=self._logger,
             json_path=self.keymap_file
         )
 
-        self.connect_events()
+        self._connect_events()
 
     def get_current_theme_path(self) -> str:
         return self.current_theme_path
@@ -54,7 +55,7 @@ class DataManager:
     def get_keymap_path(self) -> str:
         return self.keymap_file
 
-    def connect_events(self):
+    def _connect_events(self):
         eventBus.dataReloadRequested.connect(self.reload)
 
     def reload(self):

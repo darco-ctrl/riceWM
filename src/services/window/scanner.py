@@ -13,10 +13,9 @@ user32 = ctypes.windll.user32
 
 
 class WindowScanner:
-    def __init__(self):
-        pass
+    """Finds regular application windows and filters out non-standard windows."""
 
-    def is_pwa_process(self, pid):
+    def _is_pwa_process(self, pid):
         try:
             proc = psutil.Process(pid)
             cmdline = proc.cmdline()
@@ -28,7 +27,7 @@ class WindowScanner:
             pass
         return False, None
 
-    def is_window_on_desktop(self, hwnd: int, desktop: VirtualDesktop) -> bool:
+    def _is_window_on_desktop(self, hwnd: int, desktop: VirtualDesktop) -> bool:
 
         try:
             app_view = AppView(hwnd)
@@ -38,83 +37,18 @@ class WindowScanner:
         except OSError:
             return False
 
-    def is_regular_window(self,
-        hwnd: int) -> bool:
-
-        if not hwnd:
-            return False
-            
-        if not win32gui.IsWindowVisible(hwnd):
-            # print(" returning window is not visible ")
-            return False
-
+    def _get_window_data(self, hwnd: int) -> dict | None:
         title = win32gui.GetWindowText(hwnd).strip()
-        if not title:
-            # print(" window title is empty ")
-            return False
-
-        ex_style = win32gui.GetWindowLong(hwnd, win32con.GWL_EXSTYLE)
-
-        is_tool_window = bool(ex_style & win32con.WS_EX_TOOLWINDOW)
-        is_app_window = bool(ex_style & win32con.WS_EX_APPWINDOW)
-
-        if is_tool_window:
-            # print(" return. window is tool window ")
-            return False
-
-        owner = win32gui.GetWindow(hwnd, win32con.GW_OWNER)
-
-        if owner and not is_app_window:
-            # print("return is not app and has owner")
-            return False
-
-        class_name = win32gui.GetClassName(hwnd)
-
-        exclude_classes = {
-            "Windows.UI.Core.CoreWindow",  # UWP app containers
-            # "ApplicationFrameWindow",  # UWP app frames (parent windows)
-            "Progman",  # Desktop
-            "WorkerW",  # Desktop worker
-            "Shell_TrayWnd",  # Taskbar itself
-            "SysListView32",  # Usually part of taskbar
-            "NotifyIconOverflowWindow",  # System tray overflow
-        }
-
-        if class_name in exclude_classes:
-            # print(f"return beucase its in exclude class: {class_name}")
-            return False
-
-        if class_name == "ApplicationFrameWindow":
-            # Find the actual content window
-            def find_content_window(h, _):
-                child_class = win32gui.GetClassName(h)
-                return child_class == "Windows.UI.Core.CoreWindow"
-
-            win32gui.EnumChildWindows(hwnd, find_content_window, None)
-            # If this is just a frame without content, skip it
-            #
-            return False
-
-        if win32gui.IsIconic(hwnd):  # Minimized windows are fine, they're in taskbar
-            pass
-
-        return True
-
-    def get_window_data(
-        self, 
-        hwnd: int) -> dict | None:
-        title = win32gui.GetWindowText(hwnd).strip()
-        # print(f" checking if window is regular: {title}")
         if not self.is_regular_window(hwnd):
             return None
 
         if title:
             title.lstrip()
-    
+
         _, pid = win32process.GetWindowThreadProcessId(hwnd)
-    
-        is_pwa, pwa_arg = self.is_pwa_process(pid)
-    
+
+        is_pwa, pwa_arg = self._is_pwa_process(pid)
+
         try:
             process = psutil.Process(pid)
             process_name = process.name()
@@ -124,7 +58,7 @@ class WindowScanner:
         name = ""
         if process_name:
             name = f"{process_name}"
-    
+
         return {
             "process_name": name,
             "title": title,
@@ -134,43 +68,24 @@ class WindowScanner:
             "pwa_arg": pwa_arg,
         }
 
-    def get_open_windows(
-        self) -> dict[int, dict]:
-            
+    def _get_open_windows(self) -> dict[int, dict]:
+
         open_windows: dict[int, dict] = {}
-    
+
         def callback(hwnd: int, _extra) -> bool:
-            window_data = self.get_window_data(hwnd)
-    
+            window_data = self._get_window_data(hwnd)
+
             if window_data is None:
                 return True
-    
+
             open_windows[hwnd] = window_data
             return True
-    
+
         win32gui.EnumWindows(callback, None)
-    
+
         return open_windows
-        
 
-    def get_windows_info(self) -> list[WindowInfo]:
-        windows = []
-
-        windows_dict = self.get_open_windows()
-        focused_window_hwnd = win32gui.GetForegroundWindow()
-
-        for info in windows_dict.values():
-            window_info = self.create_window_info(info)
-            if window_info.hwnd == focused_window_hwnd:
-                window_info.set_focused(True)
-            else:
-                window_info.set_focused(False)
-
-            windows.append(window_info)
-
-        return windows
-
-    def get_desktops_hwnds(self, desktop: VirtualDesktop) -> list[int]:
+    def _get_desktops_hwnds(self, desktop: VirtualDesktop) -> list[int]:
         hwnds: list[int] = []
 
         def callback(hwnd: int, _extra) -> bool:
@@ -178,26 +93,24 @@ class WindowScanner:
             if not self.is_regular_window(hwnd):
                 return True
 
-            if not self.is_window_on_desktop(
-                hwnd=hwnd, desktop=desktop
-            ):
+            if not self._is_window_on_desktop(hwnd=hwnd, desktop=desktop):
                 return True
 
             hwnds.append(hwnd)
 
             return True
-    
+
         win32gui.EnumWindows(callback, None)
         return hwnds
 
-    def get_app_name(self, pid) -> str:
+    def _get_app_name(self, pid) -> str:
         try:
             process = psutil.Process(pid)
             return process.name()
         except psutil.NoSuchProcess:
             return ""
 
-    def create_window_info(self, window_data: dict) -> WindowInfo:
+    def _create_window_info(self, window_data: dict) -> WindowInfo:
         #                "process_name": process_name,
         # "title": title,
         # "pid": pid,
@@ -215,7 +128,7 @@ class WindowScanner:
 
         name = ""
         if not is_pwa:
-            self.get_app_name(pid=pid)
+            self._get_app_name(pid=pid)
 
         window_info = WindowInfo(
             hwnd=hwnd,
@@ -228,10 +141,81 @@ class WindowScanner:
 
         return window_info
 
-    def get_window_info(self, hwnd: int) -> WindowInfo | None:
-        data = self.get_window_data(hwnd)
+    def _get_window_info(self, hwnd: int) -> WindowInfo | None:
+        data = self._get_window_data(hwnd)
 
         if not data:
             return None
-            
-        return self.create_window_info(data)
+
+        return self._create_window_info(data)
+
+    def get_windows_info(self) -> list[WindowInfo]:
+        windows = []
+
+        windows_dict = self._get_open_windows()
+        focused_window_hwnd = win32gui.GetForegroundWindow()
+
+        for info in windows_dict.values():
+            window_info = self._create_window_info(info)
+            if window_info.hwnd == focused_window_hwnd:
+                window_info.set_focused(True)
+            else:
+                window_info.set_focused(False)
+
+            windows.append(window_info)
+
+        return windows
+
+    def is_regular_window(self, hwnd: int) -> bool:
+
+        if not hwnd:
+            return False
+
+        if not win32gui.IsWindowVisible(hwnd):
+            return False
+
+        title = win32gui.GetWindowText(hwnd).strip()
+        if not title:
+            return False
+
+        ex_style = win32gui.GetWindowLong(hwnd, win32con.GWL_EXSTYLE)
+
+        is_tool_window = bool(ex_style & win32con.WS_EX_TOOLWINDOW)
+        is_app_window = bool(ex_style & win32con.WS_EX_APPWINDOW)
+
+        if is_tool_window:
+            return False
+
+        owner = win32gui.GetWindow(hwnd, win32con.GW_OWNER)
+
+        if owner and not is_app_window:
+            return False
+
+        class_name = win32gui.GetClassName(hwnd)
+
+        exclude_classes = {
+            "Windows.UI.Core.CoreWindow",  # UWP app containers
+            # "ApplicationFrameWindow",  # UWP app frames (parent windows)
+            "Progman",  # Desktop
+            "WorkerW",  # Desktop worker
+            "Shell_TrayWnd",  # Taskbar itself
+            "SysListView32",  # Usually part of taskbar
+            "NotifyIconOverflowWindow",  # System tray overflow
+        }
+
+        if class_name in exclude_classes:
+            return False
+
+        if class_name == "ApplicationFrameWindow":
+            # Find the actual content window
+            def find_content_window(h, _):
+                child_class = win32gui.GetClassName(h)
+                return child_class == "Windows.UI.Core.CoreWindow"
+
+            win32gui.EnumChildWindows(hwnd, find_content_window, None)
+            return False
+
+        if win32gui.IsIconic(hwnd):  # Minimized windows are fine, they're in taskbar
+            pass
+
+        return True

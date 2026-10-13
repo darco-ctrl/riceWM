@@ -12,13 +12,13 @@ class WindowManager:
         window_scanner: WindowScanner,
         config: Config
     ) -> None:
-        self.config: Config = config
+        self._config: Config = config
         
-        self.registry = WindowRegistry(
+        self._registry = WindowRegistry(
             window_scanner=window_scanner,
             config=config
         )
-        self.controller = WindowController(
-            logger, self.registry, window_scanner
+        self._controller = WindowController(
+            logger, self._registry, window_scanner
         )
-        self.window_scanner = window_scanner
+        self._window_scanner = window_scanner

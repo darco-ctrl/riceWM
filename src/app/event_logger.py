@@ -5,15 +5,15 @@ import app.paths as rice_paths
 
 
 class LogEventType:
-    KEY_PRESSED = "KEY_PRESSED"
-    APPLICATION_START = "APPLICATION_START"
-    APPLICATION_QUIT = "APPLICATION_QUIT"
-    APPLICATION_RESTART = "APPLICATION_RESTART"
     INFO = "INFO"
-    WARNING = "WARNING"
     ERROR = "ERROR"
+    WARNING = "WARNING"
     LOAD_DATA = "LOAD_DATA"
+    KEY_PRESSED = "KEY_PRESSED"
     EXECUTE_COMMAND = "EXECUTE_COMMAND"
+    APPLICATION_QUIT = "APPLICATION_QUIT"
+    APPLICATION_START = "APPLICATION_START"
+    APPLICATION_RESTART = "APPLICATION_RESTART"
     
 
 class RiceWMFormatter(logging.Formatter):
@@ -23,13 +23,13 @@ class RiceWMFormatter(logging.Formatter):
 
 
 class EventLogger:
+    """Logs changes made in app, used for easier bug tracking and debuggging"""
+    
     def __init__(self):
-        self.file_handler = self._get_file_handler()
-        self.console_handler = self._get_console_handler()
-        self.logger = self._get_logger()
-
-        self.log(log_type=LogEventType.KEY_PRESSED, message="hello world")
-
+        self._file_handler = self._get_file_handler()
+        self._console_handler = self._get_console_handler()
+        self._logger = self._get_logger()
+        
     def _get_file_handler(self) -> RotatingFileHandler:
         path = rice_paths.log_folder / "rice_wm.log"
         
@@ -58,7 +58,8 @@ class EventLogger:
 
         return logger
 
+    # Logs given message stamped with time and type of event
     def log(self, message: str, log_type: str = LogEventType.INFO):
         log = f"[EVENT_TYPE: {log_type}]: {message}"
 
-        self.logger.info(log)
+        self._logger.info(log)

@@ -24,6 +24,7 @@ class PanelConstructor:
         self.panel: Panel
         self.search_box: SearchBox
 
+
     def create_list_scroller(
         self, 
         main_panel: QWidget,
@@ -67,18 +68,16 @@ class PanelConstructor:
 
         return container
 
+
     def reapply_theme(self):
         self.color_panel()
         self.color_search_box()
+
 
     def create_panel(self) -> QFrame:
 
         panel = QFrame()
         panel.setObjectName("Panel")
-
-        
-
-        # main_panel.setFixedHeight(100)
 
         # Main panel layout
         layout = QVBoxLayout(panel)
