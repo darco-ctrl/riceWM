@@ -1,7 +1,5 @@
 
-from typing import Any
 
-from src.core.theme.components.frame_style import FrameStyle
 from src.core.theme.primitives.border_style import BorderStyle
 from src.core.theme.primitives.color_style import ColorStyle
 from src.core.theme.primitives.dimension import Dimension

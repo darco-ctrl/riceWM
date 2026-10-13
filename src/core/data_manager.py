@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from app.event_logger import EventLogger
 from src.config.app_config import AppConfig
 from src.core.config.config import Config
 from src.core.events.event_bus import eventBus
@@ -10,11 +11,13 @@ from src.core.theme.theme import Theme
 class DataManager:
     def __init__(
         self,
+        logger: EventLogger,
         app_config: AppConfig,
         config_dir: Path,
         themes_dir: Path,
         keymap_file: Path,
     ) -> None:
+        self.logger = logger
         self.app_config = app_config
         self.config_dir = config_dir
         self.themes_dir = themes_dir
@@ -28,12 +31,17 @@ class DataManager:
         )
         
         self.active_config: Config = Config(
+            logger=self.logger,
             config_path=self.current_config_path
         )
         self.active_theme: Theme = Theme(
+            logger=self.logger,
             theme_path=self.current_theme_path
         )
-        self.key_map: KeyMap = KeyMap(json_path=self.keymap_file)
+        self.key_map: KeyMap = KeyMap(
+            logger=self.logger,
+            json_path=self.keymap_file
+        )
 
         self.connect_events()
 

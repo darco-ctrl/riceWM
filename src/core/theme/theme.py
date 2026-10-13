@@ -1,5 +1,6 @@
 import json
 
+from app.event_logger import EventLogger, LogEventType
 from src.core.theme.constructor import ThemeConstructor
 from src.core.theme.helper import ThemeHelper
 from src.core.theme.virtual_desktop_notifier.virtual_desktop_notifier import (
@@ -9,8 +10,8 @@ from src.core.theme.window_search.window_search import WindowSearchStyle
 
 
 class Theme:
-    def __init__(self, theme_path: str):
-
+    def __init__(self, logger: EventLogger, theme_path: str):
+        self.logger = logger
         self.constructor: ThemeConstructor = ThemeConstructor() 
         self.helper: ThemeHelper = ThemeHelper()
         self.theme_file_path = theme_path
@@ -22,15 +23,19 @@ class Theme:
         self.load()
 
     def reload(self):
-        print("reloading themes")
+        self.logger.log(
+            log_type=LogEventType.LOAD_DATA,
+            message=f"Applying Theme: {self.name}"
+        )
+
         self.load()
-        print(f"applying new theme: {self.name}")
 
     def load(self):
         with open(self.theme_file_path, "r") as file:
-            # text = file.read()
-            # print(f"\n\n {text} \n\n")
-            print(f"Loading Theme: {self.theme_file_path}.")
+            self.logger.log(
+                log_type=LogEventType.LOAD_DATA,
+                message=f"Loading Theme: {self.theme_file_path}"
+            )
 
             file.seek(0)
             data = json.load(file)

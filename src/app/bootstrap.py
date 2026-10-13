@@ -43,9 +43,6 @@ class BootStrap:
         # create the themes directory if it doesn't exist
         if not rice_paths.config_dir.exists():
             rice_paths.config_dir.mkdir(parents=True, exist_ok=True)
-            print(
-                f"create parents becuase file '{rice_paths.config_dir}' does not exists"
-            )
 
         # copy the default theme to the themes directory
         if not (rice_paths.config_dir / "default_config.json").exists():
@@ -53,7 +50,6 @@ class BootStrap:
                 rice_paths.default_config_path,
                 rice_paths.config_dir / "default_config.json",
             )
-            print(f"copying json '{rice_paths.config_dir}' does not exists")
 
     def check_keymap_file(self):
         if not rice_paths.key_map_file.exists():

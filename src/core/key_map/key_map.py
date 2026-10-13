@@ -1,5 +1,6 @@
 import json
 
+from app.event_logger import EventLogger, LogEventType
 from src.core.key_map.models import (
     ApplicationKM,
     VirtualDesktopKB,
@@ -10,9 +11,10 @@ from src.core.key_map.models import (
 
 
 class KeyMap:
-    def __init__(self, json_path: str) -> None:
+    def __init__(self, logger: EventLogger, json_path: str) -> None:
         self.path = json_path
 
+        self.logger = logger
         self.application: ApplicationKM
         self.window_search: WindowSearchKM
         self.window_manager: WindowManagerKM
@@ -20,7 +22,10 @@ class KeyMap:
 
     def load(self):
         with open(self.path, "r") as file:
-            print(f" Loading keybinds: {self.path}")
+            self.logger.log(
+                log_type=LogEventType.LOAD_DATA,
+                message=f"Loading keybinds: {self.path}"
+            )
 
             data = json.load(file)
             self.create_data_classes(data)

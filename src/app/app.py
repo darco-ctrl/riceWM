@@ -1,11 +1,10 @@
 import os
 import sys
 
-from pympler import asizeof
 from PySide6.QtWidgets import QApplication
 
 import src.app.paths as rice_paths
-from app.event_logger import EventLogger
+from app.event_logger import EventLogger, LogEventType
 from src.app.bootstrap import BootStrap
 from src.config.app_config import AppConfig
 from src.core.data_manager import DataManager
@@ -33,7 +32,6 @@ class App:
         self.tray = self.create_tray()
 
         self.connect_events()
-        self.print_theme_size()
 
     def connect_events(self):
         eventBus.requestRestartApplication.connect(self.restart_application)
@@ -81,6 +79,7 @@ class App:
 
     def create_data_manager(self) -> DataManager:
         data_manager = DataManager(
+            logger=self.logger,
             app_config=self.app_config,
             config_dir=rice_paths.config_dir,
             themes_dir=rice_paths.themes_dir,
@@ -91,6 +90,7 @@ class App:
 
     def create_commands_service(self) -> CommandService:
         return CommandService(
+            logger=self.logger,
             data_manager=self.data_manager
         )
 
@@ -117,14 +117,18 @@ class App:
         return tray
 
     def quit_application(self):
+        self.logger.log(
+            log_type=LogEventType.APPLICATION_QUIT,
+            message="Quiting RiceWM.."
+        )
+        
         self.bootstrap.delete_cache()
         self.application.quit()
 
-    def print_theme_size(self):
-        print(f"Theme uses {asizeof.asizeof(
-            self.data_manager.active_theme
-        ) / 1024:.2f} KB")
-
     def restart_application(self):
-        print("restarting application")
+        self.logger.log(
+            log_type=LogEventType.APPLICATION_RESTART,
+            message="Restarting RiceWM.."
+        )
+            
         os.execv(sys.executable, [sys.executable] + sys.argv)

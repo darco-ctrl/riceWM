@@ -1,5 +1,6 @@
 import json
 
+from app.event_logger import EventLogger, LogEventType
 from src.core.config.models import (
     Animation,
     AnimationConfig,
@@ -13,7 +14,8 @@ from src.core.config.models import (
 
 
 class Config:
-    def __init__(self, config_path: str):
+    def __init__(self, logger: EventLogger, config_path: str):
+        self.logger = logger
         self.config_path = config_path
 
         self.name: str
@@ -26,7 +28,10 @@ class Config:
 
     def load(self):
         with open(self.config_path, "r") as file:
-            print(f"Loading config: {self.config_path}.")
+            self.logger.log(
+                log_type=LogEventType.LOAD_DATA,
+                message=f"Loading config: {self.config_path}"
+            )
 
             data = json.load(file)
             # print(data)

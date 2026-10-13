@@ -4,12 +4,15 @@ from logging.handlers import RotatingFileHandler
 import app.paths as rice_paths
 
 
-class LogType:
-    KEY_PRESS = "KEY_PRESS"
-    APPLICATION_START = "APPLICATION START"
-    APPLICATION_QUIT = "APPLICATION QUIT"
-    CLASS_START = "CLASS START"
-    CLASS_UPDATE = "CLASS UPDATE"
+class LogEventType:
+    KEY_PRESSED = "KEY_PRESSED"
+    APPLICATION_START = "APPLICATION_START"
+    APPLICATION_QUIT = "APPLICATION_QUIT"
+    APPLICATION_RESTART = "APPLICATION_RESTART"
+    INFO = "INFO"
+    LOAD_DATA = "LOAD_DATA"
+    EXECUTE_COMMAND = "EXECUTE_COMMAND"
+    
 
 class RiceWMFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
@@ -23,7 +26,7 @@ class EventLogger:
         self.console_handler = self._get_console_handler()
         self.logger = self._get_logger()
 
-        self.log(log_type=LogType.KEY_PRESS, message="hello world")
+        self.log(log_type=LogEventType.KEY_PRESSED, message="hello world")
 
     def _get_file_handler(self) -> RotatingFileHandler:
         path = rice_paths.log_folder / "rice_wm.log"
@@ -53,7 +56,7 @@ class EventLogger:
 
         return logger
 
-    def log(self, log_type: str, message: str):
-        log = f"[TYPE: {log_type}]: {message}"
+    def log(self, message: str, log_type: str = LogEventType.INFO):
+        log = f"[EVENT_TYPE: {log_type}]: {message}"
 
         self.logger.info(log)

@@ -1,7 +1,7 @@
 import keyboard
 import pynput.keyboard as pkbaord
 
-from app.event_logger import EventLogger, LogType
+from app.event_logger import EventLogger, LogEventType
 from src.core.events.event_bus import eventBus
 from src.core.key_map.key_map import KeyMap
 from src.core.key_map.models import ApplicationKM, WindowManagerKM, WindowSearchKM
@@ -26,7 +26,7 @@ class HotKeyManager:
         
         self.panel_listner.start()
         self.logger.log(
-            log_type=LogType.CLASS_START,
+            log_type=LogEventType.INFO,
             message="Hotkey Manager has started"
         )
 
@@ -78,15 +78,23 @@ class HotKeyManager:
         self.panel_listner.start()
 
     def close_window(self):
+        self._log("CLOSE_WINDOW")
+        
         eventBus.closeWindow.emit()
 
     def minimize_window(self):
+        self._log("MINIMIZE_WINDOW")
+        
         eventBus.minimizeWindow.emit()
 
     def maximize_window(self):
+        self._log("MAXIMIZE_WINDOW")
+        
         eventBus.maximizeWindow.emit()
 
     def restore_window(self):
+        self._log("RESTORE_WINDOW")
+        
         eventBus.restoreWindow.emit()
 
     def on_wsp_select_up(self):
@@ -96,22 +104,42 @@ class HotKeyManager:
         eventBus.itemSelectDown.emit()
 
     def on_data_reload(self):
+        self._log("RESTART_APPLICATION")
+        
         eventBus.requestRestartApplication.emit()
 
     def on_wsp_toggle(self):
+        self._log("WINDOW_SEARCH_PANEL_TOGGLE")
+        
         eventBus.wspToggleRequested.emit()
 
     def on_wsp_close(self):
+        self._log("WINDOW_SEARCH_PANEL_CLOSE")
+        
         eventBus.wspCloseRequested.emit()
 
     def on_vdesktop_new(self):
+        self._log("VIRTUAL_DESKTOP_NEW")
+        
         eventBus.createNewVDesktop.emit()
 
     def on_vdesktop_delete(self):
+        self._log("VIRTUAL_DESKTOP_DELETE")
+        
         eventBus.deleteCurrentVDesktop.emit()
 
     def on_vdesktop_left(self):
+        self._log("VIRTUAL_DESKTOP_GO_LEFT")
+        
         eventBus.vDesktopGoLeft.emit()
 
     def on_vdesktop_right(self):
+        self._log("VIRTUAL_DESKTOP_GO_RIGHT")
+        
         eventBus.vDesktopGoRight.emit()
+
+    def _log(self, message: str):
+        self.logger.log(
+            log_type=LogEventType.KEY_PRESSED,
+            message=message
+        )

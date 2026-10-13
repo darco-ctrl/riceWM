@@ -1,11 +1,17 @@
 from collections.abc import Callable
 
+from app.event_logger import EventLogger, LogEventType
 from src.core.data_manager import DataManager
 from src.services.commands.executer import CommandExecuter
 
 
 class CommandService: 
-    def __init__(self, data_manager: DataManager):
+    def __init__(
+        self, 
+        logger: EventLogger, 
+        data_manager: DataManager
+    ):
+        self.logger = logger
         self.executer: CommandExecuter = CommandExecuter(
             data_manager=data_manager
         )
@@ -18,6 +24,7 @@ class CommandService:
         if not command in self.commands:
             return
 
+        self._log(command)
         self.commands[command]()
 
     def is_command(self, command: str) -> bool:
@@ -34,3 +41,9 @@ class CommandService:
         }
 
         return commands
+
+    def _log(self, message: str):
+        self.logger.log(
+            log_type=LogEventType.EXECUTE_COMMAND,
+            message=message
+        )
