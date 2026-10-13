@@ -1,4 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
+
+
 a = Analysis(
     ['main.py'],
     pathex=[],
@@ -16,12 +18,14 @@ a = Analysis(
     optimize=0,
 )
 pyz = PYZ(a.pure)
+
 exe = EXE(
     pyz,
     a.scripts,
     [],
     exclude_binaries=True,
     name='RiceWM',
+    icon=['ricewm.ico'],
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -32,8 +36,6 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['ricewm.ico'],
-    uac_admin=True,
 )
 coll = COLLECT(
     exe,
