@@ -50,7 +50,7 @@ def hicon_to_image(hicon: int, size: int = 256) -> Image.Image:
         size,
         size,
         0,
-        0,
+        0, # pyright: ignore[reportArgumentType]
         win32con.DI_NORMAL,
     )
 

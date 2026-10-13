@@ -35,7 +35,7 @@ class WindowScanner:
 
             return app_view.desktop.number == desktop.number
 
-        except Exception :
+        except OSError:
             return False
 
     def is_regular_window(self,

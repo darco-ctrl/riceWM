@@ -55,6 +55,7 @@ class App:
 
     def create_window_manager(self) -> WindowManager:
         window_manager = WindowManager(
+            logger=self.logger,
             window_scanner=self.window_scanner,
             config=self.data_manager.active_config
         )

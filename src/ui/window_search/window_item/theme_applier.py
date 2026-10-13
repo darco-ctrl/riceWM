@@ -147,36 +147,6 @@ class WinItemThemeApplier:
         )
         label.setFont(font)
 
-        # print("reapplied theme to window title...")
-
-    def recolor_keybind_label(self, label: QLabel):
-        style = self.theme.window_search.window_item.keybind_label
-
-        # print(f"setting keybind label background color to : {style.background_color}")
-        label.setFixedSize(QSize(
-            style.dimension.x, style.dimension.y
-        ))
-        label.setStyleSheet(f"""
-        #keyBindLabel {{
-            border-style: {style.border_style.style};
-            border-radius: {style.border_style.radius}px;
-            border-left-width: {style.border_style.width[0]}px;
-            border-top-width: {style.border_style.width[1]}px;
-            border-right-width: {style.border_style.width[2]}px;
-            border-bottom-width: {style.border_style.width[3]}px;
-            border-color: {style.border_style.color};
-            background-color: {style.color_style.background_color};
-            color: {style.color_style.color}
-        }}
-        """)
-
-        label.setMargin(style.margin)
-
-        font = self.theme.helper.to_qfont(
-            font_style=style.font_style,
-            qfont=label.font()
-        )
-        label.setFont(font)
 
     def select_window(self, win_item: WindowItem):
 

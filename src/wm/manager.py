@@ -1,4 +1,4 @@
-
+from app.event_logger import EventLogger
 from src.core.config.config import Config
 from src.services.window.scanner import WindowScanner
 from src.wm.controller import WindowController
@@ -8,6 +8,7 @@ from src.wm.registry import WindowRegistry
 class WindowManager:
     def __init__(
         self, 
+        logger: EventLogger,
         window_scanner: WindowScanner,
         config: Config
     ) -> None:
@@ -18,6 +19,6 @@ class WindowManager:
             config=config
         )
         self.controller = WindowController(
-            self.registry, window_scanner
+            logger, self.registry, window_scanner
         )
         self.window_scanner = window_scanner

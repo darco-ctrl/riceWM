@@ -3,15 +3,17 @@ import win32con
 import win32gui
 from pyvda.pyvda import AppView, VirtualDesktop
 
+from app.event_logger import EventLogger, LogEventType
 from src.core.events.event_bus import eventBus
 from src.services.window.scanner import WindowScanner
 from src.wm.registry import WindowRegistry
 
 
 class WindowController:
-    def __init__(self, registry, window_scanner):
+    def __init__(self, logger: EventLogger, registry, window_scanner):
         self.connect_window_events()
 
+        self.logger = logger
         self.window_scanner: WindowScanner = window_scanner
         self.registry: WindowRegistry = registry
 
@@ -59,8 +61,11 @@ class WindowController:
 
         if self.window_scanner.is_regular_window(hwnd):
             return hwnd
-
-        print("returning becuase not regular window")
+            
+        self.logger.log(
+            log_type=LogEventType.INFO,
+            message="The window tried to focus is not regular window"
+        )
         return 0
 
     def focus_window(self, hwnd: int):
@@ -102,4 +107,7 @@ class WindowController:
         try:
             win32gui.SetForegroundWindow(hwnd)
         except pywintypes.error as error:
-            print(f"Could not focus hwnd {hwnd}: {error}")
+            self.logger.log(
+                log_type=LogEventType.ERROR,
+                message=f"Could not focus HWND: {hwnd}, error: {error}"
+            )

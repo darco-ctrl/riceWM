@@ -79,7 +79,6 @@ class WindowRegistry:
         return -1
 
     def v_desktop_delete_current(self):
-        print("delete")
         desktops = pyvda.get_virtual_desktops()
         current = VirtualDesktop.current()
         current_index = current.number - 1  # convert 1-indexed -> 0-indexed
