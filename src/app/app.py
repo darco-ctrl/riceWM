@@ -1,11 +1,11 @@
 import os
 import sys
 
-from app.event_logger import EventLogger
 from pympler import asizeof
 from PySide6.QtWidgets import QApplication
 
 import src.app.paths as rice_paths
+from app.event_logger import EventLogger
 from src.app.bootstrap import BootStrap
 from src.config.app_config import AppConfig
 from src.core.data_manager import DataManager
@@ -21,7 +21,7 @@ from src.wm.manager import WindowManager
 class App:
     def __init__(self):
         self.bootstrap = self.create_bootstrap()
-        self.event_Logger = self.create_event_logger()
+        self.logger = self.create_event_logger()
         self.application = self.create_application()
         self.window_scanner = self.create_window_scanner()
         self.app_config = self.create_app_config()
@@ -42,6 +42,8 @@ class App:
         )
 
     def run(self):
+        
+        
         self.hotkey_manager.start()
         self.ui_manager.load()
 
@@ -93,7 +95,7 @@ class App:
         )
 
     def create_hotkey_manager(self) -> HotKeyManager:
-        hotkey_manager = HotKeyManager(self.data_manager.key_map)
+        hotkey_manager = HotKeyManager(self.logger, self.data_manager.key_map)
 
         return hotkey_manager
 

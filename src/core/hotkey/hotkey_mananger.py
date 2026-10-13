@@ -1,13 +1,16 @@
 import keyboard
 import pynput.keyboard as pkbaord
 
+from app.event_logger import EventLogger, LogType
 from src.core.events.event_bus import eventBus
 from src.core.key_map.key_map import KeyMap
 from src.core.key_map.models import ApplicationKM, WindowManagerKM, WindowSearchKM
 
 
 class HotKeyManager:
-    def __init__(self, key_map: KeyMap) -> None:
+    def __init__(self, logger: EventLogger, key_map: KeyMap) -> None:
+        self.logger = logger
+
         self.key_map = key_map
         self._global_handles = []
         self.panel_listner: pkbaord.GlobalHotKeys
@@ -20,7 +23,12 @@ class HotKeyManager:
         eventBus.disablePanelKeys.connect(self.disable_panelkeys)
 
     def start(self):
+        
         self.panel_listner.start()
+        self.logger.log(
+            log_type=LogType.CLASS_START,
+            message="Hotkey Manager has started"
+        )
 
     def set_panel_listner(self):
         wsp_key_map: WindowSearchKM = self.key_map.window_search
