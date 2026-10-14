@@ -51,7 +51,7 @@ RiceWM relies on Windows-specific APIs (virtual desktops, low-level keyboard hoo
 2. Extract the `RiceWM` folder anywhere you like.
 3. Run `RiceWM.exe`.
 
-> **Note:** RiceWM requests administrator privileges on launch. This is required for global hotkey suppression to work reliably across all applications (similar to how AutoHotkey scripts operate).
+> **Note:** RiceWM uses Windows low-level keyboard hooks (WH_KEYBOARD_LL), which require elevation to suppress input across all applications.
 
 > **Antivirus note:** Some antivirus software may flag RiceWM on first run due to its use of global keyboard hooks — this pattern is also used by keyloggers, so heuristic scanners sometimes react to it. RiceWM is not currently code-signed (see [roadmap](#%EF%B8%8F-roadmap--future-plans))), so Windows SmartScreen may also show an "unrecognized app" warning. This is expected for an early-stage, unsigned open-source tool — you're welcome to review the source yourself before running it.
 
