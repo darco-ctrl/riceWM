@@ -53,7 +53,7 @@ RiceWM relies on Windows-specific APIs (virtual desktops, low-level keyboard hoo
 
 > **Note:** RiceWM uses Windows low-level keyboard hooks (WH_KEYBOARD_LL), which require elevation to suppress input across all applications.
 
-> **Antivirus note:** Some antivirus software may flag RiceWM on first run due to its use of global keyboard hooks — this pattern is also used by keyloggers, so heuristic scanners sometimes react to it. RiceWM is not currently code-signed (see [roadmap](#%EF%B8%8F-roadmap--future-plans))), so Windows SmartScreen may also show an "unrecognized app" warning. This is expected for an early-stage, unsigned open-source tool — you're welcome to review the source yourself before running it.
+> **Antivirus note:** Some antivirus software may flag RiceWM on first run due to its use of global keyboard hooks — this pattern is also used by keyloggers, so heuristic scanners sometimes react to it. RiceWM is not currently code-signed (see [roadmap](#%EF%B8%8F-roadmap--future-plans)), so Windows SmartScreen may also show an "unrecognized app" warning. This is expected for an early-stage, unsigned open-source tool — you're welcome to review the source yourself before running it.
 
 On first launch, RiceWM automatically creates its config directory at `%USERPROFILE%\.config\riceWM` and populates it with default configuration, theme, and keymap files.
 
