@@ -20,7 +20,7 @@
 </p>
 
 
-## 🎥 Video
+## Demo (40s)
 <a href="https://youtu.be/4T6kRqzbd_s" target="_blank">
   <img src="https://img.youtube.com/vi/4T6kRqzbd_s/maxresdefault.jpg" alt="Watch the video" width="100%" />
 </a>
