@@ -9,8 +9,7 @@
     <a href="#-installation">Installation</a> ♦
     <a href="#%EF%B8%8F-default-hotkeys">Default Hotkeys</a> ♦
     <a href="#%EF%B8%8F-configuration">Configuration</a> ♦
-    <a href="#-feedback--support">Feedback & Support</a> ♦
-    <a href="#-about">About</a>
+    <a href="#-feedback--support">Feedback & Support</a> 
   </p></h2>
 </div>
 
