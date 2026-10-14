@@ -84,14 +84,16 @@ All hotkeys are fully remappable — see [Configuration](#%EF%B8%8F-configuratio
 
 Typed into the window search panel, prefixed with '`:`':
 
-| Command            | Description                        |
-| ------------------ | ---------------------------------- |
-| `:quit`            | Quits the application              |
-| `:open-theme`      | Opens the active `theme.json` file |
-| `:open-app-config` | Opens `app.toml`                   |
-| `:open-config`     | Opens active `config.json`         |
-| `:open-keymap`     | Opens the keymap file              |
-| `:restart`         | Restarts the application           |
+| Command               | Description                        |
+| --------------------- | ---------------------------------- |
+| `:quit`               | Quits the application              |
+| `:open-config-folder` | Opens config folder                |
+| `:open-theme`         | Opens the active `theme.json` file |
+| `:open-app-config`    | Opens `app.toml`                   |
+| `:open-config`        | Opens active `config.json`         |
+| `:open-keymap`        | Opens the keymap file              |
+| `:restart`            | Restarts the application           |
+
 
 
 ## ⚙️ Configuration
@@ -121,16 +123,13 @@ Edit these files directly, then restart the application with `Ctrl + Alt + F12` 
 ```bash
 git clone https://github.com/darco-ctrl/riceWM.git
 cd RiceWM
-python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
-python main.py
+uv sync
 ```
 
 ### Building an executable
 
 ```bash
-pyinstaller --clean main.spec
+uv run pyinstaller --clean RiceWM.spec
 ```
 
 The built application will be output to `dist/RiceWM/`.
@@ -191,14 +190,8 @@ RiceWM is licensed under the [MIT License](LICENSE).
 
 ## 💬 Feedback & Support
 
-Found a bug, have a feature idea, or just want to chat about the project? Reach out to me through either :D :
+Found a bug, have a feature idea, or just want to chat about the project? Reach out to me through either:
 
 - **Issues:** [GitHub Issues](https://github.com/darco-ctrl/riceWM/issues)
 - **Email:** [ricewmsupport@gmail.com](mailto:ricewmsupport@gmail.com)
 
-
-## 📖 About
-
-This project was made because I hated `alt+tab` and used `.ahk` to customize hotkey to switch between virtual desktop and stuff and I had 5 virtual desktpp opened and wouldn't know where a window is that's how I got idea of making window search,
-
-Btw , love `.ahk` when i said above don't take it as bad its amazing :D
